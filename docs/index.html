@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>CobbleMarket — Cobblemon 服务器市场模组</title>
+  <meta name="description" content="CobbleMarket 是一个面向 Cobblemon 服务器的玩家交易市场模组，支持精灵与物品的挂单买卖、拍卖场、求购单、喵喵银行金融系统与四种货币，同时提供 Fabric 与 NeoForge 两个版本。">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/core.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/addons/vue.min.css">
+
+  <style>
+    /* ===== 配色变量：精灵球红白主题 ===== */
+    :root {
+      --theme-color: #d64541;
+      --theme-color-secondary: #f5f5f5;
+      --theme-color-dark: #2c3e50;
+      --pokemon-blue: #3b7dd8;
+      --pokemon-yellow: #f9ca24;
+      --pokemon-green: #6ab04c;
+      --border-radius: 12px;
+      --duration-medium: 250ms;
+    }
+
+    /* 说明：侧边栏「点击当前条目收起/展开子目录」是 docsify 的原生功能
+       （event/index.js 的 Collapse toggle，通过 .collapse 类实现），保持默认行为，不覆盖。 */
+
+    /* ===== 侧边栏分割线 ===== */
+    .sidebar-nav hr {
+      border: none;
+      border-top: 2px solid #ccc;
+      margin: 14px 0;
+    }
+
+    /* ===== 侧边栏圆角与悬停 ===== */
+    .sidebar-nav li a {
+      border-radius: 8px;
+      transition: background var(--duration-medium), color var(--duration-medium);
+    }
+    .sidebar-nav li a:hover {
+      background: rgba(214, 69, 65, 0.1);
+      color: var(--theme-color);
+    }
+    .sidebar-nav li.active > a {
+      color: var(--theme-color);
+      font-weight: 600;
+    }
+
+    /* ===== 顶部导航栏常驻 =====
+       docsify 默认给 .app-nav 用 position:absolute（它的定位祖先是 .content，
+       而后者顶端就在文档顶端），所以页面一滚导航栏就跟着走了。改成 fixed 固定到视口。
+       正文不会被盖住 —— docsify 已给 .markdown-section 设了
+       margin-top: calc(var(--navbar-height) + 间距)，正好空出导航栏的高度。 */
+    .app-nav,
+    .github-corner {
+      position: fixed;
+    }
+
+    .app-nav a {
+      transition: color var(--duration-medium);
+    }
+    .app-nav a:hover {
+      color: var(--theme-color);
+    }
+
+    /* 语言 / 主题切换按钮：直接写在 _navbar.md 里由 docsify 渲染，
+       所以选择器就是按钮自身（.lang-switch / .theme-switch），
+       不再是「JS 注入 li、再往里塞 a」的 .lang-switch > a 结构 */
+    .app-nav .lang-switch,
+    .app-nav .theme-switch {
+      cursor: pointer;
+    }
+    .app-nav .lang-switch {
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .app-nav .lang-switch::before {
+      content: '🌐 ';
+      font-weight: 400;
+    }
+    /* 图标跟着主题走，纯 CSS 切换，JS 不用管 */
+    .app-nav .theme-switch::before {
+      content: '🌙';
+    }
+    body.dark .app-nav .theme-switch::before {
+      content: '☀️';
+    }
+
+    /* 封面页上的导航栏：它叠在深色封面图上，而导航栏文字的颜色变量 --navbar-link-color
+       是空值 → 实际继承正文色（浅色模式下为深灰），压在深色封面上几乎看不见，
+       鼠标悬停变色才显出来。这里在封面显示时改用浅色 + 文字阴影，封面图明暗都能看清。
+       （:.cover 是文档流内的元素，滚过封面后导航栏随之滚出视口，不会浅字压白底。） */
+    body:has(.cover.show) .app-nav a {
+      color: rgba(255, 255, 255, 0.88);
+      text-decoration-color: #fff;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+    }
+    body:has(.cover.show) .app-nav a:hover,
+    body:has(.cover.show) .app-nav .active a {
+      color: #fff;
+    }
+
+    /* ===== 内容区美化 ===== */
+    .markdown-section {
+      max-width: 860px;
+    }
+    .markdown-section h1 {
+      border-bottom: 3px solid var(--theme-color);
+      padding-bottom: 10px;
+    }
+    .markdown-section h2 {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 6px;
+    }
+    .markdown-section a {
+      color: var(--theme-color);
+    }
+    .markdown-section code {
+      border-radius: 6px;
+    }
+    .markdown-section blockquote {
+      border-left: 4px solid var(--theme-color);
+      background: rgba(214, 69, 65, 0.05);
+      border-radius: 0 8px 8px 0;
+      padding: 10px 16px;
+    }
+    .markdown-section table {
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .markdown-section table th {
+      background: var(--theme-color);
+      color: #fff;
+    }
+
+    /* 提示块（callout）用 docsify v5 内置组件：markdown 里写 "> [!NOTE]" 即可，
+       渲染成 <div class="callout note">，左侧带圆形图标，配色走 --theme-color-1/2
+       （由主题色与背景色混合而来，暗色模式自动适配）。
+       ⚠ 这里刻意不自定义样式：内置选择器同为 .markdown-section .callout，优先级相同，
+       重复定义会按加载顺序覆盖它，导致内置的图标 / 内边距 / 暗色适配被破坏。 */
+
+    /* ===== 截图占位框 ===== */
+    .markdown-section img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+    .markdown-section img.shot {
+      display: block;
+      margin: 18px auto;
+      border: 1px solid #e3e3e3;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+    }
+
+    /* ===== 搜索框 ===== */
+    .search input {
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      transition: border var(--duration-medium), box-shadow var(--duration-medium);
+    }
+    .search input:focus {
+      border-color: var(--theme-color);
+      box-shadow: 0 0 0 3px rgba(214, 69, 65, 0.15);
+    }
+
+    /* ===== 暗黑模式适配 =====
+       docsify v5 的配色由 CSS 变量推导：--color-mono-1 ~ -9 都是拿 --color-bg 和 --color-text
+       用 color-mix() 算出来的，边框、代码块底、callout 底也都指回这些变量。
+       所以只要覆盖下面这两个，整站（画布 / 文字 / 边框 / 代码块 / 表格）会一起变暗。
+
+       ⚠ 必须声明在 html 上，不能只写 body：
+       html 自己的 background 就是 var(--color-bg)，而 CSS 变量只对「声明它的元素及其后代」可见 ——
+       写在 body 上 html 读不到，滚动露出的画布仍是白底，整页会从中间断开。 */
+    html.dark {
+      --color-bg: #1e1e1e;
+      --color-text: #ddd;
+      --code-bg: #2a2a2a;
+      /* 标题色默认是「正文色向黑混合 35%」——浅色下等于加深（更醒目），
+         暗色下就变成变暗了，标题会比正文还糊。这里改成向白混合，保持"强调=更亮" */
+      --strong-color: color-mix(in srgb, var(--color-text), #fff 35%);
+    }
+    body.dark .sidebar {
+      background: #252525;
+      border-right: 1px solid #333;
+    }
+    body.dark .sidebar-nav hr {
+      border-top-color: #444;
+    }
+    body.dark .markdown-section h2 {
+      border-bottom-color: #333;
+    }
+    body.dark .markdown-section blockquote {
+      background: rgba(214, 69, 65, 0.1);
+    }
+    body.dark .markdown-section img.shot {
+      border-color: #3a3a3a;
+    }
+    body.dark .app-nav a {
+      color: #ddd;
+    }
+    body.dark .search input {
+      background: #2a2a2a;
+      border-color: #444;
+      color: #ddd;
+    }
+
+    /* ===== 封面页背景图 ===== */
+    .cover {
+      background-image: url('cover-bg.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    /* 半透明遮罩：盖在图片上，压暗背景 */
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 1;
+    }
+
+    /* 封面内容显示在遮罩之上 */
+    .cover .cover-main {
+      position: relative;
+      z-index: 2;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 16px;
+      padding: 32px 40px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* 封面文字强化：多重阴影模拟描边 */
+    .cover .cover-main h1,
+    .cover .cover-main p,
+    .cover .cover-main blockquote,
+    .cover .cover-main ul,
+    .cover .cover-main li {
+      color: #ffffff !important;
+      text-shadow:
+        0 0 4px rgba(0, 0, 0, 0.9),
+        0 0 8px rgba(0, 0, 0, 0.7),
+        0 2px 6px rgba(0, 0, 0, 0.8),
+        0 0 16px rgba(0, 0, 0, 0.5);
+    }
+
+    /* 封面标题加大加粗 */
+    .cover .cover-main h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    /* 封面副标题稍微加大 */
+    .cover .cover-main blockquote p,
+    .cover .cover-main > p {
+      font-size: 1.15rem;
+      font-weight: 500;
+    }
+
+    /* 封面按钮 */
+    .cover .cover-main .cover-button {
+      color: #ffffff !important;
+      border: 2px solid #ffffff !important;
+      background: rgba(0, 0, 0, 0.4);
+      text-shadow: none;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: transform var(--duration-medium), box-shadow var(--duration-medium), background var(--duration-medium);
+    }
+    .cover .cover-main .cover-button:hover {
+      background: var(--theme-color);
+      border-color: var(--theme-color) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    /* 暗黑模式下遮罩更深一点 */
+    body.dark .cover::before {
+      background: rgba(0, 0, 0, 0.65);
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    // ⚠ 以下 IIFE 与 $docsify 配置同处一个 <script> 块：任何一处抛出未捕获异常，
+    //    都会中断整块执行（含 window.$docsify 的赋值 → 侧边栏/封面/搜索全没）。
+    //    所以对可能缺失的浏览器 API 要单独做保护（见 isDarkNow 里的 matchMedia）。
+
+    // ===== 主题（暗黑模式）：跟随系统偏好，手动切换后记住选择 =====
+    (function () {
+      var KEY = 'cobblemarket-theme';
+
+      function isDarkNow() {
+        try {
+          var saved = localStorage.getItem(KEY);
+          if (saved) return saved === 'dark';
+        } catch (e) { /* 隐私模式下 localStorage 不可用，忽略 */ }
+        // matchMedia 极少数环境没有；它若抛异常会把整块脚本带崩，所以单独兜住
+        try {
+          return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        } catch (e) { return false; }
+      }
+
+      function apply(dark) {
+        // html 上要挂：暗色 CSS 变量声明在 html.dark 上（见样式表里「暗黑模式适配」注释），
+        // 而 html 自身的 background 用的就是这个变量——挂 body 上 html 读不到，滚动露出的画布会留白
+        document.documentElement.classList.toggle('dark', dark);
+        document.body.classList.toggle('dark', dark);
+      }
+
+      window.__cmIsDark = isDarkNow;
+      window.__cmToggleTheme = function () {
+        var next = !isDarkNow();
+        apply(next);
+        try { localStorage.setItem(KEY, next ? 'dark' : 'light'); } catch (e) {}
+      };
+
+      apply(isDarkNow());
+    })();
+
+    // ===== 多语言：中文站位于根目录，英文站位于 /en/ =====
+    (function () {
+      // 取当前文档路径（去掉 hash 前缀与尾部斜杠）：'en/currency' / 'currency' / 'en' / ''
+      function currentPath() {
+        return location.hash.replace(/^#\/?/, '').replace(/\/+$/, '');
+      }
+
+      function currentLang() {
+        var p = currentPath();
+        // 注意 'en'（英文站首页 #/en/ 归一化后）不带斜杠，不能只判前缀
+        return (p === 'en' || p.indexOf('en/') === 0) ? 'en' : 'zh';
+      }
+
+      // 语言内路径：'en/features' -> 'features'，'en' -> ''，'features' -> 'features'
+      function innerPath() {
+        var p = currentPath();
+        return p === 'en' ? '' : p.replace(/^en\//, '');
+      }
+
+      function targetPath(lang) {
+        return lang === 'en' ? 'en/' + innerPath() : innerPath();
+      }
+
+      window.__cmCurrentLang = currentLang;
+      window.__cmSwitchLang = function (lang) {
+        if (lang === currentLang()) return;
+        // 只改 hash，不做任何滚动干预 —— 滚动位置原样保留。
+        //（曾在这里加过「切换后回顶」，那是早期误判「滚过封面后切语言看不到封面」时留下的补丁，
+        //  真实原因是 coverpage 配置漏了英文站、已在配置里修掉；这个补丁反而导致
+        //  从页面下方切语言会被强行拉回顶部。）
+        location.hash = '#/' + targetPath(lang);
+      };
+
+      // 语言 / 主题按钮直接写在 _navbar.md 里（见那里的 class），这里只做事件委托。
+      // 早先是用 JS 往 .app-nav 注入按钮，但 docsify 每次路由变化都会重建导航栏，
+      // 注入的节点会被清掉 —— 连点几次就赶上一次没重新注入上，按钮就消失了。
+      document.addEventListener('click', function (e) {
+        var el = e.target && e.target.closest ? e.target.closest('a') : null;
+        if (!el) return;
+
+        if (el.classList.contains('lang-switch')) {
+          e.preventDefault();
+          window.__cmSwitchLang(currentLang() === 'en' ? 'zh' : 'en');
+        } else if (el.classList.contains('theme-switch')) {
+          e.preventDefault();
+          window.__cmToggleTheme();
+        }
+
+        // 侧边栏的「点击收起/展开子目录」是 docsify 原生行为，这里不做干预。
+      });
+
+    })();
+
+    // ===== 侧边栏滚动高亮（scroll spy）=====
+    // docsify 的侧边栏高亮只跟路由走：点子条目跳到 #/config?id=xxx 后高亮就定在那里，
+    // 滚动时不会更新 —— 长页面上会出现「都滚到最底了，左侧还停在某一节」。
+    // 这里补一个滚动监听，按标题实际位置更新高亮。
+    (function () {
+      var OFFSET = 90;   // 参考线：视口顶部往下这么多像素。标题越过它就认为「已滚到这一节」
+
+      function headingEls() {
+        var all = [].slice.call(
+          document.querySelectorAll('.markdown-section :where(h1,h2,h3,h4,h5,h6)[id]')
+        );
+        // 排掉不可见的标题。侧边栏折叠某个条目时，不会影响正文里的标题；但如果某节
+        // 本身被隐藏（display:none），它的 getBoundingClientRect() 会返回全 0 ——
+        // 0 <= OFFSET 恒成立，会被误判成「已滚到这一节」，导致高亮跳过它。
+        return all.filter(function (h) {
+          var r = h.getBoundingClientRect();
+          return r.width > 0 || r.height > 0;
+        });
+      }
+
+      // 去掉尾部斜杠再比：'#/en' 与 '#/en/' 视为同一个条目
+      function normHref(h) {
+        return (h || '').replace(/\/+$/, '');
+      }
+
+      function updateActive() {
+        var hs = headingEls();
+
+        // 找「最后一个顶部已越过参考线」的标题 = 当前所在小节
+        // 取「顶部越过参考线、且离参考线最近」的那个标题。
+        // 不用「最后一个满足条件的」：那个写法依赖标题的纵坐标严格递增，实测在
+        // 平滑滚动过程中会取到错误的节（文档顺序与瞬时坐标对不上）。
+        // 这里改成按坐标挑最接近参考线的，对顺序不敏感。
+        var current = null;
+        var bestTop = -Infinity;
+        for (var i = 0; i < hs.length; i++) {
+          var top = hs[i].getBoundingClientRect().top;
+          if (top <= OFFSET && top > bestTop) {
+            bestTop = top;
+            current = hs[i];
+          }
+        }
+        // 已滚到页面底部：直接取最后一个标题。
+        // 页面较短时，末尾几节的顶部永远压不到参考线（实测滚到底时「参数说明」还在
+        // 视口下方 157px 处），不特判的话高亮会卡在中间某节、下面几节永远轮不到。
+        // 代价是滚动过程中这几节不会被逐个高亮 —— 这是短页面固有的取舍。
+        if (hs.length &&
+            window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+          current = hs[hs.length - 1];
+        }
+
+        var id = current ? current.id : null;
+
+        // 当前页面对应的条目（href 不带 ?id=）。这一层不依赖 docsify 自己的高亮标记 ——
+        // 从封面页点进来时它不一定生效（表现为「跳转后左侧没有任何条目变红」）。
+        var pageHref = normHref((location.hash || '#/').split('?')[0]);
+
+        // 先无条件清干净，再按下面的规则上色。
+        // 逐条 toggle 会出问题：点击导航后 docsify 先渲染、滚动是滞后的，重算时页面
+        // 可能还没滚到位，算出的「当前小节」仍是上一节 —— 旧高亮就留在原地了
+        // （表现为两个条目同时红）。
+        [].forEach.call(document.querySelectorAll('.sidebar-nav a'), function (a) {
+          var li0 = a.parentElement;
+          if (li0) li0.classList.remove('active');
+          a.style.color = '';
+          a.style.fontWeight = '';
+        });
+
+        [].forEach.call(document.querySelectorAll('.sidebar-nav a'), function (a) {
+          var href = a.getAttribute('href') || '';
+          var li = a.parentElement;
+          if (!li) return;
+
+          var m = href.match(/[?&]id=([^&]*)/);
+          var on;
+          if (m) {
+            // 小节条目：跟着滚动走，只高亮当前所在小节
+            on = decodeURIComponent(m[1]) === id;
+          } else {
+            // 页面条目：只要指向当前页就常亮，不随滚动变化
+            on = normHref(href) === pageHref;
+          }
+          li.classList.toggle('active', on);
+
+          // 同时写行内样式：docsify 内部也在管 .active（它的 #markSidebarActiveElm 会按自己的
+          // 时机增删这个类，跟这里互相覆盖），只靠 class 会在某些时序下失效。
+          // 行内样式优先级最高，不受任何样式表规则和时序影响。
+          var link = li.querySelector('a');
+          if (link) {
+            link.style.color = on ? 'var(--theme-color)' : '';
+            link.style.fontWeight = on ? '600' : '';
+          }
+
+        });
+      }
+
+      var ticking = false;
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          ticking = false;
+          updateActive();
+        });
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+
+      // 页面切换后内容变了要重算一次；延后一拍，让 docsify 先设好它自己的高亮
+      window.__cmScrollSpy = function () { setTimeout(updateActive, 0); };
+    })();
+
+    window.$docsify = {
+      name: 'CobbleMarket',
+      repo: 'https://github.com/ShuShengA/cobblemarket-fabric',
+
+      // 点击导航 / 侧边栏跳转后自动回到页面顶部（docsify 默认 false，不设就会停在上一页的滚动位置）
+      auto2top: true,
+
+      // 侧边栏和导航栏（按语言目录自动匹配：/en/ 下用 en/_sidebar.md）
+      loadSidebar: true,
+      loadNavbar: true,
+      subMaxLevel: 3,
+      mergeNavbar: true,
+
+      // 封面页：必须用「对象形式」逐条列出路由。
+      // 配成 true 时 docsify 会把它转成字符串 '_coverpage.md'，而字符串模式只在
+      // routePath === '/' 时生效（见 fetch/index.js 的 _fetchCover）—— 英文站首页 #/en/
+      // 永远拿不到封面，切语言就直接落在内容区。
+      // ⚠ 值相对于「当前路由所在目录」（docsify 内部会做 root + path），
+      //    所以两边都写文件名本身，别写成 en/_coverpage.md（会拼成 /en/en/_coverpage.md）。
+      coverpage: {
+        '/': '_coverpage.md',
+        '/en/': '_coverpage.md'
+      },
+
+      // 404 页：按路径前缀匹配（key 长度降序，所以 /en/ 优先于 /）
+      notFoundPage: {
+        '/en/': 'en/_404.md',
+        '/': '_404.md'
+      },
+
+      // 搜索
+      search: {
+        paths: 'auto',
+        placeholder: {
+          '/': '搜索文档',
+          '/en/': 'Search docs'
+        },
+        noData: '未找到相关文档 / No results'
+      },
+
+      // 每次渲染完成后刷新导航栏按钮（语言按钮文案/链接依赖当前路径）
+      plugins: [
+        function (hook) {
+          hook.doneEach(function () {
+            window.__cmScrollSpy();
+          });
+        }
+      ]
+    }
+  </script>
+
+  <!-- Docsify 核心 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@5"></script>
+  <!-- 搜索插件：必须用 dist/ 下的那份。
+       lib/plugins/search.min.js 是 v4 时代的 API（调用了 v5 已移除的
+       Docsify.dom.toggleClass / before），加载后在 doneEach 钩子里抛未捕获异常，
+       把排在它后面的插件钩子（含本页的滚动高亮 __cmScrollSpy）全部带崩 ——
+       表现为「文件是最新的、逻辑也对，但功能就是不生效」。 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@5/dist/plugins/search.min.js"></script>
+</body>
+</html>

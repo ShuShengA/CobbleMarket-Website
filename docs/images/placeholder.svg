@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="495" viewBox="0 0 880 495" role="img" aria-label="Screenshot placeholder">
+  <rect width="880" height="495" fill="#f7f7f8"/>
+  <rect x="10" y="10" width="860" height="475" rx="12" fill="none" stroke="#d0d0d5" stroke-width="3" stroke-dasharray="14 10"/>
+
+  <!-- 相机图标 -->
+  <g transform="translate(440, 205)" fill="none" stroke="#b8b8c0" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="-64" y="-40" width="128" height="88" rx="12"/>
+    <path d="M -24 -40 L -13 -58 L 13 -58 L 24 -40"/>
+    <circle cx="0" cy="4" r="26"/>
+  </g>
+
+  <text x="440" y="322" text-anchor="middle"
+        font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif"
+        font-size="28" fill="#9a9aa2">截图待补</text>
+  <text x="440" y="360" text-anchor="middle"
+        font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
+        font-size="21" fill="#b8b8c0">Screenshot coming soon</text>
+</svg>

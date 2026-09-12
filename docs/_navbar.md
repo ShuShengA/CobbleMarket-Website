@@ -1,0 +1,6 @@
+- [首页](/)
+- [功能特色](/features)
+- [安装](/install)
+- [下载模组](https://www.curseforge.com/minecraft/mc-mods/cobblemarket)
+- <a href="javascript:void(0)" class="lang-switch" title="Switch to English">EN</a>
+- <a href="javascript:void(0)" class="theme-switch" title="切换深色 / 浅色"></a>
