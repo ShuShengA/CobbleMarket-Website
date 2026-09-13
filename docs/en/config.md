@@ -6,7 +6,7 @@ Path: `config/cobblemarket.json` (generated on first launch)
 
 **Two ways to edit it:**
 
-1. **In-game (recommended)** — the **Server Config** screen at the bottom of the admin panel covers fees, limits, durations and switches; Meowth Bank settings live in the **Meowth Bank Config** screen reached from there
+1. **In-game (recommended)** — the **Server Config** screen at the bottom of the Admin Panel covers fees, limits, durations and switches; Meowth Bank settings live in the **Meowth Bank Config** screen reached from there
 2. **Edit the file directly** — then run `/market reload` to apply changes without a restart
 
 > ⚠ **Currency settings (the `currency` block) are read only at server startup.** After changing them you must restart; `/market reload` will not apply them (it tells you so when it detects a change).
@@ -55,7 +55,7 @@ Full details, including how the market cooperates with each currency mod, are in
 |---|---|---|
 | `buyOrderFeePercent` | `5.0` | Fee percentage deducted from the seller's payment on settlement (`0` = no fee) |
 | `buyOrderExpiryDays` | `3` | Days before an order expires; it closes automatically and refunds the frozen money |
-| `maxBuyOrdersPerPlayer` | `5` | Max concurrent buy orders per player, Pokémon and items combined (`0` = unlimited) |
+| `maxBuyOrdersPerPlayer` | `5` | Max concurrent Buy Orders per player, Pokémon and items combined (`0` = unlimited) |
 
 ## Egg trading
 

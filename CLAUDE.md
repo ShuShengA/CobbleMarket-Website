@@ -197,19 +197,20 @@ grep -o '"cobblemarket\.[^"]*"[[:space:]]*:[[:space:]]*"[^"]*"' \
 - `backdrop-filter` 是移动端性能杀手，**只给固定不动的侧边栏和少量卡片用**，别往列表行/正文块铺
 - 全站自定义光标把链接的「手型」提示盖掉了（`cursor: ... !important`）—— **看不出能点的元素要靠别的反馈补**（悬停发光/抬起），新加可交互元素时注意
 
-## 十四、待修的不一致（2026-09-14 盘点，改到相关文件时顺手修）
+## 十四、格式统一记录
 
-| # | 位置 | 现状 |
-|---|---|---|
-| 1 | 全站 zh | 「管理员面板 / 管理端 / 管理面板」三名并存（23 / 14 / 13 处）→ 统一「管理员面板」 |
-| 2 | `features.md`、`changelog.md`、`security.md` | 「待领取 / 待归还 / 待取回」三套 → 统一「待领取」 |
-| 3 | `en/changelog.md` | `Auction House` / `Auction house` / `auction hall` 三套并存（23 处）→ 统一 `Auction House` |
-| 4 | zh 全站 | 并列斜杠两侧空格：无空格 252 处 vs 有空格 52 处 → 统一**不加空格** |
-| 5 | `features.md`、`changelog.md` | 「页签」vs 英文 `tab` 混用（zh 侧）→ 统一「页签」 |
-| 6 | `changelog.md:189` | `PokéDollars` → 全站其余 32 处为 `PokeDollars` |
-| 7 | `security.md:69,105,107`、`currency.md:135` | 中文引号用了半角 `"` → 改 `「」` |
-| 8 | `en/support.md:9,12,18` | `Pokeball` → 官方拼写 `Poké Ball` |
-| 9 | `changelog.md:232` | 标题前**缺空行**（全站唯一一处），且该节漏了「新功能：」前缀 |
-| 10 | `en/changelog.md` | `### New Feature` 与 `### New Features` 单复数不一（按版本段） |
-| 11 | `README.md:98` vs `install.md:9` | Cobblemon 版本要求一处含上界一处不含 → 统一 `1.8.0 及以上、1.9 以下` |
-| 12 | `currency.md`、`meowth-bank.md` 等 4 页 | H1 带限定词（如「…说明（服主向）」），与侧边栏名不一致 → 新页面照旧即可，老页面可择机统一 |
+**2026-09-14 一次性统一**（此前盘点出的 12 类历史遗留问题已全部处理；模组仓库的 `CHANGELOG.md` / `CHANGELOG_EN.md` 已同步）：
+
+| 项 | 统一为 |
+|---|---|
+| 界面术语 | 管理员面板 / 待领取 / 拍卖场（按游戏内 lang 文案，见第十节） |
+| 英文界面名 | 一律首字母大写：`Admin Panel` / `Pending Claims` / `Auction House` / `Meowth Bank` / `Buy Orders` / `Server Config` / `Item Market` |
+| 并列分隔 | 中文站 `/`（两侧无空格）；英文并列保留 ` / ` |
+| 中文引号 | `「」`（4 处半角 `"` 遗留已改） |
+| 拼写 | `PokeDollars`（非 PokéDollars）、`Poké Ball`（非 Pokeball） |
+| 更新日志标题 | 分组标题统一单数 `New Feature`；蛋交易节补前缀与标题前空行 |
+| 版本要求 | `1.8.0 及以上、1.9 以下`（含上界，README 与 install 已对齐） |
+
+**有意保留**：`currency` / `meowth-bank` / `save-data` / `security` 四页的 H1 带限定词（如「…说明（服主向）」）—— 限定词有信息量，与侧边栏名不一致可接受。
+
+**注意**：模组仓库 `docs/` 下有一批**网站页面的来源文件**（`currency_zh.md` / `meowth_bank_zh.md` / `save-data-locations.md` / `security/`）—— 从它们生成网站页面时，记得沿用本规范的格式。

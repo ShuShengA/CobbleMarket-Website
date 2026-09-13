@@ -4,4 +4,4 @@
 - [下载模组](https://www.curseforge.com/minecraft/mc-mods/cobblemarket)
 - [☕ 支持开发](/support)
 - <a href="javascript:void(0)" class="lang-switch" title="Switch to English">EN</a>
-- <a href="javascript:void(0)" class="theme-switch" title="切换深色 / 浅色"></a>
+- <a href="javascript:void(0)" class="theme-switch" title="切换深色/浅色"></a>
