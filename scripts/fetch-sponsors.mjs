@@ -27,6 +27,19 @@ if (!USER_ID || !TOKEN) {
  * （英文不用收 "thank" —— includes('thanks') 已经覆盖了带 s 的各种写法。）
  */
 const KEYWORDS = ['鸣谢', '感谢', '谢谢', 'thanks', 'thank you', 'sponsor'];
+
+/**
+ * 留言里出现这些词 = 明确不想公开，**一律不收录**（优先级高于 KEYWORDS）。
+ *
+ * 为什么需要它：匹配是「包含」而非精确相等，所以一句「谢谢你的模组，但不用列我」
+ * 里同时含"谢谢"和"不用"，按关键词会被收录 —— 那是「明确拒绝却被公开」，
+ * 比漏收一个愿意公开的人严重得多。所以宁可不收。
+ * 代价是会误伤「不用客气，感谢」这种客套话，接受。
+ */
+const OPT_OUT = [
+  '不用', '不要', '不必', '无需', '别列', '匿名',
+  'anonymous', "don't list", 'do not list',
+];
 /** 只收录支付成功的订单 */
 const STATUS_OK = 2;
 
@@ -134,10 +147,12 @@ function ballFor(amount) {
 const orders = await fetchAll();
 console.log(`共拉到 ${orders.length} 条订单`);
 
-// 只留：支付成功 + 留言里有公开意愿关键词
+// 只留：支付成功 + 留言里有公开意愿关键词 + 没有明确拒绝公开
 const willing = orders.filter(o => {
   if (o.status !== STATUS_OK) return false;
   const remark = String(o.remark || '').toLowerCase();
+  // 先看有没有明确拒绝 —— 必须在关键词之前，否则「不用鸣谢」会被当成愿意公开
+  if (OPT_OUT.some(k => remark.includes(k.toLowerCase()))) return false;
   return KEYWORDS.some(k => remark.includes(k.toLowerCase()));
 });
 
