@@ -123,7 +123,7 @@
 - Entry screen layout tweaks: title bolded and moved up, row spacing tightened, divider line and market-closed banner repositioned
 - Admin panel title aligned with the entry screen (gold + bold), button layout improved, back button centered when Cobbreeding is not installed
 - Pagination layout revamp (pokemon/item markets, admin lists): a symmetric divider line added below the list, prev/next buttons no longer cover the bottom border
-- Fixed the last background slice covering the rounded corners of the bottom border in all 15 three-part screens
+- **Last background slice covered the rounded corners of the bottom border** in all 15 three-part screens
 - Buy order and auction panel textures consolidated and upgraded: shared textures, duplicates removed
 - Buy order entry button icon sharpened to match the market master switch
 - Divider line added between the button row and the record list in the transaction history screen (both personal and all-history views)
@@ -133,18 +133,18 @@
 
 ### Fixes
 
-- Fixed item icons (balls/held items — drawItem render layer) and some Pokémon model icons (emissive layer) piercing through dialog masks — present in existing screens (market/auction/admin) since beta.1; item icons are now hidden while dialogs are open (render-layer limit), and Pokémon 3D icons are dimmed via color parameters
-- Fixed new item blacklist entries still appearing at the bottom of the list (the send path was missing the reverse); re-adding the same entry in blacklist/ban/price limit now moves it to the top instead of keeping its old position
-- Fixed buy order creation dialog validation messages being darkened and invisible under the dialog overlay (now rendered above the overlay)
-- Fixed Int overflow in fee calculation (auction settlement, seller notification, and pokemon listing): price × feePercent could wrap around above ~214.7M, producing a negative or zero fee (fee evasion, phantom seller credit, or data corruption in the extreme case) — now computed in Long
-- Fixed sustained FPS drops while market screens are open — they stay smooth no matter how many listings there are
-- Fixed the garbled seller notification after a buy order delivery was accepted — the message template has 5 placeholders but only 4 args were passed, with the amount/currency order swapped (mixed-up amounts and leftover %s)
-- Fixed the first row's 3D icon in the Pokémon picker always showing the first party Pokémon after searching (buy order delivery and auction creation — same root cause): the filtered-position index was used to look up the icon cache built with original list indices; filtering now keeps the original index
-- Fixed a false "CobbleMarket state save failed" error when players log out: on NeoForge, persistent state writes are asynchronous, so verifying right after saving misreported failures; verification is now delayed, and saves are skipped entirely when there is nothing unsaved
-- Fixed purchase success messages (Pokémon/items) showing amounts in green instead of the standard gold: the %d placeholders dropped the text color; they now use %s with gold-formatted amount text
-- Fixed rapid page-turning in market screens permanently graying out the prev/next buttons and leaving stale content: paging now merges clicks into a target page — each click updates the page number immediately (instant feedback), requests queue behind the server-side throttle window (pokemon market 250ms, item market/pending claims 500ms), and rapid clicks only send one request for the final page; a 1-second response timeout also force-resets the in-flight flag, so a silently dropped request can no longer lock the paging buttons (pokemon/item markets and both pending claims screens; the two admin screens also got the timeout fallback)
-- Custom Poké Balls from addon mods now show their icon and name correctly (previously blank due to hard-coded Cobblemon namespace)
-- Pokémon/item market listings force-cancelled by an admin now notify the seller with a dedicated red message (consistent with auctions and buy orders)
+- **Item icons and some Pokémon model icons pierced through dialog masks**: present in existing screens (market/auction/admin) since beta.1; item icons are now hidden while dialogs are open (render-layer limit), and Pokémon 3D icons are dimmed via color parameters
+- **New item blacklist entries still appeared at the bottom of the list** (the send path was missing the reverse); re-adding the same entry in blacklist/ban/price limit now moves it to the top instead of keeping its old position
+- **Buy order creation dialog validation messages were darkened by the dialog overlay** (now rendered above the overlay)
+- **Int overflow in fee calculation (auction settlement, seller notification, pokemon listing)**: price × feePercent could wrap around above ~214.7M, producing a negative or zero fee (fee evasion, phantom seller credit, or data corruption in the extreme case) — now computed in Long
+- **Sustained FPS drops while market screens are open**: they stay smooth no matter how many listings there are
+- **Garbled seller notification after a buy order delivery was accepted**: the message template has 5 placeholders but only 4 args were passed, with the amount/currency order swapped (mixed-up amounts and leftover %s)
+- **First row's 3D icon in the Pokémon picker always showed the first party Pokémon after searching** (buy order delivery and auction creation — same root cause): the filtered-position index was used to look up the icon cache built with original list indices; filtering now keeps the original index
+- **False "CobbleMarket state save failed" error when players log out**: on NeoForge, persistent state writes are asynchronous, so verifying right after saving misreported failures; verification is now delayed, and saves are skipped entirely when there is nothing unsaved
+- **Purchase success messages showed amounts in green instead of the standard gold**: the %d placeholders dropped the text color; they now use %s with gold-formatted amount text
+- **Rapid page-turning in market screens permanently grayed out the prev/next buttons and left stale content**: paging now merges clicks into a target page — each click updates the page number immediately (instant feedback), requests queue behind the server-side throttle window (pokemon market 250ms, item market/pending claims 500ms), and rapid clicks only send one request for the final page; a 1-second response timeout also force-resets the in-flight flag, so a silently dropped request can no longer lock the paging buttons (pokemon/item markets and both pending claims screens; the two admin screens also got the timeout fallback)
+- **Custom Poké Balls from addon mods showed no icon or name** (previously blank due to hard-coded Cobblemon namespace)
+- **Seller notification for admin force-cancellations**: Pokémon/item listings force-cancelled by an admin now notify the seller with a dedicated red message (consistent with auctions and buy orders)
 
 ## 1.0.0-beta.6
 
@@ -192,7 +192,7 @@
 
 ### Fixes
 
-- Fixed trade data loss when the server shuts down abnormally (killed process / crash): listed Pokémon or items could vanish — market data is now force-saved within seconds after every trade and immediately when a player disconnects, no longer relying on the autosave cycle; online OPs get a red-text alert if a save ever fails
+- **Trade data loss when the server shuts down abnormally (killed process / crash)**: listed Pokémon or items could vanish — market data is now force-saved within seconds after every trade and immediately when a player disconnects, no longer relying on the autosave cycle; online OPs get a red-text alert if a save ever fails
 
 ## 1.0.0-beta.5
 
@@ -212,10 +212,10 @@
 
 ### Fixes
 
-- The "Unban All" button stayed clickable while the item blacklist dialog was open, and its visibility did not refresh when blacklist data arrived
-- Long Pokémon blacklist rows (e.g. all six IVs filled in) are now truncated with an ellipsis instead of overlapping the remove button (full details remain in the hover tooltip)
-- Editing a price limit entry that changes the Pokémon (species / V count / shiny / form) or item now replaces the old entry instead of leaving it behind
-- Pokémon holding a blacklisted item can no longer be listed on the market or auction house (previously bypassed the item blacklist); held-item price limits now merge into the total price: lower bounds add up, upper bounds add up only when both sides are set
+- **"Unban All" button in the item blacklist dialog**: it stayed clickable while the dialog was open, and its visibility did not refresh when blacklist data arrived
+- **Long Pokémon blacklist rows overlapped the remove button**: they are now truncated with an ellipsis (full details remain in the hover tooltip)
+- **Old price limit entry left behind after editing**: changing the Pokémon (species / V count / shiny / form) or item and saving now replaces the old entry correctly
+- **Pokémon holding a blacklisted item could bypass the item blacklist**: they can no longer be listed on the market or auction house; held-item price limits now merge into the total price: lower bounds add up, upper bounds add up only when both sides are set
 
 ## 1.0.0-beta.4
 
@@ -257,13 +257,13 @@
 
 ### Fixes
 
-- Pending Claims screen showed raw translation keys instead of localized species names (also affected regular listing returns)
-- Fixed English-mode text overflow: shortened the claims button label
-- Fixed currency names following the server's language instead of the player's: UI and chat now use each player's own language
-- Fixed a rare case where buying/cancelling could mis-deduct identical items from a player's armor or offhand: only the main inventory is touched now
-- Expired listings are now taken down immediately (they used to linger for over ten seconds and could still be bought)
-- Blacklist and price limit screens kept stale remove/edit buttons after searching (only cleared after clicking or scrolling): row buttons now rebuild immediately as the search text changes
-- Searching by name in the item market and the admin "all Pokémon/items" screens only filtered the current page (targets on other pages couldn't be found without paging manually): search is now server-side global filtering, matching the Pokémon market — results appear on the first page immediately
+- **Pending Claims screen showed raw translation keys instead of localized species names** (also affected regular listing returns)
+- **English-mode text overflow**: shortened the claims button label
+- **Currency names followed the server's language instead of the player's**: UI and chat now use each player's own language
+- **Buying/cancelling could mis-deduct identical items from armor or offhand** (rare case): only the main inventory is touched now
+- **Expired listings lingered for over ten seconds** (and could still be bought): they are now taken down immediately
+- **Stale remove/edit buttons left after searching in blacklist and price limit screens** (only cleared after clicking or scrolling): row buttons now rebuild immediately as the search text changes
+- **Searching by name in the item market and admin screens only filtered the current page** (targets on other pages couldn't be found without paging manually): search is now server-side global filtering, matching the Pokémon market — results appear on the first page immediately
 
 ## 1.0.0-beta.3
 
