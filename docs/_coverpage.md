@@ -11,4 +11,4 @@
 
 [开始了解](/features)
 [下载模组](https://www.curseforge.com/minecraft/mc-mods/cobblemarket)
-[☕ 支持开发](https://afdian.com/a/cobblemarketmc)
+[☕ 支持开发](/support)

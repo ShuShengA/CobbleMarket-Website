@@ -2,6 +2,6 @@
 - [Features](/en/features)
 - [Install](/en/install)
 - [Download](https://www.curseforge.com/minecraft/mc-mods/cobblemarket)
-- [Support](https://afdian.com/a/cobblemarketmc)
+- [Support](/en/support)
 - <a href="javascript:void(0)" class="lang-switch" title="切换到中文">中文</a>
 - <a href="javascript:void(0)" class="theme-switch" title="Toggle dark / light"></a>

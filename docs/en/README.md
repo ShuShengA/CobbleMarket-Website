@@ -53,10 +53,9 @@ CobbleMarket is completely free with no locked features — everything is open t
 
 If it's been useful to you, you can buy the author a coffee ☕
 
-[☕ Buy me a coffee](https://afdian.com/a/cobblemarketmc)
+[☕ Buy me a coffee](/en/support)
 
-> Payment is handled by Afdian (a Chinese creator-support platform).
-> **PayPal and Google Pay are available for international supporters** — the options adapt to your region.
+> **PayPal and Google Pay are available for international supporters** — payment options adapt to your region. See the [support page](/en/support) for details.
 
 ## Help & Feedback
 

@@ -53,7 +53,7 @@ CobbleMarket 完全免费、没有任何功能限制 —— 所有功能对所�
 
 如果它帮到了你的服务器，可以请作者喝杯咖啡 ☕
 
-[☕ 请我喝咖啡](https://afdian.com/a/cobblemarketmc)
+[☕ 请我喝咖啡](/support)
 
 ## 支持与反馈
 

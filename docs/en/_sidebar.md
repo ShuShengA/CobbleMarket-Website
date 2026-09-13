@@ -18,5 +18,6 @@
 ---
 
 - **More**
+- [Support Development](/en/support)
 - [Security](/en/security)
 - [Changelog](/en/changelog)

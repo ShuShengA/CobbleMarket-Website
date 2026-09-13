@@ -251,6 +251,58 @@
       box-shadow: inset 0 -2px 0 var(--accent-gold);
     }
 
+    /* ===== 赞助档位卡片 =====
+       用 grid + auto-fit，窄屏自动堆叠、宽屏一行四个。 */
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+      gap: 16px;
+      margin: 26px 0;
+    }
+    .support-card {
+      display: block;
+      text-align: center;
+      padding: 18px 10px 15px;
+      border: 2px solid var(--cm-border);
+      border-radius: 4px;
+      background: var(--bg-panel);
+      box-shadow: 4px 4px 0 var(--pixel-shadow);
+      text-decoration: none !important;
+      transition: transform var(--duration-medium), box-shadow var(--duration-medium),
+                  border-color var(--duration-medium);
+    }
+    .support-card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 7px 7px 0 var(--pixel-shadow);
+      border-color: var(--theme-color);
+    }
+    .support-card img {
+      width: 72px;
+      height: 72px;
+      display: block;
+      margin: 0 auto 10px;
+      image-rendering: pixelated;         /* 保持硬边，别让浏览器把它插值糊掉 */
+      transition: transform var(--duration-medium);
+    }
+    .support-card:hover img {
+      transform: scale(1.12) rotate(-6deg);
+    }
+    .support-card .ball-name {
+      font-weight: 700;
+      font-size: 1.05em;
+      color: var(--text-primary);
+    }
+    .support-card .ball-price {
+      font-size: 1.5em;
+      font-weight: 800;
+      color: var(--accent-gold);
+      margin: 4px 0 2px;
+    }
+    .support-card .ball-desc {
+      font-size: 0.85em;
+      color: var(--text-muted);
+    }
+
     /* ===== 截图占位框 ===== */
     .markdown-section img {
       max-width: 100%;
