@@ -1,9 +1,9 @@
 /**
  * 从爱发电拉取赞助者，生成鸣谢名单。
  *
- * 隐私约定（opt-out）：**赞助者默认会被列出** —— 只有主动在留言里写明想匿名的才不收录。
+ * 隐私约定（opt-out）：**赞助者默认会被列出** —— 想匿名的人主动说一声，由作者手工登记。
  * 理由：默认公开才符合直觉，想匿名的人是极少数，让他们主动说一句，比让每个想被
- * 感谢的人都去猜关键词要合理得多。
+ * 感谢的人都去猜关键词要合理得多。手工名单见 ANONYMOUS。
  *
  * 由 .github/workflows/update-sponsors.yml 每天调用一次，
  * 凭据从 GitHub Secrets 读（AFDIAN_USER_ID / AFDIAN_TOKEN），绝不出现在仓库里。
@@ -20,29 +20,20 @@ if (!USER_ID || !TOKEN) {
 }
 
 /**
- * 留言里出现这些词 = 明确表示不想公开，**一律不收录**。
+ * 手工维护的匿名名单 —— 列在这里的赞助者**不会**出现在鸣谢名单上。
  *
- * 匹配是「包含」而非精确相等，所以词必须收得**保守**：现在是默认公开，
- * 一句正常的客套话（「谢谢，不用客气」）一旦被这里误判，就会让一个本该上榜的
- * 赞助者凭空消失 —— 比多列一个人严重。因此**只认明确指向匿名/不署名的说法**，
- * 不收「不用」「不要」「不必」这类泛词（它们会和客套话撞车）。
+ * ⚠ 为什么是手工的（2026-09-14 实测）：爱发电的 `query-sponsor` 接口**不返回留言内容**。
+ *   它的条目只有 6 个字段：sponsor_plans / current_plan / all_sum_amount /
+ *   first_pay_time / last_pay_time / user —— **既没有 remark 也没有订单状态**。
+ *   所以「留言里写了匿名」这件事脚本读不到，只能由作者在爱发电后台看到后手动登记。
+ *   （同一原因：这里也**不能**用 status 过滤"支付成功"——那个字段压根不存在，
+ *     加上它会让每个人都匹配失败、名单永远为空。）
+ *
+ * 填 `user_id`（推荐，唯一且不变）或昵称。有人要求匿名时加一行即可 —— 极少数情况，够用。
  */
-const OPT_OUT = [
-  // 中文：核心词「匿名」+ 明确的拒绝署名说法
-  '匿名',
-  '不用鸣谢', '不要鸣谢', '无需鸣谢', '不必鸣谢', '不参与鸣谢', '别鸣谢',
-  '不用写我', '不要写我', '别写我',
-  '不用列我', '不要列我', '别列我',
-  '不用提我', '不要提我', '别提我',
-  // 英文：同样只收明确说法
-  'anonymous',
-  "don't list", 'do not list',
-  "don't mention", 'do not mention',
-  "don't include", 'do not include',
-  'no credit', 'opt out',
+const ANONYMOUS = [
+  // '34a08xxxxxxxxxxxxxxxxxxxxx',  // 例：某人 2026-09-14 要求匿名
 ];
-/** 只收录支付成功的订单 */
-const STATUS_OK = 2;
 
 /**
  * 签名规则（爱发电官方）：把参与签名的参数按 key 排好序拼成 key+value，
@@ -158,16 +149,17 @@ console.log(`共拉到 ${orders.length} 条订单`);
 for (const o of orders) {
   console.log(`[debug] 订单字段: ${Object.keys(o).join(', ')}`);
   console.log(
-    `[debug] status=${JSON.stringify(o.status)} remark=${JSON.stringify(o.remark)} ` +
-    `user.name=${JSON.stringify(o.user?.name)} 累计=${JSON.stringify(o.all_sum_amount)}`
+    `[debug] user.name=${JSON.stringify(o.user?.name)} ` +
+    `user_id=${JSON.stringify(o.user?.user_id)} 累计=${JSON.stringify(o.all_sum_amount)}`
   );
 }
 
-// 收录：支付成功 + 没有明确表示想匿名（默认公开，opt-out）
+// 收录：赞助者列表里的全部人，减去手工登记的匿名者。
+// 这个接口返回的就是"已成功赞助的人"，没有未支付/退款状态可以（也不需要）过滤。
 const willing = orders.filter(o => {
-  if (o.status !== STATUS_OK) return false;
-  const remark = String(o.remark || '').toLowerCase();
-  return !OPT_OUT.some(k => remark.includes(k.toLowerCase()));
+  const id = o.user?.user_id;
+  const name = o.user?.name;
+  return !ANONYMOUS.some(a => a && (a === id || a === name));
 });
 
 // 同一个人多次赞助只列一次，按最近一次的时间排序（新的在前）
@@ -205,14 +197,14 @@ function render(lang, entries) {
 
 感谢这些支持者的慷慨相助 —— 他们让 CobbleMarket 得以持续维护下去。
 
-> 赞助者默认会出现在这里。不想公开名字的话，在[赞助](/support)时于爱发电的留言框写下「匿名」即可。
+> 赞助者默认会出现在这里。不想公开名字的话，在[赞助](/support)时于爱发电的留言框写下「匿名」即可（作者会据此手动移出）。
 >
 > 名字前的球表示赞助档位（按**累计**金额计算）。`
     : `# Thank You
 
 Thanks to these generous supporters — they're the reason CobbleMarket keeps getting maintained.
 
-> Supporters are listed here by default. If you'd rather stay anonymous, write **"anonymous"** in the message box on Afdian when you [support the project](/en/support).
+> Supporters are listed here by default. To stay anonymous, write **"anonymous"** in the message box on Afdian when you [support the project](/en/support) — the author removes you manually.
 >
 > The ball before each name shows the sponsorship tier (based on the **cumulative** amount).`;
 
