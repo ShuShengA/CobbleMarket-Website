@@ -152,6 +152,17 @@ function ballFor(amount) {
 const orders = await fetchAll();
 console.log(`共拉到 ${orders.length} 条订单`);
 
+// 诊断：逐单打印"过滤会用到的字段"。
+// ⚠ 不要用「打印整个 JSON」的办法 —— sponsor_plans / current_plan 两个大对象会把
+//   订单自身的字段挤出截断长度（2000 字都不够），而且字段**是否存在**也看不出来。
+for (const o of orders) {
+  console.log(`[debug] 订单字段: ${Object.keys(o).join(', ')}`);
+  console.log(
+    `[debug] status=${JSON.stringify(o.status)} remark=${JSON.stringify(o.remark)} ` +
+    `user.name=${JSON.stringify(o.user?.name)} 累计=${JSON.stringify(o.all_sum_amount)}`
+  );
+}
+
 // 收录：支付成功 + 没有明确表示想匿名（默认公开，opt-out）
 const willing = orders.filter(o => {
   if (o.status !== STATUS_OK) return false;
