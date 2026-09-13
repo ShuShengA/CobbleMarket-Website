@@ -51,15 +51,28 @@ async function queryPage(page) {
   let lastErr;
   for (const url of endpoints) {
     try {
+      console.log(`[debug] 请求 ${url} page=${page}`);
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body,
       });
-      const json = await res.json();
+      console.log(`[debug] HTTP ${res.status}`);
+      const text = await res.text();
+      // 把原始响应打出来：API 出错时正文往往是解释原因的关键
+      console.log(`[debug] 响应前 400 字: ${text.slice(0, 400)}`);
+
+      let json;
+      try {
+        json = JSON.parse(text);
+      } catch {
+        lastErr = new Error(`${url} 返回的不是 JSON（HTTP ${res.status}）`);
+        continue;
+      }
       if (json.ec === 200) return json.data;
       lastErr = new Error(`${url} 返回 ec=${json.ec} ${json.em || ''}`);
     } catch (e) {
+      console.log(`[debug] 请求异常: ${e.message}`);
       lastErr = e;
     }
   }
