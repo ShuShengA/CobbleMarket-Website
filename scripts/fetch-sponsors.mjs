@@ -18,8 +18,15 @@ if (!USER_ID || !TOKEN) {
   process.exit(1);
 }
 
-/** 留言里出现这些词才算"愿意公开"（大小写不敏感） */
-const KEYWORDS = ['鸣谢', 'thanks', 'thank you', 'sponsor'];
+/**
+ * 留言里出现这些词才算"愿意公开"。
+ * 是「包含」匹配、不是精确相等，所以多打空格或后缀（「 鸣谢」「鸣谢s」「thankss」）
+ * 都能认出来，大小写也不敏感。
+ * 中文特意收了「感谢」「谢谢」两个近义说法：页面引导的是「鸣谢」，但玩家很可能
+ * 自作主张写成更顺口的词，只认「鸣谢」会白白漏掉愿意公开的人。
+ * （英文不用收 "thank" —— includes('thanks') 已经覆盖了带 s 的各种写法。）
+ */
+const KEYWORDS = ['鸣谢', '感谢', '谢谢', 'thanks', 'thank you', 'sponsor'];
 /** 只收录支付成功的订单 */
 const STATUS_OK = 2;
 
