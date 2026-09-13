@@ -621,13 +621,18 @@
       color: var(--text-primary);
     }
 
-    /* ===== 封面页背景图 ===== */
+    /* ===== 封面页背景图 =====
+       ⚠ 两张同构图（同一场景/机位），只换昼夜氛围 —— 切换深浅色时背景是**瞬间替换**的，
+       构图不一致画面会"跳"一下。改图时务必保持这一点。 */
     .cover {
       background-image: url('cover-bg.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       position: relative;
+    }
+    body.dark .cover {
+      background-image: url('cover-bg-dark.jpg');
     }
 
     /* 半透明遮罩：盖在图片上，压暗背景 */
@@ -895,6 +900,10 @@
       background-position: center calc(50% + var(--cm-parallax));
       background-repeat: no-repeat;
       animation: cm-kenburns 28s ease-in-out infinite alternate;
+    }
+    /* 深色模式换夜间封面（同构图，见上面 .cover 的说明） */
+    body.dark .cover::after {
+      background-image: url('cover-bg-dark.jpg');
     }
     @keyframes cm-kenburns {
       from { transform: scale(1); }
