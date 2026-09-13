@@ -2220,6 +2220,26 @@
       if (bar) bar.setAttribute('aria-label', t('阅读进度', 'Reading progress'));
     };
 
+    // ===== 补一条「/」快捷键 =====
+    // docsify 判断快捷键用的是 e.key === '/'，但中文输入法在标点模式下按 / 出来的是「、」，
+    // e.key 变成 '、'，它的三个判断条件（e.key / e.code==='/' / e.code==='key/'）就全落空了
+    // —— 中文玩家按 / 打不开搜索框，只能用 Ctrl+K（字母键的 e.key 不受标点模式影响）。
+    // 这里按 e.code（物理键位 'Slash'）补一条，与输入法和中英文状态都无关。
+    (function () {
+      document.addEventListener('keydown', function (e) {
+        if (e.code !== 'Slash') return;
+        // Shift+/ 打的是「?」，不是想搜索；带 Ctrl/Alt/Cmd 的组合交给浏览器
+        if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return;
+        // 已经在输入框里打字时不抢
+        var ae = document.activeElement;
+        if (ae && ae.matches && ae.matches('input, select, textarea')) return;
+        var input = document.querySelector('.search input');
+        if (!input) return;
+        e.preventDefault();
+        input.focus();
+      });
+    })();
+
     // ===== 阅读进度条 =====
     // 注意与 docsify 自带的 body > .progress 区分：那条是「页面加载进度」，
     // 加载完就归零淡出；这条是「正文阅读进度」，跟着滚动走。
