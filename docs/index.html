@@ -333,6 +333,52 @@
       border-radius: 4px;
     }
 
+    /* ===== 侧边栏的三层层级 =====
+       docsify 渲染出来的实际结构：
+         <li><strong>开始使用</strong></li>              ← ① 分组标题（无链接）
+         <li><a class="page-link">功能特色</a>            ← ② 页面条目
+           <ul class="app-sub-sidebar">
+             <li><a class="section-link">精灵市场</a>      ← ③ 当前页里的小节
+       在此之前三层只差一个加粗和默认缩进，看上去就是一堆同级的字 ——
+       用户报的「没有层次感、不知道自己现在在哪个目录下」就是这个。
+       现在三者各有各的长相：分组=小号宽字距的标签，条目=正常，小节=更小更淡。
+       另外给小节列表加一条左侧竖线 —— 它同时解决"位置感"：
+       那些小节一眼就能看出是被框在「功能特色」底下的。 */
+    .sidebar-nav li > strong {
+      display: block;
+      padding: 14px 0 5px 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;   /* 拉开字距 = "这是个标签，不是条目" */
+      color: var(--text-muted);
+    }
+    .sidebar-nav a.page-link {
+      font-weight: 500;
+    }
+    .sidebar-nav .app-sub-sidebar {
+      margin: 2px 0 6px 10px;
+      padding-left: 0;
+      border-left: 2px solid var(--cm-border);
+      list-style: none;
+    }
+    /* ⚠ 子项左边那条小横杠**不是列表符号**（list-style:none 去不掉它）——
+       它是 docsify 主题画的 ::before（content: '—'，探针读出来的）。
+       它和上面那条竖线表达的是同一件事（"这是子项"），两个叠在一起就显得乱。
+       这里只保留竖线：竖线还能把这些小节"框"在所属页面底下，位置感更强。 */
+    .sidebar-nav .app-sub-sidebar li::before {
+      content: none;
+    }
+    .sidebar-nav a.section-link {
+      padding-left: 12px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+    /* ⚠ 当前小节的高亮是 scroll spy 用**行内样式**画的（优先级最高），
+       所以这条 hover 只在未高亮的那些小节上生效 —— 正是想要的行为。 */
+    .sidebar-nav a.section-link:hover {
+      color: var(--theme-color);
+    }
+
     /* ===== 动效 =====
        目标是"有生气但不拖沓"：都在 0.2~0.4s 内完成，不挡住阅读。 */
 
