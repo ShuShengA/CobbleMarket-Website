@@ -46,5 +46,5 @@ CobbleMarket 的所有功能一直对所有人开放 —— 我不想把功能�
 
 ---
 
-有其他想说的？欢迎到 [GitHub Issues](https://github.com/ShuShengA/cobblemarket-fabric/issues) 留言。
+有其他想说的？欢迎到 [GitHub Issues](https://github.com/ShuShengA/cobblemarket/issues) 留言。
 

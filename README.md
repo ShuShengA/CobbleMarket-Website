@@ -1,6 +1,6 @@
 # CobbleMarket Website
 
-[CobbleMarket](https://github.com/ShuShengA/cobblemarket-fabric)（Cobblemon 服务器市场模组）的官方介绍与文档网站。
+[CobbleMarket](https://github.com/ShuShengA/cobblemarket)（Cobblemon 服务器市场模组）的官方介绍与文档网站。
 
 基于 [Docsify](https://docsify.js.org/) 构建的纯静态站点，托管在 GitHub Pages，无需构建步骤 —— 推送到 `main` 即上线。
 

@@ -117,7 +117,7 @@ If it's been useful to you, you can buy the author a coffee ☕
 
 ## Help & Feedback
 
-- Bug reports and feature requests: [GitHub Issues](https://github.com/ShuShengA/cobblemarket-fabric/issues)
+- Bug reports and feature requests: [GitHub Issues](https://github.com/ShuShengA/cobblemarket/issues)
 - What's new: [Changelog](/en/changelog)
 
 ## License

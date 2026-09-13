@@ -113,7 +113,7 @@ CobbleMarket 完全免费、没有任何功能限制 —— 所有功能对所�
 
 ## 支持与反馈
 
-- 问题反馈与功能建议：[GitHub Issues](https://github.com/ShuShengA/cobblemarket-fabric/issues)
+- 问题反馈与功能建议：[GitHub Issues](https://github.com/ShuShengA/cobblemarket/issues)
 - 更新内容见 [更新日志](/changelog)
 
 ## 许可证

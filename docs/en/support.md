@@ -55,4 +55,4 @@ The checkout page itself is in Chinese, but **PayPal and Google Pay work fine** 
 
 ---
 
-Something else on your mind? Drop by the [GitHub Issues](https://github.com/ShuShengA/cobblemarket-fabric/issues).
+Something else on your mind? Drop by the [GitHub Issues](https://github.com/ShuShengA/cobblemarket/issues).
