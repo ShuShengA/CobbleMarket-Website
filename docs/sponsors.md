@@ -6,4 +6,4 @@
 >
 > 名字前的球表示赞助档位（按**累计**金额计算）。
 
-_名单还在等第一位赞助者。_
+- <img class="sponsor-ball" src="images/ball-poke.png" alt="精灵球"> **爱发电用户\_34a08**
