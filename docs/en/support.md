@@ -31,7 +31,10 @@ If it's been useful to you, you can buy the author a coffee ☕
   </a>
 </div>
 
-Prefer your own amount? [**Custom amount →**](https://afdian.com/a/cobblemarketmc)
+Prefer your own amount? [**Custom amount →**](https://afdian.com/order/create?user_id=6843bbf0d99511eb88bb52540025c377&remark=&affiliate_code=)
+
+<!-- SPONSORS:BEGIN -->
+<!-- SPONSORS:END -->
 
 > **Want your name on the thank-you list?** After picking a tier, just write **"thanks"** in the message box on Afdian — leave it blank and you stay anonymous.
 
@@ -39,7 +42,7 @@ Prefer your own amount? [**Custom amount →**](https://afdian.com/a/cobblemarke
 
 **Nothing, really.**
 
-Every feature of CobbleMarket stays open to everyone — I don't want to lock things behind a paywall. Your support just buys me more time to work on it.
+Every feature of CobbleMarket stays open to everyone — I don't want to lock things behind a paywall. Your support doesn't buy any privileges; it just tells me this thing is actually helping fellow Cobblemon players.
 
 ## International supporters
 

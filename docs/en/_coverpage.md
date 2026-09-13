@@ -7,7 +7,7 @@
 - Pokémon Market / Item Market / Auction House / Buy Orders
 - Optional Meowth Bank finance system: credit, deposits and card credentials
 - Four currency modes, available for both Fabric and NeoForge
-- Transaction history, CSV ledgers and data backups
+- Admin tools, CSV ledgers and data backups
 
 [Get Started](/en/features)
 [Download](https://www.curseforge.com/minecraft/mc-mods/cobblemarket)
