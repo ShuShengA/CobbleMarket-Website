@@ -2060,13 +2060,23 @@
       // ---- 封面底部的滚动提示 ----
       function addScrollHint() {
         var cover = document.querySelector('.cover');
-        if (!cover || cover.querySelector('.cm-scroll-hint')) return;
-        var hint = document.createElement('div');
+        if (!cover) return;
+        var label = window.__cmT ? window.__cmT('向下滚动', 'Scroll down') : '向下滚动';
+
+        var hint = cover.querySelector('.cm-scroll-hint');
+        if (hint) {
+          // 已经建过：只更新文案。
+          // ⚠ 不能在这里直接 return —— 切换语言时封面不会重建（只是内容换了），
+          //   提示还在，于是文案永远停在旧语言，非得刷新整页才变。
+          var span = hint.querySelector('span');
+          if (span && span.textContent !== label) span.textContent = label;
+          return;
+        }
+
+        hint = document.createElement('div');
         hint.className = 'cm-scroll-hint';
         hint.setAttribute('aria-hidden', 'true');
-        hint.innerHTML = '<span>' +
-          (window.__cmT ? window.__cmT('向下滚动', 'Scroll down') : '向下滚动') +
-          '</span><span class="cm-hint-arrow">▼</span>';
+        hint.innerHTML = '<span>' + label + '</span><span class="cm-hint-arrow">▼</span>';
         cover.appendChild(hint);
       }
 
