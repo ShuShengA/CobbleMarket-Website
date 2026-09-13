@@ -636,19 +636,20 @@
        按四组组织：① 首屏与封面 ② 正文阅读 ③ 交互反馈 ④ 移动端
        =================================================================== */
 
-    /* ===== 移动端的视口高度（100vh 的经典坑）=====
-       手机浏览器算 100vh 时用的是「地址栏收起后」的高度（最大那个），
-       于是用 100vh 撑出来的元素比实际可视区高一截，页面就多出一段滚不到底的空白
-       （症状：手机上滚到底还能继续往上滑，直到整屏变空；电脑端地址栏不占位，没这问题）。
+    /* ===== 视口高度（同一个坑踩了三次，别再动它）=====
+       ① 100vh：手机算的是「工具栏收起后」的高度（最大那个），比初始可视区高一截
+          → 页面多出一段滚不到底的空白（电脑端工具栏不占位，没这问题）。
+       ② 100dvh：它是「动态视口高度」，工具栏收放时**实时变化** ——
+          手机一开始下滑、微信底栏收起，dvh 突然变大 → .cover 跟着变高 →
+          background-size:cover 把背景图放大一截、整页 reflow 顿一下（2026-09-13 实测）。
+       ③ 100svh：「工具栏可见时」的高度，本应恒定，但它是 Chromium 108+ 才有的单位 ——
+          微信内置浏览器（XWeb）版本较老不认，直接落回 100vh；
+          而**微信的 vh 是动态的**（视口 = WebView 当前尺寸）→ 竖屏收底栏时又抖回 ② 的症状。
+          （横屏不抖：那时 cover 的缩放由**宽度**决定，高度变化不参与计算 —— 正好反证了病因。）
 
-       ⚠ 别用 dvh 解决：它是「动态视口高度」，地址栏**收放时实时变化** ——
-       手机上一开始下滑、地址栏收起，dvh 突然变大 → .cover 跟着变高 →
-       背景图往下伸长、整页 reflow 顿一下（2026-09-13 手机实测反馈）。
-
-       用 svh：「地址栏可见时」的高度，**恒定不变**，且永远 ≤ 可视区 ——
-       既不会多出空白（那要元素比可视区高），也不会随滚动抖动。
-       代价只是地址栏收起后封面比可视区矮一点，露出下方内容 —— 此时封面已在上滚，观感自然。
-       两行都写：不认 svh 的老浏览器自动落回 vh。
+       ⇒ 终解：JS 首次加载读一次 window.innerHeight，写死成 --cm-vh，此后不再更新。
+         不依赖任何新单位，任何浏览器 / WebView 都恒定。旋转屏幕时重算一次。
+         三层兜底：锁定值 → svh（JS 没跑时）→ vh（老浏览器）。
        ⚠ docsify 在 body/html、#app、main、.cover 四处都用了 100vh，这里逐一覆盖。 */
     html, body,
     #app,
@@ -656,11 +657,13 @@
     .cover {
       min-height: 100vh;
       min-height: 100svh;
+      min-height: var(--cm-vh, 100svh);
     }
     html, body,
     #app {
       height: 100vh;
       height: 100svh;
+      height: var(--cm-vh, 100svh);
     }
 
     /* ====================== ① 首屏与封面 ====================== */
@@ -1561,6 +1564,23 @@
       }
     }
   </style>
+
+  <!-- 视口高度锁定：见样式表末尾「视口高度」那段说明。
+       ⚠ 必须放在 head 里、在首次渲染前执行，否则会先按 100vh 排一帧再跳一下。
+       ⚠ 只监听 orientationchange，**不要监听 resize** ——
+         听 resize 就等于又变回动态值，正是这次要修的病。 -->
+  <script>
+    (function () {
+      function lockViewportHeight() {
+        document.documentElement.style.setProperty('--cm-vh', window.innerHeight + 'px');
+      }
+      lockViewportHeight();
+      // 旋转屏幕后重算：orientationchange 触发时尺寸往往还没更新，延后一拍再读
+      window.addEventListener('orientationchange', function () {
+        setTimeout(lockViewportHeight, 200);
+      });
+    })();
+  </script>
 </head>
 <body>
   <!-- 加载态：docsify 初始化时会把 #app 的内容整体换成页面骨架，所以这段会自然消失。
@@ -2385,7 +2405,69 @@
           });
         }
       ]
-    }
+    };
+
+    // ⚠⚠ 上面那两个字符 `};` 绝对不能省、也不能只写 `;`！
+    //   ① 把 `}` 漏掉 → 对象字面量没闭合 → 整个 <script> 块语法错误 →
+    //      window.$docsify 根本没被赋值 → 封面/深色主题/导航/插件全部失效。
+    //   ② 只写 `}` 不写 `;` → ASI 不生效（后面紧跟 IIFE），
+    //      被解析成「把配置对象当函数调用」→ 运行时 TypeError → 同样全废。
+    //   ⚠ 前面已经有过一条同样的教训（见上方 1597 行附近），别再踩。
+    //   window.$docsify 的闭合 } 后面若直接跟 IIFE（写成 `}\n(function () {...})()`），
+    //   ASI 不生效，会被解析成「把配置对象当函数调用」→ 运行时 TypeError →
+    //   window.$docsify 整个赋值失败 → 首页/封面/导航/插件等全部自定义配置失效，
+    //   页面停在加载态（精灵球那个画面）。语法检查查不出来（语法本身合法），极难定位。
+
+    // ===== 临时诊断面板（只认 ?diag=1，平时零影响；排查完可整段删）=====
+    // 拿来确认微信内置浏览器里「认不认 svh、vh 会不会随底栏收放变化」。
+    // 判据：100svh 显示「不支持」= 落回了 vh；100vh / cover 的 [最小~最大] 区间不为零 = 高度在变。
+    (function () {
+      if (!/[?&]diag=1/.test(location.search)) return;
+
+      function probe(h) {
+        var el = document.createElement('div');
+        el.style.cssText = 'position:absolute;top:0;left:0;width:0;pointer-events:none;visibility:hidden;height:' + h;
+        document.body.appendChild(el);
+        return el;
+      }
+      var elVh = probe('100vh');
+      var elSvh = probe('100svh');
+
+      var panel = document.createElement('div');
+      panel.style.cssText = 'position:fixed;top:0;left:0;z-index:2147483647;' +
+        'background:rgba(0,0,0,.85);color:#0f0;font:11px/1.6 monospace;' +
+        'padding:6px 9px;white-space:pre;pointer-events:none;';
+      document.body.appendChild(panel);
+
+      var r = { ih: [], vh: [], svh: [], cover: [] };
+      function track(arr, v) {
+        if (!arr.length) { arr[0] = arr[1] = v; return; }
+        if (v < arr[0]) arr[0] = v;
+        if (v > arr[1]) arr[1] = v;
+      }
+      function line(label, arr) {
+        return label + ' ' + arr[1] + ' [' + arr[0] + '~' + arr[1] + ']';
+      }
+      function upd() {
+        var cover = document.querySelector('.cover');
+        var svh = elSvh.offsetHeight;
+        var cmvh = getComputedStyle(document.documentElement)
+          .getPropertyValue('--cm-vh').trim();
+        track(r.ih, window.innerHeight);
+        track(r.vh, elVh.offsetHeight);
+        track(r.svh, svh);
+        track(r.cover, cover ? cover.offsetHeight : -1);
+        panel.textContent =
+          line('innerH', r.ih) + '\n' +
+          line('100vh ', r.vh) + '\n' +
+          '100svh ' + (svh === 0 ? '不支持 → 落回 vh' : r.svh[1] + ' [' + r.svh[0] + '~' + r.svh[1] + ']') + '\n' +
+          line('cover ', r.cover) + '\n' +
+          '--cm-vh ' + (cmvh || '(未设)') + '\n' +
+          'w' + window.innerWidth + ' dpr' + window.devicePixelRatio;
+      }
+      upd();
+      setInterval(upd, 250);
+    })();
   </script>
 
   <!-- Docsify 核心 -->
