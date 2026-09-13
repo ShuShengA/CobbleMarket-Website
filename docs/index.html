@@ -1631,6 +1631,27 @@
       });
     })();
   </script>
+
+  <!-- 语言自动跳转：浏览器语言不是中文的访客，直接进英文站。
+       ⚠⚠ 必须放在 head 里、docsify 加载之前 —— 这段跑在「精灵球加载动画」那几百毫秒内，
+           docsify 启动时直接按 #/en/ 渲染，**用户全程看不到中文内容**（不会闪一下再变）。
+           放到页面底部的脚本里就会先渲染中文再跳，那才是肉眼可见的闪烁。
+       ⚠ 用 history.replaceState 而不是 location.hash：前者不触发刷新、也**不往历史里塞记录**
+          （否则国外访客按一次后退会退回中文站）。docsify 启动时直接读当前 hash，不受影响。
+       ⚠ 只在「根路径首页」跳：直接分享出去的 .../#/en/features 这类内页链接不受影响。
+       ⚠ 三道闸门缺一不可：手动选过语言 → 不跳；浏览器语言以 zh 开头 → 不跳；不是首页 → 不跳。 -->
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('cm-lang')) return;
+        if (/^zh/i.test(navigator.language || '')) return;
+        var h = location.hash;
+        if (h === '' || h === '#' || h === '#/') {
+          history.replaceState(null, '', location.pathname + location.search + '#/en/');
+        }
+      } catch (e) { /* 隐私模式下 localStorage 不可用等，静默跳过，保持中文站 */ }
+    })();
+  </script>
 </head>
 <body>
   <!-- 加载态：docsify 初始化时会把 #app 的内容整体换成页面骨架，所以这段会自然消失。
@@ -1839,6 +1860,9 @@
 
       window.__cmSwitchLang = function (lang) {
         if (lang === currentLang()) return;
+        // 记下这次手动选择 —— head 里的自动跳转靠它判断「这个访客自己选过语言了，别再自作主张」。
+        // 没有这一步，中文用户切回中文后一刷新又会被跳去英文站。
+        try { localStorage.setItem('cm-lang', lang); } catch (e) { /* 隐私模式忽略 */ }
         // 记下当前所在小节，切完由 __cmRestoreHeading 对齐到新语言的同一节。
         // ⚠ 注意不是「切完回到顶部」—— 那会让从页面下方切语言的用户被强行拉回顶端
         //   （早期版本加过这个补丁，后来去掉了）。
