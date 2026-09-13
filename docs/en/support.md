@@ -36,7 +36,7 @@ Prefer your own amount? [**Custom amount →**](https://afdian.com/order/create?
 <!-- SPONSORS:BEGIN -->
 <!-- SPONSORS:END -->
 
-> **Want your name on the thank-you list?** After picking a tier, just write **"thanks"** in the message box on Afdian — leave it blank and you stay anonymous.
+> **Supporters are listed on the thank-you page by default.** If you'd rather stay anonymous, just write **"anonymous"** in the message box on Afdian.
 
 ## What you get
 
