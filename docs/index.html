@@ -1555,11 +1555,17 @@
       function isDarkNow() {
         try {
           var saved = localStorage.getItem(KEY);
-          if (saved) return saved === 'dark';
+          if (saved) return saved === 'dark';   // 手动切过 → 尊重手动选择
         } catch (e) { /* 隐私模式下 localStorage 不可用，忽略 */ }
-        // 默认深色：模组图标与游戏内 GUI 都是深色调，网站跟随这个基调。
-        // （不再跟随系统偏好 —— 否则浅色系统上打开会看到与模组不符的浅色站。）
-        return true;
+        // 没手动切过 → 跟随系统。手机（尤其 iPhone）会在夜间自动切深色，
+        // 网页跟着变才不刺眼。
+        // （早期版本固定返回深色、不跟随系统，理由是怕浅色系统上看到与模组风格
+        //   不符的浅色站 —— 但浅色模式后来已经打磨过，那个顾虑不成立了。）
+        try {
+          return window.matchMedia('(prefers-color-scheme: dark)').matches;
+        } catch (e) {
+          return true;   // 拿不到 matchMedia 时兜底用深色
+        }
       }
 
       function apply(dark) {
@@ -1575,25 +1581,49 @@
         if (m) m.setAttribute('content', dark ? '#101018' : '#ffffff');
       }
 
-      window.__cmIsDark = isDarkNow;
-      window.__cmToggleTheme = function () {
-        var next = !isDarkNow();
-        // 切换的那一瞬挂上 cm-theming —— 样式表里那条规则会给全站加上颜色过渡。
-        // 只在切换期间挂（而不是常驻），否则 hover 之类的交互也会被拖慢。
+      /**
+       * 应用主题，并让全站平滑过渡一次。
+       * 手动切换、跟随系统变化都走这里 —— 否则系统那边一变，整站会"啪"地一下硬切。
+       * 过渡只在切换的那一瞬挂（而不是常驻），否则 hover 之类的交互也会被拖慢。
+       */
+      function applyWithTransition(dark) {
         var root = document.documentElement;
         root.classList.add('cm-theming');
         clearTimeout(window.__cmThemeTimer);
         window.__cmThemeTimer = setTimeout(function () {
           root.classList.remove('cm-theming');
         }, 340);
+        apply(dark);
+        syncThemeColor(dark);
+      }
 
-        apply(next);
-        syncThemeColor(next);
+      window.__cmIsDark = isDarkNow;
+      window.__cmToggleTheme = function () {
+        var next = !isDarkNow();
+        applyWithTransition(next);
         try { localStorage.setItem(KEY, next ? 'dark' : 'light'); } catch (e) {}
       };
 
       apply(isDarkNow());
       syncThemeColor(isDarkNow());
+
+      // 系统主题变化时实时跟随 —— 手机（尤其 iPhone）会在夜间自动切深色，
+      // 网页应当跟着变，而不是等用户手动刷新。
+      // ⚠ 只在用户没手动切过时跟随：手动选过就说明有明确偏好，不该被系统覆盖。
+      try {
+        var mq = window.matchMedia('(prefers-color-scheme: dark)');
+        var onSystemThemeChange = function (e) {
+          var saved = null;
+          try { saved = localStorage.getItem(KEY); } catch (err) { }
+          if (saved) return;
+          applyWithTransition(e.matches);
+        };
+        if (mq.addEventListener) {
+          mq.addEventListener('change', onSystemThemeChange);
+        } else if (mq.addListener) {
+          mq.addListener(onSystemThemeChange);   // 旧版 Safari（iOS 13 及更早）
+        }
+      } catch (e) { /* 浏览器不支持 matchMedia，忽略 */ }
     })();
 
     // ===== 多语言：中文站位于根目录，英文站位于 /en/ =====
