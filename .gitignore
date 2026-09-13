@@ -12,3 +12,6 @@ desktop.ini
 *.log
 *.tmp
 _tmp*
+
+# 临时：爱发电注册用的文案（非网站内容）
+爱发电文案.txt

@@ -9,35 +9,62 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/addons/vue.min.css">
 
   <style>
-    /* ===== 配色变量：精灵球红白主题 ===== */
+    /* ===== 配色变量 =====
+       全部取自模组图标 icon.png 的实际像素取样，改动前请先核对图标，别凭印象调：
+         #f84858 精灵球红（主色）      #f0b020 金币金（强调/金额）
+         #101018 图标底色（深蓝黑）     #484858 图标外框（边框）
+         #e8e0e8 球体浅色（正文）       #e050b8 星星闪光（点缀） */
     :root {
-      --theme-color: #d64541;
-      --theme-color-secondary: #f5f5f5;
-      --theme-color-dark: #2c3e50;
-      --pokemon-blue: #3b7dd8;
-      --pokemon-yellow: #f9ca24;
-      --pokemon-green: #6ab04c;
-      --border-radius: 12px;
+      /* 主题色：两种模式共用（图标原色） */
+      --theme-color: #f84858;
+      --theme-color-dark: #c02840;
+      --accent-pink: #e050b8;
+
+      /* ⚠ 下面这套是「浅色模式」的值。
+         网站默认深色，所以它们只在用户手动切到浅色时生效；
+         深色那套写在后面的 html.dark 里。两套必须都完整 —— 少了哪个变量，
+         对应模式下就会拿另一套的值去用（比如白底配浅色字，直接看不见）。 */
+      --bg-body: #ffffff;
+      --bg-panel: #f4f4f7;
+      --bg-deep: #e9e9ef;
+      --cm-border: #cfcfda;
+      --text-primary: #1b1b24;
+      --text-muted: #63636f;
+      --accent-gold: #a86b00;    /* 浅色底上用深金，否则 #f0b020 对比度不够 */
+      --pixel-shadow: rgba(0, 0, 0, 0.18);
+
+      --border-radius: 4px;      /* 像素风：小圆角（游戏内 GUI 是硬边） */
       --duration-medium: 250ms;
     }
 
-    /* 说明：侧边栏「点击当前条目收起/展开子目录」是 docsify 的原生功能
-       （event/index.js 的 Collapse toggle，通过 .collapse 类实现），保持默认行为，不覆盖。 */
+    /* ===== 自定义光标 =====
+       全站使用模组同款光标（闪电 + 精灵球），与游戏内保持一致。
+       图从模组光标包 .cur 里提取的 32×32 版本（原包内含 16/32/48/64/128 五档，
+       这里取 32 是因为浏览器推荐 ≤32，且它与游戏内视觉大小相当）。
+       热点 (1,1)：取自光标文件自带的热点，与模组 Client.CustomCursor 里 (4,5)/128
+       等比换算的结果一致 —— 对准它，点下去的位置才和你指的地方吻合。
+       ⚠ 用 !important 是为了盖过链接/按钮自带的 pointer 手型；漏掉哪个元素，
+         鼠标移到那儿就会突然变回系统箭头。 */
+    *,
+    *::before,
+    *::after {
+      cursor: url('images/cursor.png') 1 1, auto !important;
+    }
 
     /* ===== 侧边栏分割线 ===== */
     .sidebar-nav hr {
       border: none;
-      border-top: 2px solid #ccc;
+      border-top: 2px solid var(--cm-border);
       margin: 14px 0;
     }
 
     /* ===== 侧边栏圆角与悬停 ===== */
     .sidebar-nav li a {
-      border-radius: 8px;
+      border-radius: 4px;
       transition: background var(--duration-medium), color var(--duration-medium);
     }
     .sidebar-nav li a:hover {
-      background: rgba(214, 69, 65, 0.1);
+      background: rgba(248, 72, 88, 0.1);
       color: var(--theme-color);
     }
     .sidebar-nav li.active > a {
@@ -99,33 +126,63 @@
       color: #fff;
     }
 
-    /* ===== 内容区美化 ===== */
+    /* ===== 内容区美化 =====
+       配色沿用模组界面的规矩：标题金、正文浅色、链接红、强调金。 */
     .markdown-section {
       max-width: 860px;
     }
     .markdown-section h1 {
+      color: var(--accent-gold);                 /* 与游戏内界面标题同为金色 */
       border-bottom: 3px solid var(--theme-color);
       padding-bottom: 10px;
+      text-shadow: 0 0 18px rgba(240, 176, 32, 0.35);   /* 金色微光 */
+    }
+    /* h1 前的精灵球：内联 SVG（data URI），不用图片文件。
+       ⚠ 这里特意没用「多层 CSS 渐变 + border-radius 圆形裁剪」的画法 ——
+         那种在小尺寸（em 换算后只有十几像素）下，各层渐变的抗锯齿边缘会叠在一起，
+         球顶会冒出一道杂色弧线，且随字号变化时隐时现。SVG 是矢量、边界精确，没这问题。 */
+    .markdown-section h1::before {
+      content: '';
+      display: inline-block;
+      width: 0.9em;
+      height: 0.9em;
+      margin-right: 0.35em;
+      vertical-align: -0.06em;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23e8e0e8'/%3E%3Cpath d='M2 16a14 14 0 0 1 28 0z' fill='%23f84858'/%3E%3Crect x='2' y='14' width='28' height='4' fill='%23101018'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23101018'/%3E%3Ccircle cx='16' cy='16' r='3.5' fill='%23e8e0e8'/%3E%3Ccircle cx='16' cy='16' r='14' fill='none' stroke='%23101018' stroke-width='2.5'/%3E%3C/svg%3E") center / contain no-repeat;
     }
     .markdown-section h2 {
-      border-bottom: 1px solid #eee;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--cm-border);
       padding-bottom: 6px;
+    }
+    .markdown-section h2::before {
+      content: '▎';                              /* 像素风竖条 */
+      color: var(--theme-color);
+      margin-right: 5px;
     }
     .markdown-section a {
       color: var(--theme-color);
+      transition: color var(--duration-medium), text-shadow var(--duration-medium);
+    }
+    .markdown-section a:hover {
+      text-shadow: 0 0 10px rgba(248, 72, 88, 0.6);    /* 悬停时链接发光 */
+    }
+    .markdown-section strong {
+      color: var(--accent-gold);                 /* 强调=金（模组里金色是强调色） */
     }
     .markdown-section code {
-      border-radius: 6px;
+      border-radius: 3px;
     }
     .markdown-section blockquote {
       border-left: 4px solid var(--theme-color);
-      background: rgba(214, 69, 65, 0.05);
-      border-radius: 0 8px 8px 0;
+      background: rgba(248, 72, 88, 0.08);
+      border-radius: 0 4px 4px 0;
       padding: 10px 16px;
     }
     .markdown-section table {
-      border-radius: 8px;
+      border-radius: 4px;
       overflow: hidden;
+      border: 1px solid var(--cm-border);
     }
     .markdown-section table th {
       background: var(--theme-color);
@@ -138,27 +195,83 @@
        ⚠ 这里刻意不自定义样式：内置选择器同为 .markdown-section .callout，优先级相同，
        重复定义会按加载顺序覆盖它，导致内置的图标 / 内边距 / 暗色适配被破坏。 */
 
+    /* ===== 像素风细节 =====
+       游戏内 GUI 用的是「硬边框 + 右下角实心阴影」，不是网页那套柔和投影。
+       这里照搬：2px 边框 + 0 模糊的实心偏移阴影，凑近看就是像素块的立体感。 */
+
+    /* 表格 / 代码块：硬边框 + 实心阴影 */
+    .markdown-section table,
+    .markdown-section pre {
+      border: 2px solid var(--cm-border);
+      box-shadow: 4px 4px 0 var(--pixel-shadow);
+    }
+
+    /* 侧边栏条目统一留出左内边距。
+       当前项的红色竖条是画在 <a> 的 padding 区域里的，不留内边距就会紧贴第一个字；
+       给所有条目一起加，竖条与文字的间距有了，条目之间的对齐也不会变。 */
+    .sidebar-nav li a {
+      padding-left: 10px;
+    }
+
+    /* 侧边栏当前项：左侧像素竖条 + 淡红底 */
+    .sidebar-nav li.active > a {
+      box-shadow: inset 3px 0 0 var(--theme-color);
+      background: rgba(248, 72, 88, 0.16);
+      border-radius: 4px;
+    }
+
+    /* ===== 动效 =====
+       目标是"有生气但不拖沓"：都在 0.2~0.4s 内完成，不挡住阅读。 */
+
+    /* 换页时标题淡入上浮（只给标题，正文整段动画会显得很慢） */
+    @keyframes cm-rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .markdown-section > h1,
+    .markdown-section > h2 {
+      animation: cm-rise 0.38s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    }
+    /* 逐级延迟，形成"从下往上依次浮现"的节奏 */
+    .markdown-section > h1 { animation-delay: 0s; }
+    .markdown-section > h2 { animation-delay: 0.05s; }
+
+    /* 表格行悬停：整行微微发亮，方便横向读数 */
+    .markdown-section tbody tr {
+      transition: background var(--duration-medium), box-shadow var(--duration-medium);
+    }
+    .markdown-section tbody tr:hover {
+      background: rgba(248, 72, 88, 0.08);
+      box-shadow: inset 3px 0 0 var(--theme-color);
+    }
+
+    /* 导航栏当前页：底部一道金色下划线（与正文标题同色，形成呼应） */
+    .app-nav .active > a {
+      color: var(--accent-gold) !important;
+      box-shadow: inset 0 -2px 0 var(--accent-gold);
+    }
+
     /* ===== 截图占位框 ===== */
     .markdown-section img {
       max-width: 100%;
-      border-radius: 8px;
+      border-radius: 4px;
     }
     .markdown-section img.shot {
       display: block;
       margin: 18px auto;
-      border: 1px solid #e3e3e3;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+      border: 2px solid var(--cm-border);
+      box-shadow: 4px 4px 0 var(--pixel-shadow);
     }
 
     /* ===== 搜索框 ===== */
     .search input {
-      border-radius: 8px;
-      border: 1px solid #ddd;
+      border-radius: 4px;
+      border: 1px solid var(--cm-border);
       transition: border var(--duration-medium), box-shadow var(--duration-medium);
     }
     .search input:focus {
       border-color: var(--theme-color);
-      box-shadow: 0 0 0 3px rgba(214, 69, 65, 0.15);
+      box-shadow: 0 0 0 3px rgba(248, 72, 88, 0.15);
     }
 
     /* ===== 暗黑模式适配 =====
@@ -170,36 +283,48 @@
        html 自己的 background 就是 var(--color-bg)，而 CSS 变量只对「声明它的元素及其后代」可见 ——
        写在 body 上 html 读不到，滚动露出的画布仍是白底，整页会从中间断开。 */
     html.dark {
-      --color-bg: #1e1e1e;
-      --color-text: #ddd;
-      --code-bg: #2a2a2a;
+      /* 深色模式下，把上面那套浅色变量整体换成图标取样的深色值 */
+      --bg-body: #101018;
+      --bg-panel: #181820;
+      --bg-deep: #080810;
+      --cm-border: #484858;
+      --text-primary: #e8e0e8;
+      --text-muted: #9a9aac;
+      --accent-gold: #f0b020;    /* 深色底上用亮金（图标金币原色） */
+      --pixel-shadow: rgba(0, 0, 0, 0.55);
+
+      --color-bg: #101018;       /* 图标底色（深蓝黑，不是中性灰） */
+      --color-text: #e8e0e8;     /* 球体浅色 */
+      --code-bg: #181820;        /* 面板色 */
       /* 标题色默认是「正文色向黑混合 35%」——浅色下等于加深（更醒目），
          暗色下就变成变暗了，标题会比正文还糊。这里改成向白混合，保持"强调=更亮" */
       --strong-color: color-mix(in srgb, var(--color-text), #fff 35%);
+      /* 标题统一走金色（与 h1/h2 的显式规则一致），避免 docsify 用 --strong-color 覆盖 */
+      --heading-color: var(--accent-gold);
     }
     body.dark .sidebar {
-      background: #252525;
-      border-right: 1px solid #333;
+      background: var(--bg-panel);
+      border-right: 1px solid var(--cm-border);
     }
     body.dark .sidebar-nav hr {
-      border-top-color: #444;
+      border-top-color: var(--cm-border);
     }
     body.dark .markdown-section h2 {
-      border-bottom-color: #333;
+      border-bottom-color: var(--cm-border);
     }
     body.dark .markdown-section blockquote {
-      background: rgba(214, 69, 65, 0.1);
+      background: rgba(248, 72, 88, 0.12);
     }
     body.dark .markdown-section img.shot {
-      border-color: #3a3a3a;
+      border-color: var(--cm-border);
     }
     body.dark .app-nav a {
-      color: #ddd;
+      color: var(--text-primary);
     }
     body.dark .search input {
-      background: #2a2a2a;
-      border-color: #444;
-      color: #ddd;
+      background: var(--bg-panel);
+      border-color: var(--cm-border);
+      color: var(--text-primary);
     }
 
     /* ===== 封面页背景图 ===== */
@@ -247,11 +372,22 @@
         0 0 16px rgba(0, 0, 0, 0.5);
     }
 
-    /* 封面标题加大加粗 */
+    /* 封面标题加大加粗 + 红色辉光（全站最亮的一处，第一眼就抓人） */
     .cover .cover-main h1 {
-      font-size: 3.2rem;
+      font-size: 3.6rem;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
+      color: #fff !important;
+      text-shadow:
+        0 0 6px rgba(248, 72, 88, 1),
+        0 0 22px rgba(248, 72, 88, 0.85),
+        0 0 48px rgba(248, 72, 88, 0.55),
+        0 4px 12px rgba(0, 0, 0, 0.9) !important;
+    }
+    /* 封面标题下的金句分隔线 */
+    .cover .cover-main blockquote {
+      border-left: 4px solid var(--accent-gold) !important;
+      padding-left: 14px;
     }
 
     /* 封面副标题稍微加大 */
@@ -264,23 +400,62 @@
     /* 封面按钮 */
     .cover .cover-main .cover-button {
       color: #ffffff !important;
-      border: 2px solid #ffffff !important;
-      background: rgba(0, 0, 0, 0.4);
+      border: 3px solid #ffffff !important;
+      background: rgba(0, 0, 0, 0.45);
       text-shadow: none;
       font-weight: 600;
-      border-radius: 8px;
+      border-radius: 4px;
+      box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);   /* 像素按钮：实心偏移阴影 */
       transition: transform var(--duration-medium), box-shadow var(--duration-medium), background var(--duration-medium);
     }
     .cover .cover-main .cover-button:hover {
       background: var(--theme-color);
       border-color: var(--theme-color) !important;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      /* 悬停时整体向左上抬起，阴影同步拉长 —— 经典像素按钮的按下/弹起手感 */
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.5);
     }
 
     /* 暗黑模式下遮罩更深一点 */
     body.dark .cover::before {
       background: rgba(0, 0, 0, 0.65);
+    }
+
+    /* ===== 回到顶部 =====
+       滚动超过一屏才淡入；默认深色底，悬停变红（与全站强调色一致）。 */
+    #cmBackTop {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 60;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      border: 2px solid var(--cm-border);
+      border-radius: 4px;
+      background: var(--bg-panel);
+      color: var(--text-primary);
+      box-shadow: 4px 4px 0 var(--pixel-shadow);   /* 与全站一致的像素硬阴影 */
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--duration-medium), visibility var(--duration-medium),
+                  background var(--duration-medium), transform var(--duration-medium),
+                  box-shadow var(--duration-medium);
+    }
+    #cmBackTop.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    #cmBackTop:hover {
+      background: var(--theme-color);
+      color: #fff;
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--pixel-shadow);
     }
   </style>
 </head>
@@ -294,17 +469,18 @@
 
     // ===== 主题（暗黑模式）：跟随系统偏好，手动切换后记住选择 =====
     (function () {
-      var KEY = 'cobblemarket-theme';
+      // 升到 v2：主题默认值从「跟随系统」改成「深色」，换 key 让浏览器里存的旧选择失效，
+      // 否则老访客会一直被旧记忆按在浅色模式上、看不到新配色。
+      var KEY = 'cobblemarket-theme-v2';
 
       function isDarkNow() {
         try {
           var saved = localStorage.getItem(KEY);
           if (saved) return saved === 'dark';
         } catch (e) { /* 隐私模式下 localStorage 不可用，忽略 */ }
-        // matchMedia 极少数环境没有；它若抛异常会把整块脚本带崩，所以单独兜住
-        try {
-          return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-        } catch (e) { return false; }
+        // 默认深色：模组图标与游戏内 GUI 都是深色调，网站跟随这个基调。
+        // （不再跟随系统偏好 —— 否则浅色系统上打开会看到与模组不符的浅色站。）
+        return true;
       }
 
       function apply(dark) {
@@ -488,6 +664,28 @@
 
       // 页面切换后内容变了要重算一次；延后一拍，让 docsify 先设好它自己的高亮
       window.__cmScrollSpy = function () { setTimeout(updateActive, 0); };
+    })();
+
+    // ===== 回到顶部按钮 =====
+    // 滚动超过一屏才淡入，避免短页面上挂个没用的按钮。
+    (function () {
+      var btn = document.createElement('div');
+      btn.id = 'cmBackTop';
+      btn.textContent = '▲';
+      btn.title = '回到顶部';
+      btn.setAttribute('aria-label', '回到顶部');
+      document.body.appendChild(btn);
+
+      btn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      function sync() {
+        btn.classList.toggle('show', (window.scrollY || 0) > window.innerHeight * 0.8);
+      }
+      window.addEventListener('scroll', sync, { passive: true });
+      window.addEventListener('resize', sync, { passive: true });
+      sync();
     })();
 
     window.$docsify = {

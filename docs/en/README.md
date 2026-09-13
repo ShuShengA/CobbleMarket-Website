@@ -47,7 +47,18 @@ Virtual currency is optional: [Cobblemon Economy](https://modrinth.com/mod/cobbl
 
 This mod uses a server-authoritative architecture: cheating on the client cannot produce money or items. See [Security](/en/security) for the full defence design.
 
-## Support
+## Support Development
+
+CobbleMarket is completely free with no locked features — everything is open to everyone, whether you support it or not.
+
+If it's been useful to you, you can buy the author a coffee ☕
+
+[☕ Buy me a coffee](https://afdian.com/a/cobblemarketmc)
+
+> Payment is handled by Afdian (a Chinese creator-support platform).
+> **PayPal and Google Pay are available for international supporters** — the options adapt to your region.
+
+## Help & Feedback
 
 - Bug reports and feature requests: [GitHub Issues](https://github.com/ShuShengA/cobblemarket-fabric/issues)
 - What's new: [Changelog](/en/changelog)

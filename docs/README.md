@@ -47,6 +47,14 @@ CobbleMarket 为 Cobblemon 服务器提供完整的玩家间交易闭环 —— 
 
 本模组采用服务端权威架构，客户端作弊无法凭空获得货币或物品。完整防御设计见 [安全设计](/security)。
 
+## 支持开发
+
+CobbleMarket 完全免费、没有任何功能限制 —— 所有功能对所有人开放，赞助与否都一样用。
+
+如果它帮到了你的服务器，可以请作者喝杯咖啡 ☕
+
+[☕ 请我喝咖啡](https://afdian.com/a/cobblemarketmc)
+
 ## 支持与反馈
 
 - 问题反馈与功能建议：[GitHub Issues](https://github.com/ShuShengA/cobblemarket-fabric/issues)

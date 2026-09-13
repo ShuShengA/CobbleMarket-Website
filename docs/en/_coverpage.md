@@ -11,3 +11,4 @@
 
 [Get Started](/en/features)
 [Download](https://www.curseforge.com/minecraft/mc-mods/cobblemarket)
+[☕ Support](https://afdian.com/a/cobblemarketmc)
