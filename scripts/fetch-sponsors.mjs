@@ -62,10 +62,12 @@ async function queryPage(page) {
     sign: makeSign(params, ts),
   });
 
-  // .net 与 .com 是同一套服务，优先 .net（官方文档域名），失败再试 .com
+  // .net 与 .com 是同一套服务。
+  // ⚠ 2026-09-14 实测：**afdian.net 已经不通**（每次都是 `fetch failed`），
+  //   顺序还是 .net 优先的话，每次跑都要先白等一次失败才轮到 .com。所以 .com 放前面，.net 只作兜底。
   const endpoints = [
-    'https://afdian.net/api/open/query-sponsor',
     'https://afdian.com/api/open/query-sponsor',
+    'https://afdian.net/api/open/query-sponsor',
   ];
 
   let lastErr;
