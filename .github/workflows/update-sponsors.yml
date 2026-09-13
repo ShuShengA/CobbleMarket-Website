@@ -33,7 +33,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/sponsors.md docs/en/sponsors.md
+          # ⚠ 四个文件都要 add：脚本除了重写两份 sponsors.md，还会更新两份 support.md 里的
+          #   <!-- SPONSORS:BEGIN/END --> 致谢带。漏掉 support 的话，脚本日志明明写着"已更新"，
+          #   改动却在提交这一步被静默丢弃（2026-09-14 踩到：赞助页有名单、support 页致谢带一直是空的）。
+          git add docs/sponsors.md docs/en/sponsors.md docs/support.md docs/en/support.md
           # 没变化就不提交，避免每天堆一条空提交
           if git diff --staged --quiet; then
             echo "名单无变化"

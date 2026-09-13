@@ -34,6 +34,12 @@ If it's been useful to you, you can buy the author a coffee ☕
 Prefer your own amount? [**Custom amount →**](https://afdian.com/order/create?user_id=6843bbf0d99511eb88bb52540025c377&remark=&affiliate_code=)
 
 <!-- SPONSORS:BEGIN -->
+<p class="cm-spon-head">Thanks to these supporters</p>
+<div class="cm-spon-box">
+  <div class="cm-spon-list">
+    <div class="cm-spon"><img src="images/ball-poke.png" alt="Poké Ball"> 爱发电用户\_34a08</div>
+  </div>
+</div>
 <!-- SPONSORS:END -->
 
 > **Supporters are listed on the thank-you page by default.** To stay anonymous, just write **"anonymous"** in the message box on Afdian — the author removes you manually.

@@ -34,6 +34,12 @@ CobbleMarket 完全免费、没有任何功能限制 —— 所有功能对所�
 想按自己的数额来？[**自定义金额 →**](https://afdian.com/order/create?user_id=6843bbf0d99511eb88bb52540025c377&remark=&affiliate_code=)
 
 <!-- SPONSORS:BEGIN -->
+<p class="cm-spon-head">感谢这些支持者</p>
+<div class="cm-spon-box">
+  <div class="cm-spon-list">
+    <div class="cm-spon"><img src="images/ball-poke.png" alt="精灵球"> 爱发电用户\_34a08</div>
+  </div>
+</div>
 <!-- SPONSORS:END -->
 
 > **赞助者默认会出现在鸣谢名单里。** 不想公开名字的话，在爱发电的留言框写「匿名」两个字就行 —— 作者会据此手动移出。
