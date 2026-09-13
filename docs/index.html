@@ -2217,10 +2217,25 @@
 
       function sync() {
         var doc = document.documentElement;
-        var max = doc.scrollHeight - window.innerHeight;
         var y = window.scrollY || 0;
+
+        // ⚠ 页面高度取几个来源的最大值，不能只看 documentElement.scrollHeight：
+        //   手机上地址栏收放会让 window.innerHeight 变化，两个数一错位，
+        //   算出的「可滚动距离」就偏小 —— 表现为进度条提前满格、但页面还能继续滑
+        //   （用户报的正是这个：进度条满了，浏览器滚动条却还没到底）。
+        var pageH = Math.max(
+          doc.scrollHeight,
+          doc.offsetHeight,
+          document.body ? document.body.scrollHeight : 0
+        );
+        var viewH = doc.clientHeight || window.innerHeight || 1;
+        var max = pageH - viewH;
         var pct = max > 0 ? Math.min(100, Math.max(0, (y / max) * 100)) : 0;
-        bar.style.width = pct + '%';
+
+        // 已经到底就直接画满 —— 比靠百分比算更可靠，保证「到底 = 满格」这件事一定成立
+        var atBottom = y + viewH >= pageH - 2;
+        bar.style.width = (atBottom ? 100 : pct) + '%';
+
         // 页面还在顶部时让位给加载进度条（两者都贴顶边，同时亮会打架）
         bar.classList.toggle('show', y > 60);
       }
