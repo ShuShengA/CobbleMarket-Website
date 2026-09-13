@@ -51,7 +51,7 @@ Payments are handled by **Afdian**. **The options adapt to your region** — pic
 - **PayPal** or **Google Pay** (outside China)
 - Alipay or WeChat Pay (inside China)
 
-The checkout opens a standard, English-language payment flow — **no Chinese needed to complete your payment**.
+The checkout page itself is in Chinese, but **PayPal and Google Pay work fine** — you don't need an Alipay or WeChat account.
 
 ---
 
