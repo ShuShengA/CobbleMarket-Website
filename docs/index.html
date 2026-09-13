@@ -1111,6 +1111,22 @@
       padding: 0 4px;
       line-height: 1.5;
     }
+    /* 快捷键提示改成「输入框为空时常显」。
+       插件原本让它只在「聚焦或鼠标悬停」时才出现 —— 可它要告诉用户的恰恰是
+       "不用鼠标也能搜"，等鼠标移上去才显示，人已经在用鼠标了，失去意义。
+       ⚠ 只在 :invalid（输入框为空）时显示：有内容时那个位置要留给「清除」按钮，
+         两者都是 right:7px 的绝对定位，同时显示会重叠。 */
+    .search input:invalid ~ .kbd-group {
+      visibility: visible;
+      opacity: 1;
+    }
+    /* 反过来：输入框有内容时，提示一律隐藏（包括鼠标还悬停着的时候）。
+       插件的 :hover 规则会让提示在有内容时也冒出来，和清除按钮挤在同一个
+       right:7px 上；这条特异性与它相同、又排在后面，能压住。 */
+    .search input:valid ~ .kbd-group {
+      visibility: hidden;
+      opacity: 0;
+    }
     .search .matching-post {
       transition: background var(--duration-medium), box-shadow var(--duration-medium);
     }
