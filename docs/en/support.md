@@ -48,7 +48,7 @@ Every feature of CobbleMarket stays open to everyone — I don't want to lock th
 
 Payments are handled by **Afdian**. **The options adapt to your region** — pick a tier above and you'll get:
 
-- **PayPal** (outside China)
+- **PayPal** or **Google Pay** (outside China)
 - Alipay or WeChat Pay (inside China)
 
 The checkout opens a standard, English-language payment flow — **no Chinese needed to complete your payment**.
