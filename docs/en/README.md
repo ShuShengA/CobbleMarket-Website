@@ -113,7 +113,7 @@ If it's been useful to you, you can buy the author a coffee ☕
 
 [☕ Buy me a coffee](/en/support)
 
-> **PayPal and Google Pay are available for international supporters** — payment options adapt to your region. See the [support page](/en/support) for details.
+> **PayPal is available for international supporters** — payment options adapt to your region. See the [support page](/en/support) for details.
 
 ## Help & Feedback
 
