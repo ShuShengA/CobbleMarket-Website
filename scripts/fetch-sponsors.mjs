@@ -79,8 +79,10 @@ async function queryPage(page) {
       });
       console.log(`[debug] HTTP ${res.status}`);
       const text = await res.text();
-      // 把原始响应打出来：API 出错时正文往往是解释原因的关键
-      console.log(`[debug] 响应前 400 字: ${text.slice(0, 400)}`);
+      // 把原始响应打出来：API 出错时正文往往是解释原因的关键。
+      // ⚠ 长度要够看到**订单对象本身**的字段 —— 400 字只够进到 list[0].sponsor_plans 里，
+      //   而我们要核的是订单字段（all_sum_amount），它在更后面（2026-09-14 实测踩到）。
+      console.log(`[debug] 响应前 2000 字: ${text.slice(0, 2000)}`);
 
       let json;
       try {
