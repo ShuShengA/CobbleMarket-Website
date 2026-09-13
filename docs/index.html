@@ -891,23 +891,30 @@
     .cover::after {
       content: '';
       position: absolute;
-      /* 比封面大一圈：Ken Burns 要放大 6%，视差还要上下移动，
-         图层本身不留余量的话，一动就会从边缘露出底色 */
-      inset: -6%;
+      /* 余量分工：**上下 -6%** 给视差（纵向移动最多 ±90px）+ 缩放；
+         **左右 -3%** 只给缩放（Ken Burns 放大 6% → 每边需要 3%）。
+         原来四边一律 -6%，左右白留了一倍，白白吃掉一圈视野。 */
+      inset: -6% -3%;
       z-index: 0;
       background-image: url('cover-bg.jpg');
       background-size: cover;
       background-position: center calc(50% + var(--cm-parallax));
       background-repeat: no-repeat;
-      animation: cm-kenburns 28s ease-in-out infinite alternate;
+      /* ===== 鼠标环视（原 Ken Burns 推镜已弃用）=====
+         画面静止，但随鼠标位置平移 —— 鼠标往哪边移，画面就往哪边挪，露出那一侧的余量。
+         像把头探进画面里看，比自动推镜更有互动感。
+         位移量由 JS 写入 --cm-look-x / --cm-look-y（见「封面鼠标环视」那段脚本）。
+         ⚠ 为什么弃用自动推镜：那是**时间驱动**的缓慢缩放，每帧位移只有零点零几像素，
+           在 Firefox 上会被合成器吸附到整像素、看起来一卡一卡；而且 will-change、
+           去掉 var() 都救不了。改成**用户驱动**后同样的位移量就没这个问题 ——
+           人手动移动时对位移不敏感，也不会一直空跑。 */
+      transform: translate(var(--cm-look-x, 0px), var(--cm-look-y, 0px));
+      transition: transform 0.35s ease-out;   /* 跟手，但不生硬 */
+      will-change: transform;
     }
     /* 深色模式换夜间封面（同构图，见上面 .cover 的说明） */
     body.dark .cover::after {
       background-image: url('cover-bg-dark.jpg');
-    }
-    @keyframes cm-kenburns {
-      from { transform: scale(1); }
-      to   { transform: scale(1.06); }
     }
 
     /* ===== 封面内容错峰浮现 =====
@@ -2542,6 +2549,36 @@
       window.addEventListener('resize', sync, { passive: true });
       window.__cmCoverParallax = sync;
       sync();   // 首屏也要定一次态：非首页要立刻带背景，不能等第一次滚动
+    })();
+
+    // ===== 封面鼠标环视 =====
+    // 鼠标在视口里的相对位置 → 背景层平移。方向是**反向**：鼠标右移画面左移，
+    // 露出右侧那截余量 —— 像探头往右边看（若改成同向，会变成"画面被鼠标推着走"，
+    // 观感很怪，用户确认要反向）。
+    // ⚠ 位移上限 RANGE 必须小于背景层的余量，否则会从边缘露出底色 ——
+    //   余量见样式表的 inset: -6% -3%（1280×720 下约 上下43px / 左右38px）。
+    // ⚠ 用 rAF 节流：mousemove 触发极频繁，不节流会白跑样式计算。
+    (function () {
+      var RANGE = 18;
+      var raf = 0, lx = 0, ly = 0;
+
+      function apply() {
+        raf = 0;
+        var cover = document.querySelector('.cover');
+        if (!cover) return;
+        cover.style.setProperty('--cm-look-x', lx.toFixed(1) + 'px');
+        cover.style.setProperty('--cm-look-y', ly.toFixed(1) + 'px');
+      }
+
+      window.addEventListener('mousemove', function (e) {
+        if (window.innerWidth <= 640) return;          // 小屏（触屏）不做
+        var cover = document.querySelector('.cover');
+        if (!cover || cover.getBoundingClientRect().bottom < 0) return;  // 封面已滚出视野
+        // 取负 = 反向：画面朝鼠标的**反方向**偏，读起来就是"视线跟着鼠标看过去"
+        lx = -((e.clientX / window.innerWidth) * 2 - 1) * RANGE;
+        ly = -((e.clientY / window.innerHeight) * 2 - 1) * RANGE;
+        if (!raf) raf = requestAnimationFrame(apply);
+      }, { passive: true });
     })();
 
     // ⚠ 别在这里给 hashchange 挂「立即 scrollTo(0,0)」：
