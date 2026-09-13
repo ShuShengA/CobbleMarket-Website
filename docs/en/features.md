@@ -20,7 +20,7 @@ List items from your inventory; buyers can purchase **any quantity**.
 - **Full item tooltips** — every list and hover uses real item tooltips, with move names, enchantment names and Roman-numeral levels fully visible; hold `Shift` to expand the full tooltip and `Ctrl` to show component details
 - **Rarity colouring** — item names are coloured by rarity, matching your inventory
 
-<img src="images/item-market.png" class="shot" alt="Item market screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="images/item-market.png" class="shot" alt="Item Market screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## Auction House
 
@@ -29,11 +29,11 @@ Timed auctions with **live countdowns** and bidding, settled automatically on ex
 - **Three tabs** — Mine / Pokémon / Items
 - **Bidding rules** — bids are charged immediately; being outbid refunds you to pending earnings; consecutive bids of your own only pay the difference; you cannot bid on your own auction; bids below "current price + minimum increment" are rejected with a message
 - **Anti-snipe** — a bid within the last 120 seconds (configurable) extends the end time
-- **Automatic settlement** — the server settles auctions when they expire, with nobody needing the screen open: the winner's goods go to pending claims, the seller is paid minus the fee, and auctions with no bids are returned
+- **Automatic settlement** — the server settles auctions when they expire, with nobody needing the screen open: the winner's goods go to Pending Claims, the seller is paid minus the fee, and auctions with no bids are returned
 - **Server-wide broadcast** — new listings and results are announced in chat; hover the item name for details or click it to jump straight to the bidding screen
 - **Auction sound** — a confirmation chime on bidding; three escalating hammer strikes at 10 / 6 / 3 seconds remaining; a final hammer and bell on settlement (sent only to participants, so bystanders aren't disturbed)
 
-<img src="images/auction.png" class="shot" alt="Auction house screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="images/auction.png" class="shot" alt="Auction House screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## Buy Orders
 
@@ -45,7 +45,7 @@ Post **what you want, and your price** — other players deliver it.
 - **Buyer confirmation** — a delivery first enters "pending confirmation" with the goods held and funds unsettled (surviving restarts); the buyer reviews the full goods before accepting (settling the sale) or rejecting (returning the goods, optionally with a note)
 - **Partial delivery** — several sellers can each deliver part of an item order, which closes automatically once the quantity is filled
 
-<img src="images/buy-order.png" class="shot" alt="Buy orders screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="images/buy-order.png" class="shot" alt="Buy Orders screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## Meowth Bank (optional finance system)
 
@@ -66,7 +66,7 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 ## History & Ledgers
 
 - **In-game history screen** — personal history reads the last 14 days of the ledger (up to 500 entries each), while admins can view the server-wide feed
-- **CSV trade ledger** — covers the market, auctions and buy orders end to end, with a "details" column recording full Pokémon stats and item components so that goods can be **reproduced exactly**
+- **CSV trade ledger** — covers the market, auctions and Buy Orders end to end, with a "details" column recording full Pokémon stats and item components so that goods can be **reproduced exactly**
 - **CSV credit ledger** — loan creation / overdue / settlement events plus each repayment split into principal and interest, with the repayment method recorded
 - Ledgers are written **synchronously**, independent of world autosaves, so a crash or a killed process doesn't lose them
 
@@ -78,8 +78,8 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 - **Price limits** — upper and lower bounds per Pokémon form or item variant, with the most specific entry taking precedence
 - **Bans** — ban players from trading with an optional duration and reason; bans restrict trading only and **never freeze assets**
 - **Forced delisting** — admins can view and force-delist any listing, auction or buy order; both parties are notified (queued and delivered on next login if offline)
-- **Market master switch** — stop the market in an emergency with one button (with confirmation); OPs can still use the admin panel to clean up
-- **Server config screen** — edit fees, limits, durations and switches in-game, with no need to touch the config file
+- **Market master switch** — stop the market in an emergency with one button (with confirmation); OPs can still use the Admin Panel to clean up
+- **Server Config screen** — edit fees, limits, durations and switches in-game, with no need to touch the config file
 
 ## And More
 

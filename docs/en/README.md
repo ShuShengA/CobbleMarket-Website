@@ -79,7 +79,7 @@ Every transaction is validated server-side and the client is display-only, so ch
 
 - **Meowth Bank** (optional, off by default) — credit loans, 3 / 6 / 12-installment repayment, interest-bearing deposits, three tiers of overdue penalties, and the Meow·Purple Gold Card / Meow·Black Gold Card credit credentials
 - **History & Ledgers** — an in-game history screen plus CSV ledgers for server owners (the trade ledger answers "where did the goods go", the credit ledger answers "where did the money go")
-- **Admin Tools** — blacklists, price limits, bans, forced delistings, a market master switch, and an in-game server config screen
+- **Admin Tools** — blacklists, price limits, bans, forced delistings, a market master switch, and an in-game Server Config screen
 - **Personalisation** — 3D Pokémon icons and animations, Marks and size badges, a repositionable balance HUD, celebration animations and other client-side switches
 
 See [Features](/en/features) for the full list, and the [Changelog](/en/changelog) for every change.
@@ -97,7 +97,7 @@ See [Features](/en/features) for the full list, and the [Changelog](/en/changelo
 | Item | Requirement |
 |---|---|
 | Minecraft | 1.21.1 |
-| Cobblemon | 1.8.0 or later |
+| Cobblemon | **1.8.0 or later, below 1.9** |
 | Fabric | Fabric API + Fabric Language Kotlin |
 | NeoForge | Kotlin for Forge + Cobblemon (NeoForge build); Architectury API is **not** required |
 

@@ -6,8 +6,8 @@ If it's been useful to you, you can buy the author a coffee ☕
 
 <div class="support-grid">
   <a class="support-card" href="https://afdian.com/order/create?plan_id=ace51b18af0611f1b1bb5254001e7c00&product_type=0">
-    <img src="images/ball-poke.png" alt="Pokeball">
-    <div class="ball-name">Pokeball</div>
+    <img src="images/ball-poke.png" alt="Poké Ball">
+    <div class="ball-name">Poké Ball</div>
     <div class="ball-price">¥5</div>
     <div class="ball-desc">Just to show you care</div>
   </a>
@@ -15,7 +15,7 @@ If it's been useful to you, you can buy the author a coffee ☕
     <img src="images/ball-great.png" alt="Great Ball">
     <div class="ball-name">Great Ball</div>
     <div class="ball-price">¥15</div>
-    <div class="ball-desc">A bit better than a Pokeball</div>
+    <div class="ball-desc">A bit better than a Poké Ball</div>
   </a>
   <a class="support-card" href="https://afdian.com/order/create?plan_id=53fafbf2af0711f1ade85254001e7c00&product_type=0">
     <img src="images/ball-ultra.png" alt="Ultra Ball">

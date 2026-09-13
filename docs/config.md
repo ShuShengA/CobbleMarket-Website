@@ -31,7 +31,7 @@
 
 | 字段 | 默认 | 说明 |
 |---|---|---|
-| `marketEnabled` | `true` | 市场总开关。关闭后所有买卖 / 拍卖 / 求购操作被拦截，但领取资产不受影响 |
+| `marketEnabled` | `true` | 市场总开关。关闭后所有买卖/拍卖/求购操作被拦截，但领取资产不受影响 |
 | `pokemonListingFeePercent` | `5.0` | 精灵市场上架手续费百分比（`0` = 免手续费） |
 | `itemListingFeePercent` | `5.0` | 物品市场上架手续费百分比（`0` = 免手续费） |
 | `maxPokemonListingsPerPlayer` | `0` | 每人同时活跃的精灵上架数上限（`0` = 不限制） |
@@ -69,18 +69,18 @@
 
 | 字段 | 默认 | 说明 |
 |---|---|---|
-| `finance.enabled` | `false` | 总开关。关闭时禁止新增借贷与信用支付，已有贷款照常运行（还款 / 逾期 / 坏账不受影响） |
+| `finance.enabled` | `false` | 总开关。关闭时禁止新增借贷与信用支付，已有贷款照常运行（还款/逾期/坏账不受影响） |
 | `finance.cashLoanEnabled` | `true` | 现金贷开关（玩家在银行柜台主动借款） |
 | `finance.consumerLoanEnabled` | `true` | 消费贷开关（购买时的「喵喵支付」） |
-| `finance.loanPlans` | 3 / 6 / 12 期 | 分期方案数组：`periods`=期数（每期 7 天），`feeRate`=每期费率（`0.005` = 0.5%） |
+| `finance.loanPlans` | 3/6 / 12 期 | 分期方案数组：`periods`=期数（每期 7 天），`feeRate`=每期费率（`0.005` = 0.5%） |
 | `finance.creditLimit` | 见下 | 额度公式系数与上下限，详见 [喵喵银行](/meowth-bank) |
 | `finance.dailyDepositRate` | `0.0001` | 活期存款日利率（`0.0001` = 每天 0.01%，约年化 3.65%），**按实际存入时长计息、不满一天按比例**。⚠ 有**防套利护栏**：超过安全上界会自动钳制并记日志，贷款方案全免息时自动钳为 0 |
 | `finance.autoRepayMinBalance` | `1000` | 到期自动划扣时保留的最低余额，划不足进入逾期 |
 | `finance.ipDebtLimit` | `100000` | 同 IP 未结清欠款总和上限（防小号分散借款，OP 豁免，`0` = 不限制） |
 | `finance.tradePairWindowDays` | `30` | 交易对检测窗口天数（防互买对刷） |
 | `finance.tradePairMaxTrades` | `3` | 交易对检测笔数上限 |
-| `finance.overdueDays` | 7 / 14 / 30 | 逾期三档天数：`feeDouble`（手续费翻倍）/ `freeze`（冻结交易）/ `badDebt`（注销坏账） |
-| `finance.purpleCard*` | — | 喵·紫金卡的发放上限、额度、自行申请开关、七项申请门槛、申请费 / 补发费、手续费减免。**共 12 项** |
+| `finance.overdueDays` | 7/14/30 | 逾期三档天数：`feeDouble`（手续费翻倍）/ `freeze`（冻结交易）/ `badDebt`（注销坏账） |
+| `finance.purpleCard*` | — | 喵·紫金卡的发放上限、额度、自行申请开关、七项申请门槛、申请费/补发费、手续费减免。**共 12 项** |
 | `finance.blackCard*` | — | 喵·黑金卡的同构配置。**共 12 项**，申请硬条件为持有喵·紫金卡 |
 
 > 卡片配置项较多且互相牵制（如申请门槛、净存款要求、手续费减免与逾期翻倍叠加），完整解释见 [喵喵银行](/meowth-bank)。

@@ -52,9 +52,9 @@ Example: `/market ban Steve 7d Shill bidding`
 
 Admin commands require **OP permission**. In particular:
 
-- **Turning the market on / off** and the **server config** can also be handled from the admin panel on the market entry screen — no commands needed
+- **Turning the market on / off** and the **Server Config** can also be handled from the Admin Panel on the market entry screen — no commands needed
 - **Revoking bad debt** (`/market loan clear`) is OP-only and sits outside the other admin duties
-- While the market is off, OPs can still use the admin panel for delistings, blacklists and other cleanup
+- While the market is off, OPs can still use the Admin Panel for delistings, blacklists and other cleanup
 
 ## Equivalent Screens
 
@@ -62,12 +62,12 @@ Most commands have a screen-based equivalent, which is usually more convenient f
 
 | Task | Screen |
 |---|---|
-| Toggle the market | Bottom of the admin panel |
-| Ban management | Admin panel → Bans |
-| Blacklists / price limits | Admin panel |
-| Forced delisting | Admin panel → All Auctions / All Listings / All Buy Orders |
-| Server config | Bottom of the admin panel |
+| Toggle the market | Bottom of the Admin Panel |
+| Ban management | Admin Panel → Bans |
+| Blacklists / price limits | Admin Panel |
+| Forced delisting | Admin Panel → All Auctions / All Listings / All Buy Orders |
+| Server Config | Bottom of the Admin Panel |
 | Card management | Meowth Bank → Card Management |
-| Server-wide loan feed / revoke bad debt | Admin panel → Server-wide Loan Feed |
+| Server-wide loan feed / revoke bad debt | Admin Panel → Server-wide Loan Feed |
 
 See [Features](/en/features) for details.
