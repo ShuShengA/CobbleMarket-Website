@@ -2,7 +2,11 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <title>CobbleMarket — Cobblemon 服务器市场模组</title>
+  <!-- 标签页标题：写成中英通用（两个词都是专有名词）。
+       ⚠ 不要写「服务器市场模组」这类单语言描述 —— 它是首屏加载前就显示的默认标题，
+         没法跟着 data-cm-lang 切换（那会在国外访客眼前闪一下中文）。
+         加载完成后 docsify 会按当前页面接管标题，所以这里只影响"打开瞬间"。 -->
+  <title>CobbleMarket — Cobblemon Market</title>
   <meta name="description" content="CobbleMarket 是一个面向 Cobblemon 服务器的玩家交易市场模组，支持精灵与物品的挂单买卖、拍卖场、求购单、喵喵银行金融系统与四种货币，同时提供 Fabric 与 NeoForge 两个版本。">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <!-- 手机浏览器地址栏配色，跟随模组图标底色；切到浅色模式时由 JS 改写 -->
@@ -1643,12 +1647,17 @@
   <script>
     (function () {
       try {
-        if (localStorage.getItem('cm-lang')) return;
-        if (/^zh/i.test(navigator.language || '')) return;
         var h = location.hash;
-        if (h === '' || h === '#' || h === '#/') {
+        var isHome = (h === '' || h === '#' || h === '#/');
+        var preferEn = !localStorage.getItem('cm-lang') && !/^zh/i.test(navigator.language || '');
+        if (preferEn && isHome) {
           history.replaceState(null, '', location.pathname + location.search + '#/en/');
+          h = '#/en/';
         }
+        // 把「这一屏最终会是哪种语言」写出来 —— 加载态那句中文文案靠它决定要不要换掉。
+        // ⚠ 判据用最终 hash 而不是 preferEn：手动选过中文、或直接打开 #/features 的访客
+        //   preferEn 可能是 false，但已经在内页的英文访客（#/en/xxx）要按 en 走。
+        document.documentElement.setAttribute('data-cm-lang', h.indexOf('#/en') === 0 ? 'en' : 'zh');
       } catch (e) { /* 隐私模式下 localStorage 不可用等，静默跳过，保持中文站 */ }
     })();
   </script>
@@ -1662,6 +1671,17 @@
       <div class="cm-loading-text">正在进入市场…</div>
     </div>
   </div>
+
+  <script>
+    /* 加载态这句文案也要跟着语言走 —— 它比 head 里那段跳转更早出现在屏幕上，
+       国外访客如果看到的是中文，那是整个过程里唯一会露出来的一处。
+       判断结果在 head 里已经写在 html[data-cm-lang] 上了，这里只负责替换。
+       ⚠ 必须放在加载态之后（此刻节点才存在），不能挪进 head。
+       中文是 HTML 里的默认值，只有 en 才替换 —— 少写一次字符串，也少一个出错点。 */
+    if (document.documentElement.getAttribute('data-cm-lang') === 'en') {
+      document.querySelector('.cm-loading-text').textContent = 'Entering the market…';
+    }
+  </script>
 
   <script>
     // ⚠ 以下 IIFE 与 $docsify 配置同处一个 <script> 块：任何一处抛出未捕获异常，
@@ -2462,9 +2482,13 @@
       // 搜索
       search: {
         paths: 'auto',
+        // ⚠⚠ 顺序不能反！插件的匹配是「取第一个命中的 key」：
+        //     search.js: const match = Object.keys(text).filter(key => path.indexOf(key) > -1)[0]
+        //   而 '/' 能命中**所有**路径 —— 放前面就永远轮不到 '/en/'，
+        //   英文站也会一直显示中文占位符（用户报过这个问题）。更具体的要排前面。
         placeholder: {
-          '/': '搜索文档',
-          '/en/': 'Search docs'
+          '/en/': 'Search docs',
+          '/': '搜索文档'
         },
         noData: '未找到相关文档 / No results'
       },
