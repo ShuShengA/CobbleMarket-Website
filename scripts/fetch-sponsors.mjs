@@ -1,8 +1,9 @@
 /**
  * 从爱发电拉取赞助者，生成鸣谢名单。
  *
- * 隐私约定：**只有主动在赞助留言里写关键词的才会被列出来** —— 不写就保持匿名。
- * 中英文各认一个关键词（赞助者用哪种语言留言就写哪个）。
+ * 隐私约定（opt-out）：**赞助者默认会被列出** —— 只有主动在留言里写明想匿名的才不收录。
+ * 理由：默认公开才符合直觉，想匿名的人是极少数，让他们主动说一句，比让每个想被
+ * 感谢的人都去猜关键词要合理得多。
  *
  * 由 .github/workflows/update-sponsors.yml 每天调用一次，
  * 凭据从 GitHub Secrets 读（AFDIAN_USER_ID / AFDIAN_TOKEN），绝不出现在仓库里。
@@ -19,26 +20,26 @@ if (!USER_ID || !TOKEN) {
 }
 
 /**
- * 留言里出现这些词才算"愿意公开"。
- * 是「包含」匹配、不是精确相等，所以多打空格或后缀（「 鸣谢」「鸣谢s」「thankss」）
- * 都能认出来，大小写也不敏感。
- * 中文特意收了「感谢」「谢谢」两个近义说法：页面引导的是「鸣谢」，但玩家很可能
- * 自作主张写成更顺口的词，只认「鸣谢」会白白漏掉愿意公开的人。
- * （英文不用收 "thank" —— includes('thanks') 已经覆盖了带 s 的各种写法。）
- */
-const KEYWORDS = ['鸣谢', '感谢', '谢谢', 'thanks', 'thank you', 'sponsor'];
-
-/**
- * 留言里出现这些词 = 明确不想公开，**一律不收录**（优先级高于 KEYWORDS）。
+ * 留言里出现这些词 = 明确表示不想公开，**一律不收录**。
  *
- * 为什么需要它：匹配是「包含」而非精确相等，所以一句「谢谢你的模组，但不用列我」
- * 里同时含"谢谢"和"不用"，按关键词会被收录 —— 那是「明确拒绝却被公开」，
- * 比漏收一个愿意公开的人严重得多。所以宁可不收。
- * 代价是会误伤「不用客气，感谢」这种客套话，接受。
+ * 匹配是「包含」而非精确相等，所以词必须收得**保守**：现在是默认公开，
+ * 一句正常的客套话（「谢谢，不用客气」）一旦被这里误判，就会让一个本该上榜的
+ * 赞助者凭空消失 —— 比多列一个人严重。因此**只认明确指向匿名/不署名的说法**，
+ * 不收「不用」「不要」「不必」这类泛词（它们会和客套话撞车）。
  */
 const OPT_OUT = [
-  '不用', '不要', '不必', '无需', '别列', '匿名',
-  'anonymous', "don't list", 'do not list',
+  // 中文：核心词「匿名」+ 明确的拒绝署名说法
+  '匿名',
+  '不用鸣谢', '不要鸣谢', '无需鸣谢', '不必鸣谢', '不参与鸣谢', '别鸣谢',
+  '不用写我', '不要写我', '别写我',
+  '不用列我', '不要列我', '别列我',
+  '不用提我', '不要提我', '别提我',
+  // 英文：同样只收明确说法
+  'anonymous',
+  "don't list", 'do not list',
+  "don't mention", 'do not mention',
+  "don't include", 'do not include',
+  'no credit', 'opt out',
 ];
 /** 只收录支付成功的订单 */
 const STATUS_OK = 2;
@@ -151,13 +152,11 @@ function ballFor(amount) {
 const orders = await fetchAll();
 console.log(`共拉到 ${orders.length} 条订单`);
 
-// 只留：支付成功 + 留言里有公开意愿关键词 + 没有明确拒绝公开
+// 收录：支付成功 + 没有明确表示想匿名（默认公开，opt-out）
 const willing = orders.filter(o => {
   if (o.status !== STATUS_OK) return false;
   const remark = String(o.remark || '').toLowerCase();
-  // 先看有没有明确拒绝 —— 必须在关键词之前，否则「不用鸣谢」会被当成愿意公开
-  if (OPT_OUT.some(k => remark.includes(k.toLowerCase()))) return false;
-  return KEYWORDS.some(k => remark.includes(k.toLowerCase()));
+  return !OPT_OUT.some(k => remark.includes(k.toLowerCase()));
 });
 
 // 同一个人多次赞助只列一次，按最近一次的时间排序（新的在前）
@@ -176,7 +175,7 @@ const list = [...byUser.values()].sort(
   (a, b) => Number(b.last_pay_time || 0) - Number(a.last_pay_time || 0)
 );
 
-console.log(`其中 ${list.length} 位愿意公开`);
+console.log(`其中 ${list.length} 位收录进名单`);
 
 // 昵称是中性的，中英两个版本用同一批人；只有球的 alt 文案分语言
 const entries = list.map(o => {
@@ -195,21 +194,21 @@ function render(lang, entries) {
 
 感谢这些支持者的慷慨相助 —— 他们让 CobbleMarket 得以持续维护下去。
 
-> 想出现在这里？在[赞助](/support)时，于爱发电的留言框写下「鸣谢」即可（不写就保持匿名）。
+> 赞助者默认会出现在这里。不想公开名字的话，在[赞助](/support)时于爱发电的留言框写下「匿名」即可。
 >
 > 名字前的球表示赞助档位（按**累计**金额计算）。`
     : `# Thank You
 
 Thanks to these generous supporters — they're the reason CobbleMarket keeps getting maintained.
 
-> Want to appear here? When you [support the project](/en/support), just write **"thanks"** in the message box on Afdian. Leave it blank and you stay anonymous.
+> Supporters are listed here by default. If you'd rather stay anonymous, write **"anonymous"** in the message box on Afdian when you [support the project](/en/support).
 >
 > The ball before each name shows the sponsorship tier (based on the **cumulative** amount).`;
 
   if (!entries.length) {
     const empty = zh
-      ? '_还没有人留言要上名单 —— 你也可以成为第一个。_'
-      : '_No one has asked to be listed yet — you could be the first._';
+      ? '_名单还在等第一位赞助者。_'
+      : '_The list is waiting for its first supporter._';
     return `${head}\n\n${empty}\n`;
   }
 
