@@ -112,14 +112,12 @@ All fallible checks (blacklist, price limits, quantity, stock, balance) run **be
 
 ---
 
-## 8. Historical Exploits (Fixed)
+## 8. Historical Issues
 
-| Exploit | Type | Fix |
-|---|---|---|
-| Item auction quantity diluting unit price past price limits | Business logic | Price limits scaled by unit price × quantity |
-| Expired auction revived indefinitely via anti-snipe | Timing logic | Bids validate the deadline directly, independent of settle throttle |
-| 15-second settle throttle delaying staggered auctions | UX/timing | Throttle removed |
-| Asset destruction when settlement enqueue failed | Error path | Restore ACTIVE and retry; no transfer, no destruction |
-| Fee >100% driving seller balance negative | Config boundary | Clamped to 0~100% at load |
-| Item auction listing not syncing client inventory | Display sync | Added markDirty + sendContentUpdates |
-| Packet replay (theoretical) | Replay attack | Architecturally immune: main-thread serialization + atomic state deduction |
+Every business-logic, timing and config-boundary issue found since launch has been fixed and
+is present in the current release.
+
+> For the itemised record see the "Fixes" sections of the [CHANGELOG](/en/changelog) — it is
+> already organised by version. (A "fixed exploits" list used to live here; it was condensed
+> out for security hygiene — not because any of it was exploitable, but because there is no
+> reason to hand out an organised index of past attack surfaces.)
