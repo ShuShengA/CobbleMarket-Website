@@ -1,0 +1,43 @@
+# 每天从爱发电拉一次赞助者，更新鸣谢名单。
+# 凭据来自仓库 Secrets（Settings → Secrets and variables → Actions）：
+#   AFDIAN_USER_ID / AFDIAN_TOKEN
+name: Update Sponsors
+
+on:
+  schedule:
+    # 每天 UTC 03:17（北京时间 11:17）—— 特意避开整点，减少与其它任务撞车的概率
+    - cron: '17 3 * * *'
+  workflow_dispatch:        # 也支持手动触发，方便调试
+
+# 需要写权限才能把生成的文件提交回去
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch sponsors from Afdian
+        env:
+          AFDIAN_USER_ID: ${{ secrets.AFDIAN_USER_ID }}
+          AFDIAN_TOKEN: ${{ secrets.AFDIAN_TOKEN }}
+        run: node scripts/fetch-sponsors.mjs
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/sponsors.md docs/en/sponsors.md
+          # 没变化就不提交，避免每天堆一条空提交
+          if git diff --staged --quiet; then
+            echo "名单无变化"
+          else
+            git commit -m "chore: 更新鸣谢名单"
+            git push
+          fi

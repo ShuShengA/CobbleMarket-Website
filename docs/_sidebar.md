@@ -19,5 +19,6 @@
 
 - **其他**
 - [支持开发](/support)
+- [鸣谢名单](/sponsors)
 - [安全设计](/security)
 - [更新日志](/changelog)

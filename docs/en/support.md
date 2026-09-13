@@ -33,6 +33,8 @@ If it's been useful to you, you can buy the author a coffee ☕
 
 Prefer your own amount? [**Custom amount →**](https://afdian.com/a/cobblemarketmc)
 
+> **Want your name on the thank-you list?** After picking a tier, just write **"thanks"** in the message box on Afdian — leave it blank and you stay anonymous.
+
 ## What you get
 
 **Nothing, really.**

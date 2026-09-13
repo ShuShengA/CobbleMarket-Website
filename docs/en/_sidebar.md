@@ -19,5 +19,6 @@
 
 - **More**
 - [Support Development](/en/support)
+- [Thank You](/en/sponsors)
 - [Security](/en/security)
 - [Changelog](/en/changelog)
