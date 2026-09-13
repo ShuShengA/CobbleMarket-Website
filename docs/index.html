@@ -77,6 +77,31 @@
          深色模式那套写在 html.dark 里（特异性更高，会盖过这条）。 */
       --color-text: #1b1b24;
       --color-bg: #ffffff;
+
+      /* ===== 背景环境光 =====
+         纯色底（白天 #ffffff / 夜晚 #101018）上叠两团极淡的光晕。
+         这不只是装饰 —— 它是**玻璃面板能成立的前提**：
+         backdrop-filter 模糊的是面板背后的东西，纯色模糊完还是纯色，什么都看不出来。
+         左上红、右下金，两个色都取自模组图标。
+         ⚠ 深色模式要更亮一档（暗部对比弱，见 html.dark 里的覆盖）。
+         ⚠ 要调只动这两个 alpha，别动位置和半径 —— 那会影响玻璃面板边缘的透色。 */
+      --cm-glow-1: rgba(248, 72, 88, 0.16);
+      --cm-glow-2: rgba(240, 176, 32, 0.13);
+    }
+
+    /* 光晕层：固定在视口上、不随滚动，读起来像环境光而不是贴在纸上跟着滚的东西。
+       ⚠ 用 position:fixed，不要用 background-attachment:fixed ——
+         后者在移动端滚动时会让整屏持续重绘，是已知的性能坑（本站为微信卡顿排查过这类问题）。
+       z-index:-1 让它落在所有内容之后、html 的背景色之上。 */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(58% 48% at 10% 6%, var(--cm-glow-1), transparent 70%),
+        radial-gradient(52% 44% at 90% 88%, var(--cm-glow-2), transparent 70%);
     }
 
     /* ===== 自定义光标 =====
@@ -429,6 +454,9 @@
 
       --color-bg: #101018;       /* 图标底色（深蓝黑，不是中性灰） */
       --color-text: #e8e0e8;     /* 球体浅色 */
+      /* 背景光晕在暗底上要更亮一档才看得见（暗部对比本来就弱） */
+      --cm-glow-1: rgba(248, 72, 88, 0.20);
+      --cm-glow-2: rgba(240, 176, 32, 0.13);
       --code-bg: #181820;        /* 面板色 */
       /* 标题色默认是「正文色向黑混合 35%」——浅色下等于加深（更醒目），
          暗色下就变成变暗了，标题会比正文还糊。这里改成向白混合，保持"强调=更亮" */
@@ -436,9 +464,27 @@
       /* 标题统一走金色（与 h1/h2 的显式规则一致），避免 docsify 用 --strong-color 覆盖 */
       --heading-color: var(--accent-gold);
     }
+    /* ===== 玻璃面板（亚克力）=====
+       ⚠ 前提是"背后有内容可模糊" —— 也就是上面 body::before 那层环境光。
+         没有它，模糊纯色等于没做。
+       ⚠ backdrop-filter 是移动端 WebView 的经典性能杀手（本站为微信内置浏览器的滚动卡顿
+         排查过大半天，它就在嫌疑名单里）。所以只给**固定不动**的侧边栏和少量卡片用，
+         别往列表行、正文块上铺。
+       ⚠ 半透明底用 color-mix 从中性色算出来，深浅色自动适配，不用写两套。
+       html 前缀是为了压过主题自带的 .sidebar 规则（同特异性，靠加载顺序不稳妥）。 */
+    html .sidebar {
+      /* ⚠ 底色必须用 --bg-panel（面板色，比背景略深），不能用 --color-bg ——
+         后者在浅色模式下就等于背景色 #ffffff，白玻璃叠白背景，什么都看不出来
+         （第一版就是这么翻车的）。深色那边一直用的是 --bg-panel，所以没这问题。 */
+      background: color-mix(in srgb, var(--bg-panel) 68%, transparent);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
+      backdrop-filter: blur(16px) saturate(150%);
+    }
     body.dark .sidebar {
-      background: var(--bg-panel);
+      background: color-mix(in srgb, var(--bg-panel) 72%, transparent);
       border-right: 1px solid var(--cm-border);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
+      backdrop-filter: blur(16px) saturate(150%);
     }
     body.dark .sidebar-nav hr {
       border-top-color: var(--cm-border);
@@ -1312,7 +1358,11 @@
       padding: 18px 20px 20px;
       border: 2px solid var(--cm-border);
       border-radius: 4px;
-      background: var(--bg-panel);
+      /* 玻璃底：半透明 + 模糊背后的环境光（见 body::before）。
+         保留像素风的实心偏移阴影，是"硬边 + 玻璃"的混搭，不是纯玻璃拟态。 */
+      background: color-mix(in srgb, var(--bg-panel) 78%, transparent);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      backdrop-filter: blur(12px) saturate(140%);
       box-shadow: 4px 4px 0 var(--pixel-shadow);
       transition: transform var(--duration-medium), box-shadow var(--duration-medium),
                   border-color var(--duration-medium);
