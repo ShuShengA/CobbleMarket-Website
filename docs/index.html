@@ -2116,6 +2116,20 @@
         cover.appendChild(hint);
       }
 
+      // ---- 把快捷键提示里的 ⌃K 改成 Ctrl K ----
+      // 搜索插件把 Ctrl+K 写成了 Mac 的符号「⌃K」，Windows 用户看不懂那是什么。
+      // 它是 kbd 的文本内容（不是 CSS content），只能用 JS 改。
+      // 两个平台都能按：插件的 keyBindings 里 meta+k 和 ctrl+k 都绑了。
+      // （搜索框在侧边栏里，每次换页都会重建，所以要跟着 __cmAfterRender 重做。）
+      function fixKbdLabel() {
+        var kbds = document.querySelectorAll('.search .kbd-group kbd');
+        if (kbds.length < 2) return;            // [0] 是「/」，[1] 才是 Ctrl+K 那个
+        var el = kbds[1];
+        if (el.textContent === 'Ctrl K') return;
+        el.textContent = 'Ctrl K';
+        el.title = 'Press Ctrl+K to search';
+      }
+
       // ---- 加载层退场 ----
       // 正文渲染完就不再需要它了。挂 .done 触发淡出（420ms），随后整个移出 DOM。
       // 延迟一拍再执行：封面是异步 fetch 的，立刻淡出的话会先露出正文、封面随后才"补"上来。
@@ -2135,6 +2149,7 @@
           setupReveal(section);
         }
         addScrollHint();
+        fixKbdLabel();
         // 换页往往伴随滚动位置变化（auto2top），进度条与视差要跟着重算一次
         if (window.__cmReadBarSync) window.__cmReadBarSync();
         // ⚠ 封面（coverpage）是「异步 fetch 一个 markdown 再渲染」的，doneEach 这一刻
