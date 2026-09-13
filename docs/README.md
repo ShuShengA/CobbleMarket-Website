@@ -16,7 +16,13 @@
 <div class="cm-hero">
   <img class="cm-hero-icon" src="images/hero-icon.png" alt="">
   <div class="cm-hero-body">
-    <h1>CobbleMarket</h1>
+    <!-- ⚠ 这个 tabindex="-1" 别删：docsify 的无障碍焦点逻辑（#focusContent）会找
+         「#main 里第一个标题」，自己给它补上 tabindex 后**平滑滚过去**
+         （scrollIntoView({behavior:'smooth'})）。首页这个标题在封面之后，
+         于是「点首页」会变成先滚到 hero（跳过封面）、再被拉回顶部，看起来就是
+         "上移过多再下移"。预先写死 tabindex，它就不会自己补标记、也就不会滚
+         （它只在「自己加过 tabindex」时才滚）。 -->
+    <h1 tabindex="-1">CobbleMarket</h1>
     <p class="cm-hero-sub">面向 Cobblemon 服务器的玩家交易市场模组 —— 但不止于此，它同时也是一套面向服主的服务器经济运营工具。</p>
     <div class="cm-badges">
       <span class="cm-badge">Minecraft 1.21.1</span>

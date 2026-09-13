@@ -18,7 +18,13 @@
 <div class="cm-hero">
   <img class="cm-hero-icon" src="images/hero-icon.png" alt="">
   <div class="cm-hero-body">
-    <h1>CobbleMarket</h1>
+    <!-- ⚠ Don't remove this tabindex="-1": docsify's a11y focus logic (#focusContent)
+         finds the FIRST heading inside #main, adds a tabindex to it, then smooth-scrolls
+         to it via scrollIntoView({behavior:'smooth'}). On the home page that heading sits
+         below the full-screen cover, so "click Home" ends up scrolling past the cover and
+         then back. Pre-setting tabindex makes docsify skip that step (it only scrolls when
+         it added the attribute itself). -->
+    <h1 tabindex="-1">CobbleMarket</h1>
     <p class="cm-hero-sub">A player-to-player trading market for Cobblemon servers — but it doesn't stop there. It's also an economy management toolkit built for server owners.</p>
     <div class="cm-badges">
       <span class="cm-badge">Minecraft 1.21.1</span>

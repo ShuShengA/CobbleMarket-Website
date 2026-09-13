@@ -92,7 +92,9 @@
          ⚠ 深色模式要更亮一档（暗部对比弱，见 html.dark 里的覆盖）。
          ⚠ 要调只动这两个 alpha，别动位置和半径 —— 那会影响玻璃面板边缘的透色。 */
       --cm-glow-1: rgba(248, 72, 88, 0.16);
-      --cm-glow-2: rgba(240, 176, 32, 0.13);
+      /* 白天这团金色要比红色深一号：亮金 #f0b020 铺在白底上几乎看不出（已验证），
+         换成偏橙的深金，同样的透明度下才有对比。深色模式仍用亮金（见 html.dark）。 */
+      --cm-glow-2: rgba(226, 146, 0, 0.26);
     }
 
     /* 光晕层：固定在视口上、不随滚动，读起来像环境光而不是贴在纸上跟着滚的东西。
@@ -107,7 +109,10 @@
       pointer-events: none;
       background:
         radial-gradient(58% 48% at 10% 6%, var(--cm-glow-1), transparent 70%),
-        radial-gradient(52% 44% at 90% 88%, var(--cm-glow-2), transparent 70%);
+        /* 右下这团比左上小得多、也更贴角：左边是侧边栏，压不着正文；
+           右下正好落在正文区，半径一大就糊在字上（用户反馈"和内容重合太多"）。
+           小而成团 > 大而淡：既躲开正文，又能在白天看得见。 */
+        radial-gradient(36% 30% at 97% 96%, var(--cm-glow-2), transparent 70%);
     }
 
     /* ===== 自定义光标 =====
@@ -2530,6 +2535,10 @@
       sync();   // 首屏也要定一次态：非首页要立刻带背景，不能等第一次滚动
     })();
 
+    // ⚠ 别在这里给 hashchange 挂「立即 scrollTo(0,0)」：
+    //   点子标题（#/features?id=xxx）时它抢在 docsify 前面先归零，
+    //   紧接着 docsify 再 scrollIntoView 到目标小节 —— 两个动作叠在一起，
+    //   表现为「先跳到顶、再滑下去」，比不加还明显（2026-09-13 实测踩过，已撤）。
     window.$docsify = {
       name: 'CobbleMarket',
       repo: 'https://github.com/ShuShengA/cobblemarket',
@@ -2597,56 +2606,6 @@
     //   window.$docsify 整个赋值失败 → 首页/封面/导航/插件等全部自定义配置失效，
     //   页面停在加载态（精灵球那个画面）。语法检查查不出来（语法本身合法），极难定位。
 
-    // ===== 临时诊断面板（只认 ?diag=1，平时零影响；排查完可整段删）=====
-    // 拿来确认微信内置浏览器里「认不认 svh、vh 会不会随底栏收放变化」。
-    // 判据：100svh 显示「不支持」= 落回了 vh；100vh / cover 的 [最小~最大] 区间不为零 = 高度在变。
-    (function () {
-      if (!/[?&]diag=1/.test(location.search)) return;
-
-      function probe(h) {
-        var el = document.createElement('div');
-        el.style.cssText = 'position:absolute;top:0;left:0;width:0;pointer-events:none;visibility:hidden;height:' + h;
-        document.body.appendChild(el);
-        return el;
-      }
-      var elVh = probe('100vh');
-      var elSvh = probe('100svh');
-
-      var panel = document.createElement('div');
-      panel.style.cssText = 'position:fixed;top:0;left:0;z-index:2147483647;' +
-        'background:rgba(0,0,0,.85);color:#0f0;font:11px/1.6 monospace;' +
-        'padding:6px 9px;white-space:pre;pointer-events:none;';
-      document.body.appendChild(panel);
-
-      var r = { ih: [], vh: [], svh: [], cover: [] };
-      function track(arr, v) {
-        if (!arr.length) { arr[0] = arr[1] = v; return; }
-        if (v < arr[0]) arr[0] = v;
-        if (v > arr[1]) arr[1] = v;
-      }
-      function line(label, arr) {
-        return label + ' ' + arr[1] + ' [' + arr[0] + '~' + arr[1] + ']';
-      }
-      function upd() {
-        var cover = document.querySelector('.cover');
-        var svh = elSvh.offsetHeight;
-        var cmvh = getComputedStyle(document.documentElement)
-          .getPropertyValue('--cm-vh').trim();
-        track(r.ih, window.innerHeight);
-        track(r.vh, elVh.offsetHeight);
-        track(r.svh, svh);
-        track(r.cover, cover ? cover.offsetHeight : -1);
-        panel.textContent =
-          line('innerH', r.ih) + '\n' +
-          line('100vh ', r.vh) + '\n' +
-          '100svh ' + (svh === 0 ? '不支持 → 落回 vh' : r.svh[1] + ' [' + r.svh[0] + '~' + r.svh[1] + ']') + '\n' +
-          line('cover ', r.cover) + '\n' +
-          '--cm-vh ' + (cmvh || '(未设)') + '\n' +
-          'w' + window.innerWidth + ' dpr' + window.devicePixelRatio;
-      }
-      upd();
-      setInterval(upd, 250);
-    })();
   </script>
 
   <!-- Docsify 核心 -->
