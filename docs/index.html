@@ -2036,6 +2036,8 @@
         // ⚠ 注意不是「切完回到顶部」—— 那会让从页面下方切语言的用户被强行拉回顶端
         //   （早期版本加过这个补丁，后来去掉了）。
         pendingHeadingIndex = currentHeadingIndex();
+        // 告诉滚动恢复逻辑：这次是程序化导航，别插手（切完由 __cmRestoreHeading 按小节对齐）
+        if (window.__cmSkipScrollRestore) window.__cmSkipScrollRestore();
         location.hash = '#/' + targetPath(lang);
       };
 
@@ -2640,12 +2642,74 @@
     //   点子标题（#/features?id=xxx）时它抢在 docsify 前面先归零，
     //   紧接着 docsify 再 scrollIntoView 到目标小节 —— 两个动作叠在一起，
     //   表现为「先跳到顶、再滑下去」，比不加还明显（2026-09-13 实测踩过，已撤）。
+    // ===== 浏览器后退/前进时还原滚动位置（2026-09-14）=====
+    // 背景：SPA（hash 路由）下浏览器**不会**自动还原滚动位置 —— 那机制只对整页加载生效；
+    //      而 docsify 的 auto2top 又让每次换页都跳顶部，于是「后退回到刚才看的地方」就丢了。
+    // 做法：离开某页时记住 scrollY，渲染完成后恢复。
+    //   · **只在 doneEach 里滚，绝不在 hashchange 里滚** —— 2026-09-13 的教训：
+    //     在 hashchange 抢跑会和 docsify 的 scrollIntoView 打架，表现为「先跳到顶再滑下去」。
+    //   · 区分导航来源：点站内链接 = 有意导航 → 回顶部；浏览器后退/前进 → 回原位。
+    //     不区分的话，从侧边栏点「首页」也会停在上次滚到的中部，反而更怪。
+    //   · 带 ?id= 的链接（侧边栏小节）不干预，交给 docsify 自己滚到那一节。
+    //   · 语言切换要跳过（它有 __cmRestoreHeading 按小节对齐，见 __cmSwitchLang）。
+    (function () {
+      var positions = {};             // hash → 离开时的 scrollY
+      var lastHash = location.hash || '#/';
+      var clickKind = null;           // null=后退/前进 | 'page'=普通页面链接 | 'anchor'=带 ?id=
+      var pending = null;             // 待恢复的位置；null = 本次不干预
+
+      // 点站内链接时标记来源（捕获阶段，早于 docsify 的路由处理）
+      document.addEventListener('click', function (e) {
+        var el = e.target;
+        while (el && el !== document) {
+          if (el.tagName === 'A') {
+            var href = el.getAttribute('href') || '';
+            if (href.slice(0, 2) === '#/') {
+              clickKind = href.indexOf('?id=') > -1 ? 'anchor' : 'page';
+            }
+            return;
+          }
+          el = el.parentNode;
+        }
+      }, true);
+
+      window.addEventListener('hashchange', function () {
+        var from = lastHash;
+        var to = location.hash || '#/';
+        if (from === to) return;
+        positions[from] = window.scrollY;        // 记住离开时的位置
+        lastHash = to;
+
+        if (clickKind === 'anchor') {
+          pending = null;                        // 交给 docsify 滚到那一节
+        } else if (clickKind === 'page') {
+          pending = 0;                           // 有意导航 → 顶部（接管原 auto2top 的职责）
+        } else {
+          pending = positions[to] != null ? positions[to] : 0;   // 后退/前进 → 回原位
+        }
+        clickKind = null;
+      });
+
+      // 程序化导航（语言切换等）跳过本次恢复 —— 它们各自有定位逻辑
+      window.__cmSkipScrollRestore = function () { pending = null; };
+
+      // 由 doneEach 调用：渲染完成后才滚
+      window.__cmRestoreScroll = function () {
+        if (pending === null) return;
+        var y = pending;
+        pending = null;
+        if (Math.abs(window.scrollY - y) > 1) window.scrollTo(0, y);
+      };
+    })();
+
     window.$docsify = {
       name: 'CobbleMarket',
       repo: 'https://github.com/ShuShengA/cobblemarket',
 
-      // 点击导航 / 侧边栏跳转后自动回到页面顶部（docsify 默认 false，不设就会停在上一页的滚动位置）
-      auto2top: true,
+      // ⚠ 关掉 auto2top（2026-09-14）：它的行为是「每次换页都跳顶部」，**包括浏览器后退** ——
+      //   那会让「后退回到刚才的位置」永远不可能。改由上方 __cmRestoreScroll 接管：
+      //   有意导航（点链接）仍回顶部，后退/前进则还原位置。
+      auto2top: false,
 
       // 侧边栏和导航栏（按语言目录自动匹配：/en/ 下用 en/_sidebar.md）
       loadSidebar: true,
@@ -2691,6 +2755,8 @@
             window.__cmScrollSpy();
             // 复制按钮 / 文末装饰 / 滚动入场 —— 换页会整块替换正文，每次都得重做
             if (window.__cmAfterRender) window.__cmAfterRender();
+            // 渲染完成后才恢复滚动位置（放在最后：前面的重算可能改变页面高度）
+            if (window.__cmRestoreScroll) window.__cmRestoreScroll();
           });
         }
       ]
