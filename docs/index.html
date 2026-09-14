@@ -1662,6 +1662,17 @@
       align-items: center;
       justify-content: center;
     }
+    /* 只有一位赞助者时不滚动（见 __cmSponsorStrip）：244px 的带子里只站一个名字，
+       上下会空出一大截。这时把容器收成内容高度，让单人看着也紧凑。 */
+    .cm-spon-box.cm-spon-single {
+      height: auto;
+      overflow: visible;
+      margin: 18px 0;
+    }
+    .cm-spon-box.cm-spon-single .cm-spon {
+      position: static;      /* 绝对定位 + top:50% 的居中方式在 auto 高度下会出错 */
+      transform: none;
+    }
     .cm-spon-list {
       position: relative;
       width: 100%;
@@ -2453,9 +2464,14 @@
         var items = [].slice.call(list.querySelectorAll('.cm-spon'));
         if (!items.length) return;
         list.dataset.cmReady = '1';
-        // 只有一个名字：没什么可滚的，但要**照样设 data-pos** ——
-        // 位置和缩放都由它决定，不设的话元素会沉到容器中线下方（2026-09-14 踩到）
-        if (items.length < 2) { items[0].dataset.pos = 0; return; }
+        // 只有一个名字：没什么可滚的，容器收成内容高度（否则名字孤零零悬在 244px 带子里），
+        // 但仍要**照样设 data-pos** —— 位置和缩放都由它决定，不设会沉到容器中线下方
+        // （2026-09-14 踩到）
+        if (items.length < 2) {
+          box.classList.add('cm-spon-single');
+          items[0].dataset.pos = 0;
+          return;
+        }
 
         var n = items.length;
         var offset = 0;

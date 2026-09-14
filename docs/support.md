@@ -37,7 +37,7 @@ CobbleMarket 完全免费、没有任何功能限制 —— 所有功能对所�
 <p class="cm-spon-head">感谢这些支持者</p>
 <div class="cm-spon-box">
   <div class="cm-spon-list">
-    <div class="cm-spon"><img src="images/ball-poke.png" alt="精灵球"> 爱发电用户\_34a08</div>
+    <div class="cm-spon"><img src="images/ball-poke.png" alt="精灵球"> 爱发电用户_34a08</div>
   </div>
 </div>
 <!-- SPONSORS:END -->
