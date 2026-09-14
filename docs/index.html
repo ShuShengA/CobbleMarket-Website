@@ -1639,6 +1639,9 @@
       left: 0;
       right: 0;
       top: 50%;
+      /* 兜底居中：位置本该由 data-pos 决定，但万一它没被设上（脚本没跑到、元素是手写的），
+         也必须站正 —— 少了这一行，元素会从容器中线往下沉半个身位 */
+      transform: translateY(-50%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -2415,8 +2418,11 @@
         var list = box.querySelector('.cm-spon-list');
         if (!list || list.dataset.cmReady) return;
         var items = [].slice.call(list.querySelectorAll('.cm-spon'));
-        if (items.length < 2) return;      // 只有一个名字就没什么可滚的
+        if (!items.length) return;
         list.dataset.cmReady = '1';
+        // 只有一个名字：没什么可滚的，但要**照样设 data-pos** ——
+        // 位置和缩放都由它决定，不设的话元素会沉到容器中线下方（2026-09-14 踩到）
+        if (items.length < 2) { items[0].dataset.pos = 0; return; }
 
         var n = items.length;
         var offset = 0;
