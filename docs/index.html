@@ -2645,7 +2645,7 @@
     // ===== 浏览器后退/前进时还原滚动位置（2026-09-14）=====
     // 背景：SPA（hash 路由）下浏览器**不会**自动还原滚动位置 —— 那机制只对整页加载生效；
     //      而 docsify 的 auto2top 又让每次换页都跳顶部，于是「后退回到刚才看的地方」就丢了。
-    // 做法：离开某页时记住 scrollY，渲染完成后恢复。
+    // 做法：**实时**记录每页的位置（监听 scroll），换页渲染完成后按需恢复。
     //   · **只在 doneEach 里滚，绝不在 hashchange 里滚** —— 2026-09-13 的教训：
     //     在 hashchange 抢跑会和 docsify 的 scrollIntoView 打架，表现为「先跳到顶再滑下去」。
     //   · 区分导航来源：点站内链接 = 有意导航 → 回顶部；浏览器后退/前进 → 回原位。
@@ -2653,8 +2653,7 @@
     //   · 带 ?id= 的链接（侧边栏小节）不干预，交给 docsify 自己滚到那一节。
     //   · 语言切换要跳过（它有 __cmRestoreHeading 按小节对齐，见 __cmSwitchLang）。
     (function () {
-      var positions = {};             // hash → 离开时的 scrollY
-      var lastHash = location.hash || '#/';
+      var positions = {};             // hash → 该页最后一次的 scrollY（由 scroll 事件实时写）
       var clickKind = null;           // null=后退/前进 | 'page'=普通页面链接 | 'anchor'=带 ?id=
       var pending = null;             // 待恢复的位置；null = 本次不干预
 
@@ -2673,12 +2672,15 @@
         }
       }, true);
 
+      // 实时记录当前页的位置。⚠ 别改成「在 hashchange 里记离开时的位置」——
+      // 那个时机不可靠（docsify 何时渲染、浏览器有没有动过滚动都会干扰），
+      // 实测会出现「后退正常、但前进落到很下面」的错位（2026-09-14 踩到）。
+      window.addEventListener('scroll', function () {
+        positions[location.hash || '#/'] = window.scrollY;
+      }, { passive: true });
+
       window.addEventListener('hashchange', function () {
-        var from = lastHash;
         var to = location.hash || '#/';
-        if (from === to) return;
-        positions[from] = window.scrollY;        // 记住离开时的位置
-        lastHash = to;
 
         if (clickKind === 'anchor') {
           pending = null;                        // 交给 docsify 滚到那一节
