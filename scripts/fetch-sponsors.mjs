@@ -69,8 +69,8 @@ const OPT_OUT_WORDS = [
  *   `query-sponsor`（赞助者列表）的条目只有 6 个字段，**没有留言**。而 `query-order` 有：
  *   out_trade_no / user_id / plan_id / month / total_amount / show_amount / **status** /
  *   **remark** / ... / user_name / plan_title / user_private_id ...
- *   这里只取两样：`status`（支付成功）与 `remark`（留言 → 匿名识别）。
- *   ⚠ `user_name` 字段**不可用于显示**：实测它给出的是留言内容而非昵称（见 entries 处的说明）。
+ *   这里取三样：`status`（支付成功）、`remark`（留言 → 匿名识别）、`user_name`（昵称，
+ *   可能比 sponsor 的 user.name 更新，见 entries 处的说明）。
  *
  * 返回 `Map<user_id, { name, remarks[] }>`；**取不到就返回 null**
  * （接口不可用 / 无订单 / 结构变了），调用方各自回退 —— 这个接口挂了也绝不能阻断名单生成。
@@ -287,12 +287,13 @@ console.log(`其中 ${list.length} 位收录进名单`);
 const entries = list.map(o => {
   const amount = totalAmount(o);
   const id = o.user?.user_id;
-  // 昵称：NAME_OVERRIDES（手工钉死）> sponsor 的 user.name（爱发电账号名）
-  // ⚠ **不要**用订单接口的 user_name —— 2026-09-14 查实它显示的「美女淼」是赞助者
-  //   **留言里写的内容**，不是他的名字（拿它当名字会把名单写错）。
-  //   而 sponsor 的 user.name 与赞助者自己在爱发电看到的、以及他的公开主页一致。
+  // ⚠ 昵称**优先用订单接口的 user_name**，sponsor 的 user.name 只作兜底：
+  //   两个接口的名字**可能不一致**（2026-09-14 实例：某赞助者改名保存成功，order 返回新名「美女淼」，
+  //   sponsor 仍是默认名「爱发电用户_34a08」；同一天另一位用户改名则当场生效 —— 属个例）。
+  //   取更接近本人意愿的那个：没人会想显示「爱发电用户_xxxx」这种系统默认名。
+  //   优先级：NAME_OVERRIDES（手工钉死）> order 的 user_name > sponsor 的 user.name
   //   名字存原始值，转义交给各处按语境做（网页里是 HTML 转义）；日志里也因此能打印出干净的名字
-  const name = NAME_OVERRIDES[id] || o.user?.name;
+  const name = NAME_OVERRIDES[id] || orderInfo?.get(id)?.name || o.user?.name;
   return { name, amount, ball: ballFor(amount) };
 });
 
