@@ -283,10 +283,10 @@ console.log(`其中 ${list.length} 位收录进名单`);
 const entries = list.map(o => {
   const amount = totalAmount(o);
   const id = o.user?.user_id;
-  // ⚠ 昵称**优先用订单接口的 user_name**：那是赞助者在爱发电**设置并保存成功**的名字。
-  //   sponsor 接口的 user.name 可能落后于它 —— 2026-09-14 实例：某赞助者改名保存成功、
-  //   爱发电自己的界面却没刷新，sponsor 仍返回默认名「爱发电用户_34a08」，order 返回「美女淼」。
-  //   用户拍板：名单显示他改的那个（两个接口不一致时以 order 为准），sponsor 只作兜底。
+  // ⚠ 昵称**优先用订单接口的 user_name**，sponsor 的 user.name 只作兜底：
+  //   两个接口的名字**可能不一致**（2026-09-14 实例：某赞助者改名保存成功，order 返回新名「美女淼」，
+  //   sponsor 仍是默认名「爱发电用户_34a08」；同一天另一位用户改名则当场生效 —— 属个例）。
+  //   取更接近本人意愿的那个：没人会想显示「爱发电用户_xxxx」这种系统默认名。
   //   优先级：NAME_OVERRIDES（手工钉死）> order 的 user_name > sponsor 的 user.name
   //   名字存原始值，转义交给各处按语境做（网页里是 HTML 转义）；日志里也因此能打印出干净的名字
   const name = NAME_OVERRIDES[id] || orderInfo?.get(id)?.name || o.user?.name;
