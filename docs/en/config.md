@@ -17,7 +17,7 @@ Path: `config/cobblemarket.json` (generated on first launch)
 
 | Field | Default | Description |
 |---|---|---|
-| `currency.cobblemonEconomy` | auto | Prefer Cobblemon Economy's currency API. **Fabric only** — Cobblemon Economy has no NeoForge build, so this switch is always ignored on NeoForge |
+| `currency.cobblemonEconomy` | ~~auto~~ **disabled** | ⚠ **Temporarily disabled** in this version (always `false`; writing `true` has no effect): Cobblemon 1.8 is incompatible with Cobblemon Economy — see the Currency page. Originally: prefer Cobblemon Economy's currency API; **Fabric only** — no NeoForge build, so this switch is always ignored on NeoForge |
 | `currency.cobecoCurrency` | `POKE` | Cobblemon Economy settlement currency: `POKE`=PokeDollars, `PCO`=PokeCoins (either `PCO` or `PokeCoins`, case-insensitive) |
 | `currency.cobbledollars` | auto | Use CobbleDollars (ignored when `cobblemonEconomy=true`) |
 | `currency.impactor` | `false` | Direct Impactor integration (works on both loaders). Lower priority than the two above, and **not** auto-detected on fresh installs — set it to `true` explicitly |
