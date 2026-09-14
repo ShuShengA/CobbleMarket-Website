@@ -50,41 +50,47 @@ const OPT_OUT_WORDS = [
 ];
 
 /**
- * 尝试从**订单**接口取回留言，自动识别要求匿名的赞助者。
+ * 从**订单**接口取回留言与昵称，按 user_id 归并。
  *
- * 为什么需要这一步：`query-sponsor`（赞助者列表）不返回留言 —— 条目只有 6 个字段
- * （sponsor_plans / current_plan / all_sum_amount / first_pay_time / last_pay_time / user）。
- * 而 `query-order` 接口是存在的（2026-09-14 探测确认），只要它带 remark 就能自动化。
+ * 为什么必须走这个接口（2026-09-14 实测）：
+ *   `query-sponsor`（赞助者列表）的条目只有 6 个字段，**既没有留言、昵称也常常是
+ *   「爱发电用户_xxxx」这种账号默认名**（实测：同一人在 sponsor 里叫「爱发电用户_34a08」，
+ *   在 order 里才显示其真正的昵称）。而 `query-order` 什么都有：
+ *   out_trade_no / user_id / plan_id / month / total_amount / show_amount / **status** /
+ *   **remark** / ... / **user_name** / plan_title / user_private_id ...
  *
- * 返回 `Set<user_id>`；**取不到就返回 null**（接口不存在 / 无权限 / 结构变了 / 没有订单），
- * 调用方回退到手工名单 ANONYMOUS —— 自动识别失败绝不阻断名单生成。
+ * 返回 `Map<user_id, { name, remarks[] }>`；**取不到就返回 null**
+ * （接口不可用 / 无订单 / 结构变了），调用方各自回退 —— 这个接口挂了也绝不能阻断名单生成。
  */
-async function detectAnonymous() {
-  let data;
+async function fetchOrderInfo() {
+  const info = new Map();
   try {
-    data = await queryPage(1, 'query-order');
+    let page = 1;
+    let totalPages = 1;
+    do {
+      const data = await queryPage(page, 'query-order');
+      const list = data?.list || [];
+      if (page === 1 && list.length) {
+        console.log(`[debug] query-order 条目字段: ${Object.keys(list[0]).join(', ')}`);
+      }
+      for (const o of list) {
+        if (o.status !== 2) continue;        // 只要支付成功的单（状态字段这里才有）
+        const id = o.user_id;
+        if (!id) continue;
+        const cur = info.get(id) || { name: '', remarks: [] };
+        if (o.user_name) cur.name = o.user_name;   // 订单按时间正序，后到的更新
+        if (o.remark) cur.remarks.push(o.remark);
+        info.set(id, cur);
+      }
+      totalPages = data?.total_page || 1;
+      page++;
+    } while (page <= totalPages && page <= 20);   // 20 页上限，防接口异常时跑飞
   } catch (e) {
-    console.log(`[debug] query-order 取不到（${e.message}）→ 匿名只能靠手工名单`);
+    console.log(`[debug] query-order 取不到（${e.message}）→ 昵称回退赞助者列表、匿名只能靠手工名单`);
     return null;
   }
-  const list = data?.list || [];
-  if (!list.length) {
-    console.log('[debug] query-order 没有返回条目 → 匿名只能靠手工名单');
-    return null;
-  }
-  console.log(`[debug] query-order 条目字段: ${Object.keys(list[0]).join(', ')}`);
-  const ids = new Set();
-  for (const o of list) {
-    const remark = String(o.remark || '').toLowerCase();
-    if (!remark) continue;
-    if (OPT_OUT_WORDS.some(k => remark.includes(k))) {
-      const id = o.user?.user_id || o.user_id;
-      if (id) ids.add(id);
-      console.log(`[debug] 自动识别到匿名要求：${o.user?.name || id}（留言：${o.remark}）`);
-    }
-  }
-  console.log(`[debug] 自动识别的匿名者：${ids.size} 人`);
-  return ids;
+  console.log(`[debug] query-order 覆盖 ${info.size} 位赞助者`);
+  return info;
 }
 
 /**
@@ -206,8 +212,21 @@ function ballFor(amount) {
 const orders = await fetchAll();
 console.log(`共拉到 ${orders.length} 条订单`);
 
-// 自动匿名识别：从订单接口取留言（拿不到就返回 null，回退手工名单 ANONYMOUS）
-const anonymousIds = await detectAnonymous();
+// 订单接口：提供留言（自动识别匿名）与真实昵称；拿不到就返回 null，各处自行回退
+const orderInfo = await fetchOrderInfo();
+
+// 从留言里识别要求匿名的赞助者
+const anonymousIds = new Set();
+if (orderInfo) {
+  for (const [id, o] of orderInfo) {
+    const hit = o.remarks.find(r => OPT_OUT_WORDS.some(k => r.toLowerCase().includes(k)));
+    if (hit) {
+      anonymousIds.add(id);
+      console.log(`[debug] 自动识别到匿名要求：${o.name || id}（留言：${hit}）`);
+    }
+  }
+  console.log(`[debug] 自动识别的匿名者：${anonymousIds.size} 人`);
+}
 
 // 诊断：逐单打印"过滤会用到的字段"。
 // ⚠ 不要用「打印整个 JSON」的办法 —— sponsor_plans / current_plan 两个大对象会把
@@ -250,9 +269,12 @@ console.log(`其中 ${list.length} 位收录进名单`);
 // 昵称是中性的，中英两个版本用同一批人；只有球的 alt 文案分语言
 const entries = list.map(o => {
   const amount = totalAmount(o);
-  // 名字存原始值，转义交给各处按语境做（网页里是 HTML 转义）；
-  // 日志里也因此能打印出干净的名字
-  return { name: o.user?.name, amount, ball: ballFor(amount) };
+  const id = o.user?.user_id;
+  // 昵称优先取订单接口的 user_name —— query-sponsor 常常只给「爱发电用户_xxxx」这种账号默认名，
+  // 而 order 里的才是本人在爱发电显示的昵称
+  const name = orderInfo?.get(id)?.name || o.user?.name;
+  // 名字存原始值，转义交给各处按语境做（网页里是 HTML 转义）；日志里也因此能打印出干净的名字
+  return { name, amount, ball: ballFor(amount) };
 });
 
 // 把每人的累计金额与档位打出来 —— 首次跑的时候对着爱发电后台核一遍，
@@ -266,14 +288,14 @@ function render(lang, entries) {
 
 感谢这些支持者的慷慨相助 —— 他们让 CobbleMarket 得以持续维护下去。
 
-> 赞助者默认会出现在这里。不想公开名字的话，在[赞助](/support)时于爱发电的留言框写下「匿名」即可（作者会据此手动移出）。
+> 赞助者默认会出现在这里。不想公开名字的话，在[赞助](/support)时于爱发电的留言框写下「匿名」即可。
 >
 > 名字前的球表示赞助档位（按**累计**金额计算）。`
     : `# Thank You
 
 Thanks to these generous supporters — they're the reason CobbleMarket keeps getting maintained.
 
-> Supporters are listed here by default. To stay anonymous, write **"anonymous"** in the message box on Afdian when you [support the project](/en/support) — the author removes you manually.
+> Supporters are listed here by default. To stay anonymous, write **"anonymous"** in the message box on Afdian when you [support the project](/en/support).
 >
 > The ball before each name shows the sponsorship tier (based on the **cumulative** amount).`;
 
