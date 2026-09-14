@@ -37,7 +37,7 @@ Prefer your own amount? [**Custom amount →**](https://afdian.com/order/create?
 <p class="cm-spon-head">Thanks to these supporters</p>
 <div class="cm-spon-box">
   <div class="cm-spon-list">
-    <div class="cm-spon"><img src="images/ball-great.png" alt="Great Ball"> 美女淼</div>
+    <div class="cm-spon"><img src="images/ball-great.png" alt="Great Ball"> 爱发电用户_34a08</div>
   </div>
 </div>
 <!-- SPONSORS:END -->
