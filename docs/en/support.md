@@ -42,7 +42,9 @@ Prefer your own amount? [**Custom amount →**](https://afdian.com/order/create?
 </div>
 <!-- SPONSORS:END -->
 
-> **Supporters are listed on the thank-you page by default.** To stay anonymous, just write **"anonymous"** in the message box on Afdian.
+> **Supporters are listed on the thank-you page by default** — the list refreshes once a day, so it may take up to 24 hours for your name to appear.
+>
+> To stay anonymous, just write **"anonymous"** in the message box on Afdian.
 
 ## What you get
 

@@ -308,14 +308,18 @@ function render(lang, entries) {
 
 感谢这些支持者的慷慨相助 —— 他们让 CobbleMarket 得以持续维护下去。
 
-> 赞助者默认会出现在这里。不想公开名字的话，在[赞助](/support)时于爱发电的留言框写下「匿名」即可。
+> 赞助者默认会出现在这里 —— 名单每天自动更新一次，赞助后最长等一天才会出现。
+>
+> 不想公开名字的话，在[赞助](/support)时于爱发电的留言框写下「匿名」即可。
 >
 > 名字前的球表示赞助档位（按**累计**金额计算）。`
     : `# Thank You
 
 Thanks to these generous supporters — they're the reason CobbleMarket keeps getting maintained.
 
-> Supporters are listed here by default. To stay anonymous, write **"anonymous"** in the message box on Afdian when you [support the project](/en/support).
+> Supporters are listed here by default — the list refreshes once a day, so it may take up to 24 hours for your name to appear.
+>
+> To stay anonymous, write **"anonymous"** in the message box on Afdian when you [support the project](/en/support).
 >
 > The ball before each name shows the sponsorship tier (based on the **cumulative** amount).`;
 
