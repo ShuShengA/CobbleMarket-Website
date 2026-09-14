@@ -70,7 +70,6 @@
 - **Type names in the auction chat announcement's Pokémon hover lost their type colors**
 - **Personal trade history was squeezed out by other players' trades**: the screen now reads the last 14 days of CSV ledgers (previously only the 200 shared in-memory records), showing up to 500 entries per player
 - **"Mine" button didn't refresh after resetting filters**: in the Pokémon Market and admin Pokémon list it could keep showing the "mine only" state after a reset
-- **Buy-order delivery Pokémon icon was clipped**: the idle-animation rework had overwritten its previously widened clip area back to the old values
 - **Buy-order rows showed the default form when a special form was requested**
 - **False "market data save failed" red alert during automatic backup mods' backup runs**: backup mods temporarily suspend server saving (savingDisabled), which silently skips the forced save-after-trade and tripped the mtime verification — the forced save is now deferred while saving is suspended and runs right after the backup ends, eliminating the false alarm
 - **Prices missing thousands separators**: the price in the admin Pokémon list hover, the admin item cancel dialog, the pending item return hover, the price-limit list and its hover, the buy-order publish freeze hint and the Item Market purchase total, plus every chat amount (auction broadcasts and bid warnings, card fee shortfalls, sale and refund notices, loans, price-limit warnings), now shows thousands separators
