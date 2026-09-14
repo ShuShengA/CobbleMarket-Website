@@ -7,5 +7,5 @@
 > 名字前的球表示赞助档位（按**累计**金额计算）。
 
 <div class="cm-spon-grid">
-  <div class="cm-spon-card"><img src="images/ball-poke.png" alt="精灵球"> <span>美女淼</span></div>
+  <div class="cm-spon-card"><img src="images/ball-great.png" alt="超级球"> <span>美女淼</span></div>
 </div>
