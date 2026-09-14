@@ -36,6 +36,19 @@ const ANONYMOUS = [
 ];
 
 /**
+ * 手工指定显示名 —— **优先级最高**，覆盖两个接口返回的任何名字。
+ *
+ * 为什么需要它：爱发电两个接口的名字可能长期不一致。2026-09-14 实例：某赞助者改名并保存成功，
+ * 但爱发电自己的界面**过了一天仍是**默认名「爱发电用户_xxxx」，而订单接口返回他改的「美女淼」。
+ * 这种时候问接口谁是"对的"没有意义 —— 只有本人知道自己想显示什么，那就手工钉死。
+ *
+ * 键填 user_id（推荐，唯一且不变）或接口返回的名字，值填想显示的名字。
+ */
+const NAME_OVERRIDES = {
+  // '34a080a4af3611f19ddd5254001e7c00': '美女淼',
+};
+
+/**
  * 匿名词：留言里出现这些词 = 明确不想公开。
  * ⚠ 只在**能拿到留言**时才会用到（见 detectAnonymous）。词必须收得保守 ——
  *   现在是默认公开，一句客套话（「谢谢，不用客气」）被误判就会让一个赞助者凭空消失。
@@ -274,8 +287,9 @@ const entries = list.map(o => {
   //   sponsor 接口的 user.name 可能落后于它 —— 2026-09-14 实例：某赞助者改名保存成功、
   //   爱发电自己的界面却没刷新，sponsor 仍返回默认名「爱发电用户_34a08」，order 返回「美女淼」。
   //   用户拍板：名单显示他改的那个（两个接口不一致时以 order 为准），sponsor 只作兜底。
+  //   优先级：NAME_OVERRIDES（手工钉死）> order 的 user_name > sponsor 的 user.name
   //   名字存原始值，转义交给各处按语境做（网页里是 HTML 转义）；日志里也因此能打印出干净的名字
-  const name = orderInfo?.get(id)?.name || o.user?.name;
+  const name = NAME_OVERRIDES[id] || orderInfo?.get(id)?.name || o.user?.name;
   return { name, amount, ball: ballFor(amount) };
 });
 
