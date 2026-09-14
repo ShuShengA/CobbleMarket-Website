@@ -214,3 +214,17 @@ grep -o '"cobblemarket\.[^"]*"[[:space:]]*:[[:space:]]*"[^"]*"' \
 **有意保留**：`currency` / `meowth-bank` / `save-data` / `security` 四页的 H1 带限定词（如「…说明（服主向）」）—— 限定词有信息量，与侧边栏名不一致可接受。
 
 **注意**：模组仓库 `docs/` 下有一批**网站页面的来源文件**（`currency_zh.md` / `meowth_bank_zh.md` / `save-data-locations.md` / `security/`）—— 从它们生成网站页面时，记得沿用本规范的格式。
+
+## 十五、赞助与鸣谢系统（改动前必读）
+
+**数据链路**：`scripts/fetch-sponsors.mjs`（GitHub Actions 每天 UTC 03:17 跑，也支持手动触发）→ 写 4 个文件 → workflow 提交推送。
+
+**⚠ 三个已踩过的坑（2026-09-14 全踩了一遍）**
+
+1. **`query-sponsor` 接口不返回 `remark` 和 `status`** —— 条目只有 6 个字段：`sponsor_plans` / `current_plan` / `all_sum_amount` / `first_pay_time` / `last_pay_time` / `user`。
+   - 所以「留言写匿名 → 脚本自动排除」**技术上做不到**，别写关键词识别（写了永远不命中，是空转）。匿名由作者在爱发电后台看到后**手工登记**进脚本的 `ANONYMOUS` 数组。
+   - 同理**不能**用 `status` 过滤"支付成功"：字段不存在 → 每条都判断失败 → **名单恒为空**。这个 bug 潜伏了很久，一直被"反正留言过滤也会让名单为空"掩盖（两种原因结果一样，从外面看不出区别）。
+2. **workflow 的 `git add` 必须列全脚本会写的 4 个文件**（`docs/sponsors.md`、`docs/en/sponsors.md`、`docs/support.md`、`docs/en/support.md`）—— 漏掉的文件改动会被**静默丢弃**：脚本日志照样打印"已更新"，但提交时不在暂存区就没了。
+3. **致谢带里每个名字的位置与缩放全靠 `data-pos`** —— 只有一个赞助者时脚本原本直接 return、不设该属性，名字会从容器中线**往下沉半个身位**。修法：单元素也要设 `data-pos="0"`（CSS 的 `.cm-spon` 另加了 `transform: translateY(-50%)` 兜底）。
+
+**行为约定**：默认收录所有赞助者；**只有一个名字时不滚动**（`items.length < 2` 直接返回，设计如此，等第二位赞助者出现动画自动生效）。
