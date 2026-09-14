@@ -56,7 +56,8 @@ const OPT_OUT_WORDS = [
  *   `query-sponsor`（赞助者列表）的条目只有 6 个字段，**没有留言**。而 `query-order` 有：
  *   out_trade_no / user_id / plan_id / month / total_amount / show_amount / **status** /
  *   **remark** / ... / user_name / plan_title / user_private_id ...
- *   ⚠ 只取它的 `status` 与 `remark`。`user_name` 不可靠（见 entries 处的说明）。
+ *   这里取三样：`status`（支付成功）、`remark`（留言 → 匿名识别）、`user_name`（昵称，
+ *   可能比 sponsor 的 user.name 更新，见 entries 处的说明）。
  *
  * 返回 `Map<user_id, { name, remarks[] }>`；**取不到就返回 null**
  * （接口不可用 / 无订单 / 结构变了），调用方各自回退 —— 这个接口挂了也绝不能阻断名单生成。
@@ -221,8 +222,7 @@ if (orderInfo) {
     const hit = o.remarks.find(r => OPT_OUT_WORDS.some(k => r.toLowerCase().includes(k)));
     if (hit) {
       anonymousIds.add(id);
-      // 日志里只写 user_id：这一层的 name 来自订单接口，未必是爱发电昵称
-      console.log(`[debug] 自动识别到匿名要求：user_id=${id}（留言：${hit}）`);
+      console.log(`[debug] 自动识别到匿名要求：${o.name || id}（留言：${hit}）`);
     }
   }
   console.log(`[debug] 自动识别的匿名者：${anonymousIds.size} 人`);
@@ -269,12 +269,14 @@ console.log(`其中 ${list.length} 位收录进名单`);
 // 昵称是中性的，中英两个版本用同一批人；只有球的 alt 文案分语言
 const entries = list.map(o => {
   const amount = totalAmount(o);
-  // ⚠ 昵称取 sponsor 的 user.name，**不要**用订单接口的 user_name：
-  //   实测同一个人，sponsor 里叫「爱发电用户_34a08」（账号昵称，与爱发电界面上看到的一致），
-  //   order 里却是「美女淼」—— 后者与 user_private_id（一串 hash）并列，怀疑是支付渠道/实名
-  //   那一侧的名字，不是爱发电昵称。拿它当昵称会把名单上的名字改错。
+  const id = o.user?.user_id;
+  // ⚠ 昵称**优先用订单接口的 user_name**：那是赞助者在爱发电**设置并保存成功**的名字。
+  //   sponsor 接口的 user.name 可能落后于它 —— 2026-09-14 实例：某赞助者改名保存成功、
+  //   爱发电自己的界面却没刷新，sponsor 仍返回默认名「爱发电用户_34a08」，order 返回「美女淼」。
+  //   用户拍板：名单显示他改的那个（两个接口不一致时以 order 为准），sponsor 只作兜底。
   //   名字存原始值，转义交给各处按语境做（网页里是 HTML 转义）；日志里也因此能打印出干净的名字
-  return { name: o.user?.name, amount, ball: ballFor(amount) };
+  const name = orderInfo?.get(id)?.name || o.user?.name;
+  return { name, amount, ball: ballFor(amount) };
 });
 
 // 把每人的累计金额与档位打出来 —— 首次跑的时候对着爱发电后台核一遍，
