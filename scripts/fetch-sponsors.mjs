@@ -72,7 +72,7 @@ const OPT_OUT_WORDS = [
  *   这里取三样：`status`（支付成功）、`remark`（留言 → 匿名识别）、`user_name`（昵称，
  *   可能比 sponsor 的 user.name 更新，见 entries 处的说明）。
  *
- * 返回 `Map<user_id, { name, remarks[] }>`；**取不到就返回 null**
+ * 返回 `Map<user_id, { name, lastRemark }>`（lastRemark = 该人**最近一次**留言）；**取不到就返回 null**
  * （接口不可用 / 无订单 / 结构变了），调用方各自回退 —— 这个接口挂了也绝不能阻断名单生成。
  */
 async function fetchOrderInfo() {
@@ -90,9 +90,18 @@ async function fetchOrderInfo() {
         if (o.status !== 2) continue;        // 只要支付成功的单（状态字段这里才有）
         const id = o.user_id;
         if (!id) continue;
-        const cur = info.get(id) || { name: '', remarks: [] };
-        if (o.user_name) cur.name = o.user_name;   // 订单按时间正序，后到的更新
-        if (o.remark) cur.remarks.push(o.remark);
+        const cur = info.get(id) || { name: '', lastRemark: '', lastTime: -1 };
+        if (o.user_name) cur.name = o.user_name;
+        // 只留**最近一次**留言（按 create_time 比，别靠数组位置 —— 接口返回的是最新在前）。
+        // 「匿名」是每次赞助重新表达的意愿：这次没写 = 按默认规则公开，之前写过也不算。
+        const t = Number(o.create_time || 0);
+        // ⚠ 空留言也要更新 —— 「这次没写」本身就是信息（= 没要求匿名）。
+        //   只在有留言时才更新的话，「先匿名、后没写」会永远停在之前那条匿名留言上
+        //   （2026-09-14 本地测试抓到的实现 bug）。
+        if (t >= cur.lastTime) {
+          cur.lastRemark = o.remark || '';
+          cur.lastTime = t;
+        }
         info.set(id, cur);
       }
       totalPages = data?.total_page || 1;
@@ -231,11 +240,14 @@ const orderInfo = await fetchOrderInfo();
 // 从留言里识别要求匿名的赞助者
 const anonymousIds = new Set();
 if (orderInfo) {
+  // 只看**最近一次**留言：「匿名」是每次赞助重新表达的意愿 —— 这次没写就按默认规则公开
+  // （哪怕之前某次写过匿名）。用户 2026-09-14 拍板。
   for (const [id, o] of orderInfo) {
-    const hit = o.remarks.find(r => OPT_OUT_WORDS.some(k => r.toLowerCase().includes(k)));
-    if (hit) {
+    const last = String(o.lastRemark || '');
+    if (!last) continue;
+    if (OPT_OUT_WORDS.some(k => last.toLowerCase().includes(k))) {
       anonymousIds.add(id);
-      console.log(`[debug] 自动识别到匿名要求：${o.name || id}（留言：${hit}）`);
+      console.log(`[debug] 自动识别到匿名要求：${o.name || id}（最近一次留言：${last}）`);
     }
   }
   console.log(`[debug] 自动识别的匿名者：${anonymousIds.size} 人`);
