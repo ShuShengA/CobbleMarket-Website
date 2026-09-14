@@ -103,7 +103,7 @@ See [Features](/en/features) for the full list, and the [Changelog](/en/changelo
 
 **Available for both Fabric and NeoForge**, with identical features and cross-compatible save data.
 
-Virtual currency is optional: [CobbleDollars](https://modrinth.com/mod/cobbledollars) or [Impactor](https://modrinth.com/mod/impactor). Without one, the market uses an item currency (diamond by default). **[Cobblemon Economy](https://modrinth.com/mod/cobblemon-economy) is temporarily unsupported** (incompatible with Cobblemon 1.8) — see [Currency](/en/currency) for details.
+Virtual currency is optional: [CobbleDollars](https://modrinth.com/mod/cobbledollars) or [Impactor](https://modrinth.com/mod/impactor). Without one, the market uses an item currency (diamond by default). **[Cobblemon Economy](https://modrinth.com/mod/cobblemon-economy) is incompatible with Cobblemon 1.8+** (it crashes the server when a player picks a starter Pokémon) — see [Currency](/en/currency) for details.
 
 ## Security & Downloads
 

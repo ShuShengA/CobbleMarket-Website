@@ -30,7 +30,7 @@
 
 | 模组 | 作用 |
 |---|---|
-| Cobblemon Economy | ~~虚拟货币（仅 Fabric 平台有）~~ ⚠ **暂时不受支持**：与 Cobblemon 1.8 不兼容，装了会导致选初始精灵时崩服 |
+| Cobblemon Economy | ~~虚拟货币（仅 Fabric 平台有）~~ ⚠ **与 Cobblemon 1.8+ 不兼容**：启用会导致玩家选初始精灵时崩服，请改用 CobbleDollars 或 Impactor |
 | CobbleDollars | 虚拟货币 |
 | Impactor | 虚拟货币 |
 | Cobblemon Smartphone | 从手机应用进入市场 |
