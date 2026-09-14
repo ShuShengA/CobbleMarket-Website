@@ -225,8 +225,10 @@ grep -o '"cobblemarket\.[^"]*"[[:space:]]*:[[:space:]]*"[^"]*"' \
 1. **匿名识别靠 `query-order`，不能靠 `query-sponsor`** —— 后者条目只有 6 个字段（`sponsor_plans` / `current_plan` / `all_sum_amount` / `first_pay_time` / `last_pay_time` / `user`），**既没有留言也没有支付状态**；`query-order` 才带 `status` / `remark` / `user_name`。
    - ⚠ 用 `query-sponsor` 的 `status` 过滤"支付成功"会让**名单恒为空**（字段不存在 → 每条都判断失败）。这个 bug 潜伏过很久，一直被"反正留言过滤也会让名单为空"掩盖（两种原因结果一样，从外面看不出区别）。
    - 两个接口都不可用时要能**降级**：`query-order` 挂了就回退手工名单 `ANONYMOUS`，绝不阻断名单生成。
-2. **昵称以 `query-order` 的 `user_name` 为准**，`query-sponsor` 的 `user.name` 只作兜底 —— 赞助者改名保存成功、**爱发电自己的界面却可能长期不刷新**（实测过了一天仍未变），此时 sponsor 仍返回旧的默认名（实例：同一人 sponsor 给 `爱发电用户_34a08`、order 给 `美女淼`）。
-   两个接口长期打架时**别再猜谁是"对的"** —— 用 `NAME_OVERRIDES` 手工钉死（优先级最高），或者直接问本人想显示哪个。
+2. **昵称显示「赞助者改过的名字」** —— 以 `query-order` 的 `user_name` 为准，`query-sponsor` 的 `user.name` 只作兜底。
+   原因：爱发电的改名**可能不生效**。2026-09-14 实例：某人改名保存成功，爱发电自己的界面**过了一天**仍是默认名 `爱发电用户_34a08`，而订单接口返回的是他改的 `美女淼`。
+   **用户拍板：默认显示改过的那个** —— 没人会想显示 `爱发电用户_xxxx` 这种系统默认名，那是爱发电自己的 bug，名单不该跟着它走。
+   确实要覆盖个别人时用 `NAME_OVERRIDES` 手工钉死（优先级最高）。
 2. **workflow 的 `git add` 必须列全脚本会写的 4 个文件**（`docs/sponsors.md`、`docs/en/sponsors.md`、`docs/support.md`、`docs/en/support.md`）—— 漏掉的文件改动会被**静默丢弃**：脚本日志照样打印"已更新"，但提交时不在暂存区就没了。
 3. **致谢带里每个名字的位置与缩放全靠 `data-pos`** —— 只有一个赞助者时脚本原本直接 return、不设该属性，名字会从容器中线**往下沉半个身位**。修法：单元素也要设 `data-pos="0"`（CSS 的 `.cm-spon` 另加了 `transform: translateY(-50%)` 兜底）。
 
