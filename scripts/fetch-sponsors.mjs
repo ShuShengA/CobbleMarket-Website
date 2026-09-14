@@ -36,6 +36,58 @@ const ANONYMOUS = [
 ];
 
 /**
+ * 匿名词：留言里出现这些词 = 明确不想公开。
+ * ⚠ 只在**能拿到留言**时才会用到（见 detectAnonymous）。词必须收得保守 ——
+ *   现在是默认公开，一句客套话（「谢谢，不用客气」）被误判就会让一个赞助者凭空消失。
+ */
+const OPT_OUT_WORDS = [
+  '匿名',
+  '不用鸣谢', '不要鸣谢', '无需鸣谢', '不必鸣谢', '不参与鸣谢', '别鸣谢',
+  '不用写我', '不要写我', '别写我', '不用列我', '不要列我', '别列我',
+  '不用提我', '不要提我', '别提我',
+  'anonymous', "don't list", 'do not list', "don't mention", 'do not mention',
+  "don't include", 'do not include', 'no credit', 'opt out',
+];
+
+/**
+ * 尝试从**订单**接口取回留言，自动识别要求匿名的赞助者。
+ *
+ * 为什么需要这一步：`query-sponsor`（赞助者列表）不返回留言 —— 条目只有 6 个字段
+ * （sponsor_plans / current_plan / all_sum_amount / first_pay_time / last_pay_time / user）。
+ * 而 `query-order` 接口是存在的（2026-09-14 探测确认），只要它带 remark 就能自动化。
+ *
+ * 返回 `Set<user_id>`；**取不到就返回 null**（接口不存在 / 无权限 / 结构变了 / 没有订单），
+ * 调用方回退到手工名单 ANONYMOUS —— 自动识别失败绝不阻断名单生成。
+ */
+async function detectAnonymous() {
+  let data;
+  try {
+    data = await queryPage(1, 'query-order');
+  } catch (e) {
+    console.log(`[debug] query-order 取不到（${e.message}）→ 匿名只能靠手工名单`);
+    return null;
+  }
+  const list = data?.list || [];
+  if (!list.length) {
+    console.log('[debug] query-order 没有返回条目 → 匿名只能靠手工名单');
+    return null;
+  }
+  console.log(`[debug] query-order 条目字段: ${Object.keys(list[0]).join(', ')}`);
+  const ids = new Set();
+  for (const o of list) {
+    const remark = String(o.remark || '').toLowerCase();
+    if (!remark) continue;
+    if (OPT_OUT_WORDS.some(k => remark.includes(k))) {
+      const id = o.user?.user_id || o.user_id;
+      if (id) ids.add(id);
+      console.log(`[debug] 自动识别到匿名要求：${o.user?.name || id}（留言：${o.remark}）`);
+    }
+  }
+  console.log(`[debug] 自动识别的匿名者：${ids.size} 人`);
+  return ids;
+}
+
+/**
  * 签名规则（爱发电官方）：把参与签名的参数按 key 排好序拼成 key+value，
  * 前面接上 token，整体做 MD5。这里请求体只有 user_id / params / ts 三项。
  */
@@ -44,7 +96,7 @@ function makeSign(params, ts) {
   return crypto.createHash('md5').update(raw, 'utf8').digest('hex');
 }
 
-async function queryPage(page) {
+async function queryPage(page, api = 'query-sponsor') {
   const params = JSON.stringify({ page });
   const ts = Math.floor(Date.now() / 1000);
   const body = new URLSearchParams({
@@ -58,8 +110,8 @@ async function queryPage(page) {
   // ⚠ 2026-09-14 实测：**afdian.net 已经不通**（每次都是 `fetch failed`），
   //   顺序还是 .net 优先的话，每次跑都要先白等一次失败才轮到 .com。所以 .com 放前面，.net 只作兜底。
   const endpoints = [
-    'https://afdian.com/api/open/query-sponsor',
-    'https://afdian.net/api/open/query-sponsor',
+    `https://afdian.com/api/open/${api}`,
+    `https://afdian.net/api/open/${api}`,
   ];
 
   let lastErr;
@@ -154,6 +206,9 @@ function ballFor(amount) {
 const orders = await fetchAll();
 console.log(`共拉到 ${orders.length} 条订单`);
 
+// 自动匿名识别：从订单接口取留言（拿不到就返回 null，回退手工名单 ANONYMOUS）
+const anonymousIds = await detectAnonymous();
+
 // 诊断：逐单打印"过滤会用到的字段"。
 // ⚠ 不要用「打印整个 JSON」的办法 —— sponsor_plans / current_plan 两个大对象会把
 //   订单自身的字段挤出截断长度（2000 字都不够），而且字段**是否存在**也看不出来。
@@ -165,12 +220,13 @@ for (const o of orders) {
   );
 }
 
-// 收录：赞助者列表里的全部人，减去手工登记的匿名者。
+// 收录：赞助者列表里的全部人，减去"要求匿名"的。
 // 这个接口返回的就是"已成功赞助的人"，没有未支付/退款状态可以（也不需要）过滤。
 const willing = orders.filter(o => {
   const id = o.user?.user_id;
   const name = o.user?.name;
-  return !ANONYMOUS.some(a => a && (a === id || a === name));
+  if (anonymousIds?.has(id)) return false;                      // 留言里写了匿名（自动识别）
+  return !ANONYMOUS.some(a => a && (a === id || a === name));   // 手工名单（兜底，也用于接口拿不到留言时）
 });
 
 // 同一个人多次赞助只列一次，按最近一次的时间排序（新的在前）
