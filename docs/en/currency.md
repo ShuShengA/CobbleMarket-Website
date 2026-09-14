@@ -4,7 +4,7 @@ This document explains CobbleMarket's four currency modes, the auto-selection ru
 
 > ⚠ **Cobblemon Economy is incompatible with Cobblemon 1.8+**
 >
-> Cobblemon 1.8 renamed a Pokédex field that Cobblemon Economy (up to 0.0.17) still references — with both installed and this currency enabled, **the server crashes when a player chooses their starter Pokémon**.
+> Cobblemon 1.8 renamed a Pokédex field that Cobblemon Economy (up to 0.0.17) still references — with both installed and this currency enabled, **the server crashes whenever a player obtains, levels up or evolves a Pokémon** (starter selection, catching, hatching, trading, levelling, evolution, form changes).
 >
 > This mod **will not switch your currency for you** (silently swapping the backend leaves player balances unaccounted for — worse than a crash). Servers with this currency enabled get a **prominent warning at startup** — set `currency.cobblemonEconomy` to `false` and move to **CobbleDollars / Impactor / item currency**. Switch back once Cobblemon Economy catches up with 1.8.
 
