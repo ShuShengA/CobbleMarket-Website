@@ -17,7 +17,7 @@
 
 | 字段 | 默认 | 说明 |
 |---|---|---|
-| `currency.cobblemonEconomy` | 自动 | ⚠ **与 Cobblemon 1.8+ 不兼容**（启用会导致玩家选初始精灵时崩服；启动时会给警告）。是否优先使用 Cobblemon Economy 的货币 API。**仅 Fabric 平台生效**（该模组无 NeoForge 版，NeoForge 上此开关恒被忽略） |
+| `currency.cobblemonEconomy` | 自动 | ⚠ **与 Cobblemon 1.8+ 不兼容**（启用会导致玩家获得/升级/进化精灵时崩服；启动时会给警告）。是否优先使用 Cobblemon Economy 的货币 API。**仅 Fabric 平台生效**（该模组无 NeoForge 版，NeoForge 上此开关恒被忽略） |
 | `currency.cobecoCurrency` | `POKE` | Cobblemon Economy 结算货币：`POKE`=PokeDollars，`PCO`=PokeCoins（写 `PCO` 或 `PokeCoins` 均可，不区分大小写） |
 | `currency.cobbledollars` | 自动 | 是否使用 CobbleDollars 货币（`cobblemonEconomy=true` 时被忽略） |
 | `currency.impactor` | `false` | Impactor 直连开关（双平台可用）。优先级低于上面两项，**不参与全新安装自动探测**，想用请显式写 `true` |

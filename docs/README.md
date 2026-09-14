@@ -101,7 +101,7 @@
 
 **同时提供 Fabric 与 NeoForge 两个版本**，功能一致、存档互通。
 
-虚拟货币可选配 [CobbleDollars](https://modrinth.com/mod/cobbledollars) 或 [Impactor](https://modrinth.com/mod/impactor)；不装则使用物品货币（默认钻石）。**[Cobblemon Economy](https://modrinth.com/mod/cobblemon-economy) 与 Cobblemon 1.8+ 不兼容**（启用会导致选初始精灵时崩服），详见 [货币系统](/currency)。
+虚拟货币可选配 [CobbleDollars](https://modrinth.com/mod/cobbledollars) 或 [Impactor](https://modrinth.com/mod/impactor)；不装则使用物品货币（默认钻石）。**[Cobblemon Economy](https://modrinth.com/mod/cobblemon-economy) 与 Cobblemon 1.8+ 不兼容**（启用会导致玩家获得或升级精灵时崩服），详见 [货币系统](/currency)。
 
 ## 安全与下载
 

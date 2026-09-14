@@ -30,7 +30,7 @@
 
 | Mod | Purpose |
 |---|---|
-| Cobblemon Economy | ~~Virtual currency (Fabric only)~~ ⚠ **Incompatible with Cobblemon 1.8+**: enabling it crashes the server when a player picks a starter Pokémon — use CobbleDollars or Impactor instead |
+| Cobblemon Economy | ~~Virtual currency (Fabric only)~~ ⚠ **Incompatible with Cobblemon 1.8+**: enabling it crashes the server whenever a player obtains or levels up a Pokémon — use CobbleDollars or Impactor instead |
 | CobbleDollars | Virtual currency |
 | Impactor | Virtual currency |
 | Cobblemon Smartphone | Open the market from the smartphone app |
