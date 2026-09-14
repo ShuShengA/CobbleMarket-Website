@@ -6,4 +6,6 @@ Thanks to these generous supporters — they're the reason CobbleMarket keeps ge
 >
 > The ball before each name shows the sponsorship tier (based on the **cumulative** amount).
 
-- <img class="sponsor-ball" src="images/ball-poke.png" alt="Poké Ball"> **爱发电用户\_34a08**
+<div class="cm-spon-grid">
+  <div class="cm-spon-card"><img src="images/ball-poke.png" alt="Poké Ball"> <span>爱发电用户_34a08</span></div>
+</div>

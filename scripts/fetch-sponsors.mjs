@@ -107,9 +107,20 @@ async function fetchAll() {
   return all;
 }
 
-/** 昵称里可能带 markdown 特殊字符，转义一下免得出乱子 */
-function escapeMd(s) {
-  return String(s || '').replace(/([\\`*_{}[\]()#+\-.!|])/g, '\\$1').trim();
+/**
+ * HTML 转义。名字最终是写进 `<span>` / `<div>` 里的原生 HTML（卡片与致谢带都是），
+ * 不转义的话昵称里的尖括号会破坏页面结构 —— 那同时也是一条存储型 XSS 口子
+ * （昵称由赞助者自己控制）。
+ * ⚠ 原来用的是 markdown 转义（escapeMd），随列表版式一起废弃了：它产出的 `\_`
+ *   放进 HTML 不会变回下划线，而是**原样显示成反斜杠**。
+ */
+function escapeHtml(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .trim();
 }
 
 /**
@@ -183,7 +194,9 @@ console.log(`其中 ${list.length} 位收录进名单`);
 // 昵称是中性的，中英两个版本用同一批人；只有球的 alt 文案分语言
 const entries = list.map(o => {
   const amount = totalAmount(o);
-  return { name: escapeMd(o.user?.name), amount, ball: ballFor(amount) };
+  // 名字存原始值，转义交给各处按语境做（网页里是 HTML 转义）；
+  // 日志里也因此能打印出干净的名字
+  return { name: o.user?.name, amount, ball: ballFor(amount) };
 });
 
 // 把每人的累计金额与档位打出来 —— 首次跑的时候对着爱发电后台核一遍，
@@ -215,13 +228,15 @@ Thanks to these generous supporters — they're the reason CobbleMarket keeps ge
     return `${head}\n\n${empty}\n`;
   }
 
-  const body = entries.map(e => {
+  const cards = entries.map(e => {
     const label = zh ? e.ball.zh : e.ball.en;
     // 用原生 <img> 而不是 markdown 的 ![]()：路径按 index.html 所在目录解析，
     // 中英两站才都能找到图（markdown 图片会被 docsify 按当前页面目录重写）
-    return `- <img class="sponsor-ball" src="images/${e.ball.file}" alt="${label}"> **${e.name}**`;
+    return `  <div class="cm-spon-card"><img src="images/${e.ball.file}" alt="${label}"> <span>${escapeHtml(e.name)}</span></div>`;
   }).join('\n');
-  return `${head}\n\n${body}\n`;
+  // ⚠ 网格内部不能出现空行：markdown 解析器遇到空行就认为 HTML 块结束，
+  //   后面的卡片会被当成普通段落，结构就散了（与首页 README 第 1 条注释同源）。
+  return `${head}\n\n<div class="cm-spon-grid">\n${cards}\n</div>\n`;
 }
 
 const outZh = render('zh', entries);
@@ -237,7 +252,7 @@ function renderStrip(entries, zh) {
   const head = zh ? '感谢这些支持者' : 'Thanks to these supporters';
   const items = entries.map(e => {
     const label = zh ? e.ball.zh : e.ball.en;
-    return `    <div class="cm-spon"><img src="images/${e.ball.file}" alt="${label}"> ${e.name}</div>`;
+    return `    <div class="cm-spon"><img src="images/${e.ball.file}" alt="${label}"> ${escapeHtml(e.name)}</div>`;
   }).join('\n');
   // ⚠ 整块里不能出现空行：markdown 解析器一遇到空行就认为 HTML 块结束，
   //   后面的 div 会被当成 markdown 段落、结构就散了。单个换行是安全的。

@@ -178,6 +178,7 @@ grep -o '"cobblemarket\.[^"]*"[[:space:]]*:[[:space:]]*"[^"]*"' \
 | `.cm-grid` / `.cm-card` | `<div class="cm-card"><img class="cm-card-icon" src="images/entry-item.png" alt=""><div class="cm-card-title">物品市场</div><p class="cm-card-desc">描述</p></div>` | 功能卡片网格（**标题必须用 `<div>` 不能用 `<h3>`**） |
 | `img.shot` | 见第九节 | 截图 |
 | `.support-grid` / `.support-card` | `<a class="support-card" href="…"><img src="images/ball-poke.png" alt="精灵球"><div class="ball-name">精灵球</div><div class="ball-price">¥5</div><div class="ball-desc">聊表心意</div></a>` | 赞助档位卡 |
+| `.cm-spon-grid` / `.cm-spon-card` | `<div class="cm-spon-card"><img src="images/ball-poke.png" alt="精灵球"> <span>名字</span></div>` | 鸣谢名单的赞助者卡片（由脚本生成，见第十五节） |
 
 **自动施加的动效**（写内容**不用**额外加 class）：h1/h2 换页浮现、表格/图片/代码块/引用滚动入场、链接悬停发光、表格行悬停红条、卡片悬停抬起。
 
