@@ -261,7 +261,8 @@ const willing = orders.filter(o => {
   return !ANONYMOUS.some(a => a && (a === id || a === name));   // 手工名单（兜底，也用于接口拿不到留言时）
 });
 
-// 同一个人多次赞助只列一次，按最近一次的时间排序（新的在前）
+// 同一个人多次赞助只列一次：保留**最近**那笔（金额与档位取最新的），
+// 但排序按**首次**赞助时间 —— 先来后到，见下方 sort 处的说明
 const byUser = new Map();
 for (const o of willing) {
   const name = o.user?.name;
@@ -274,7 +275,10 @@ for (const o of willing) {
 }
 
 const list = [...byUser.values()].sort(
-  (a, b) => Number(b.last_pay_time || 0) - Number(a.last_pay_time || 0)
+  // 按**首次**赞助时间（先来后到，2026-09-14 用户拍板）：
+  //   · 不按"最近赞助在前"—— 那会让早期支持者随着新人加入一路往后沉，对最早伸手的人不公平
+  //   · 不按金额 —— 档位已经由名字前的球表达了，再按金额排就把"鸣谢"变成了排行榜
+  (a, b) => Number(a.first_pay_time || 0) - Number(b.first_pay_time || 0)
 );
 
 console.log(`其中 ${list.length} 位收录进名单`);
