@@ -6,4 +6,6 @@
 >
 > 名字前的球表示赞助档位（按**累计**金额计算）。
 
-- <img class="sponsor-ball" src="images/ball-poke.png" alt="精灵球"> **爱发电用户\_34a08**
+<div class="cm-spon-grid">
+  <div class="cm-spon-card"><img src="images/ball-poke.png" alt="精灵球"> <span>爱发电用户_34a08</span></div>
+</div>

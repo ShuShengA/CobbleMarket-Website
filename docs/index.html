@@ -1583,26 +1583,55 @@
       .cm-grid { grid-template-columns: 1fr; }
     }
 
-    /* ===== 鸣谢名单里的档位球 =====
-       名字前那颗小球表示赞助档位（按累计金额），与赞助页的四档一一对应。
-       这段 HTML 由 scripts/fetch-sponsors.mjs 生成 sponsors.md 时写出。
-       vertical-align 用负值微调：球的视觉重心比文字基线高，不压下去会显得飘。 */
-    .sponsor-ball {
-      width: 19px;
-      height: 19px;
-      /* 用 middle 而不是负值像素：球比文字略大，负值会让它沉到基线以下、看着往下掉 */
-      vertical-align: middle;
-      margin-right: 9px;
+    /* ===== 鸣谢名单的卡片网格 =====
+       一个赞助者一张卡：档位球 + 名字，由 scripts/fetch-sponsors.mjs 生成 sponsors.md 时写出。
+       与首页 .cm-card、赞助页 .support-card 共用同一套语言（像素边框 + 实心偏移阴影 + 玻璃底），
+       所以颜色/时长全走全局变量，别写死数值。
+       minmax 取 210px：刚好装下「爱发电用户_34a08」这类长名，再长的交给省略号。 */
+    .cm-spon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin: 22px 0 28px;
+    }
+    .cm-spon-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+      padding: 17px 16px;
+      border: 2px solid var(--cm-border);
+      border-radius: 4px;
+      background: color-mix(in srgb, var(--bg-panel) 78%, transparent);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      backdrop-filter: blur(12px) saturate(140%);
+      box-shadow: 4px 4px 0 var(--pixel-shadow);
+      font-weight: 700;
+      color: var(--accent-gold);
+      transition: transform var(--duration-medium), box-shadow var(--duration-medium),
+                  border-color var(--duration-medium);
+    }
+    .cm-spon-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0 var(--pixel-shadow);
+      border-color: var(--theme-color);
+    }
+    .cm-spon-card img {
+      width: 30px;
+      height: 30px;
+      flex: none;
       image-rendering: pixelated;
     }
-    /* 这一行已经有档位球了，把列表符号（全站那个迷你精灵球）去掉 ——
-       否则一行开头并排两个球，看着像堆在一起的表情符号。
-       用 :has() 精确命中带档位球的条目，不影响其它页面的列表符号。 */
-    .markdown-section ul > li:has(.sponsor-ball) {
-      list-style: none;
+    .cm-spon-card span {
+      min-width: 0;               /* flex 子项默认不收缩，不给 0 的话下面的省略号不会生效 */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
-    .markdown-section ul > li:has(.sponsor-ball)::before {
-      content: none;
+    @media (max-width: 640px) {
+      .cm-spon-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+      .cm-spon-card { padding: 14px 12px; gap: 9px; }
+      .cm-spon-card img { width: 26px; height: 26px; }
     }
 
     /* ===== 致谢带的纵向焦点滚动 =====
