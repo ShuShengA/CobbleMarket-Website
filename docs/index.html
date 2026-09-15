@@ -128,19 +128,16 @@
     *::after {
       cursor: url('images/cursor.png') 1 1, auto !important;
     }
-    /* ⚠ 滚动条是唯一够不到的地方：它由浏览器绘制、不属于任何元素，`*` 选择器
-       覆盖不到；而给它单独写 ::-webkit-scrollbar { cursor } 在 Chromium 上
-       并不可靠（曾这么写过，滚动后侧边栏右缘与屏幕右缘仍会退回系统箭头）。
-       既然设不上光标，就让滚动条不存在 —— 它消失后那两条区域回归普通元素，
-       上面的 `*` 规则自然生效。滚轮/触控板/键盘照常能滚，只是没有滚动条视觉。
-       （2026-09-15 用户反馈「刷新后不动正常、一旦滚动两侧就变禁区」后改为此方案） */
-    ::-webkit-scrollbar {
-      width: 0 !important;
-      height: 0 !important;
-    }
-    /* Firefox 走标准属性；Chromium 121+ 也认，作为双保险 */
-    * {
-      scrollbar-width: none !important;
+    /* ⚠ 滚动条是个例外：它由浏览器用 shadow DOM 绘制，不属于任何元素，
+       `*` 选择器够不到 —— 鼠标划过侧边栏那条、或页面右侧那条时会退回系统箭头
+       （用户报的「移到内容与导航栏之间、以及右侧时变成系统图标」就是这两处）。
+       这里显式声明一次。注意 Chromium 对滚动条 cursor 的支持并不完整，
+       属于尽力而为；要彻底解决只能自绘滚动条，代价不值当。 */
+    ::-webkit-scrollbar,
+    ::-webkit-scrollbar-thumb,
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-corner {
+      cursor: url('images/cursor.png') 1 1, auto !important;
     }
 
     /* ===== 侧边栏分割线 ===== */
