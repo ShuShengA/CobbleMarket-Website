@@ -831,6 +831,17 @@
       height: 100svh;
       height: var(--cm-vh, 100svh);
     }
+    /* ⚠ 显式声明正文字体：原先全站只有一处 font-family: inherit，等于完全交给浏览器默认，
+       而两个内核的默认中文字体并不相同 —— Chrome 在部分 Windows 上落到「宋体」（衬线、
+       笔画细、字形窄，小字号下明显费眼），Firefox 用「微软雅黑」。同一段文字在两边连换行
+       位置都对不上（2026-09-15 用户对比截图：「喵·紫金卡/喵·黑金卡」在 Zen 下换行、Chrome 下挤一行）。
+       这里统一：英文走系统 UI 字体，中文落到无衬线中文字体，两个内核的排版与观感才对得上。 */
+    body,
+    .markdown-section {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei",
+                   "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC",
+                   "Noto Sans CJK SC", sans-serif;
+    }
 
     /* ====================== ① 首屏与封面 ====================== */
 
