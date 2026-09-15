@@ -707,9 +707,14 @@
        窄屏下两张卡片会顶到屏幕边缘，直接隐藏、只留版本号。 */
     .cm-cover-card {
       position: absolute;
-      top: 50%;
+      /* ⚠ 纵向居中用 calc 而不是 translateY(-50%)：
+         docsify 是客户端渲染，元素插入 DOM 时 transition 就已经生效，
+         浏览器会把首帧的「transform 从 none 变成 translateY(-50%)」也当成一次变化动画出来 ——
+         表现就是刷新时卡片从上方（还没位移的样子）滑到中间。
+         改用 calc 定位后，初始 transform 是 none，压根没有"变化"可播。
+         于是 transform 就腾出来专供 hover 放大用了。 */
+      top: calc(50% - 90px);                /* 90 = 高度 180px 的一半 */
       height: 180px;                        /* ≈ 文字区高度的一半 */
-      transform: translateY(-50%);
       transition: transform var(--duration-medium), filter var(--duration-medium);
       z-index: 3;
       display: block;
@@ -724,7 +729,7 @@
     .cm-cover-card--left  { left: -210px; }
     .cm-cover-card--right { right: -210px; }
     .cm-cover-card:hover {
-      transform: translateY(-50%) scale(1.08);   /* 悬浮放大 */
+      transform: scale(1.08);               /* 悬浮放大（不再需要 translateY） */
     }
 
     /* 封面右上角的 45° 版本号。故意用负偏移**探到黑框外面**（黑色方框没有 overflow:hidden，
