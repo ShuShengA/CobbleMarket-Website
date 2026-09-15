@@ -44,7 +44,7 @@
   <div class="cm-stat"><span class="cm-stat-num">0</span><span class="cm-stat-label">功能限制</span></div>
 </div>
 
-<img src="images/entry.png" class="shot" alt="市场入口界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="images/entry.jpg" class="shot" alt="市场入口界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## 四大交易玩法
 

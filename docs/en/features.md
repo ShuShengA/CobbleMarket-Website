@@ -10,7 +10,7 @@ List Pokémon from your **party or PC**, and browse every listing on the server.
 - **Hover details** — level, ball, type, nature (including the effective nature when a Nature Mint was used), ability, all six IVs (Hyper Trained values shown as "real (trained)"), friendship, Marks, size, held item
 - **3D Pokémon icons** — icons in lists and detail panels play Cobblemon's built-in idle animation by default, and can be switched to fully static in the settings
 
-<img src="images/pokemon-market.png" class="shot" alt="Pokémon market screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="en/images/pokemon-market.jpg" class="shot" alt="Pokémon market screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## Item Market
 
@@ -20,7 +20,7 @@ List items from your inventory; buyers can purchase **any quantity**.
 - **Full item tooltips** — every list and hover uses real item tooltips, with move names, enchantment names and Roman-numeral levels fully visible; hold `Shift` to expand the full tooltip and `Ctrl` to show component details
 - **Rarity colouring** — item names are coloured by rarity, matching your inventory
 
-<img src="images/item-market.png" class="shot" alt="Item Market screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="en/images/item-market.jpg" class="shot" alt="Item Market screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## Auction House
 
@@ -33,7 +33,7 @@ Timed auctions with **live countdowns** and bidding, settled automatically on ex
 - **Server-wide broadcast** — new listings and results are announced in chat; hover the item name for details or click it to jump straight to the bidding screen
 - **Auction sound** — a confirmation chime on bidding; three escalating hammer strikes at 10 / 6 / 3 seconds remaining; a final hammer and bell on settlement (sent only to participants, so bystanders aren't disturbed)
 
-<img src="images/auction.png" class="shot" alt="Auction House screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="en/images/auction.jpg" class="shot" alt="Auction House screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## Buy Orders
 
@@ -45,7 +45,7 @@ Post **what you want, and your price** — other players deliver it.
 - **Buyer confirmation** — a delivery first enters "pending confirmation" with the goods held and funds unsettled (surviving restarts); the buyer reviews the full goods before accepting (settling the sale) or rejecting (returning the goods, optionally with a note)
 - **Partial delivery** — several sellers can each deliver part of an item order, which closes automatically once the quantity is filled
 
-<img src="images/buy-order.png" class="shot" alt="Buy Orders screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="en/images/buy-order.jpg" class="shot" alt="Buy Orders screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## Meowth Bank (optional finance system)
 
@@ -61,7 +61,7 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 - **Anti-abuse design** — credit-line growth cooldown, a per-IP debt cap, trade-pair detection and a deposit-rate guard rail (so "borrow money, deposit it, live off the interest" can't work)
 - **Credit ledger** — every loan and repayment is written to its own CSV ledger, in both Chinese and English, split by day, for owners to audit offline
 
-<img src="images/meowth-bank.png" class="shot" alt="Meowth Bank screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="en/images/meowth-bank.jpg" class="shot" alt="Meowth Bank screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## History & Ledgers
 
@@ -70,7 +70,7 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 - **CSV credit ledger** — loan creation / overdue / settlement events plus each repayment split into principal and interest, with the repayment method recorded
 - Ledgers are written **synchronously**, independent of world autosaves, so a crash or a killed process doesn't lose them
 
-<img src="images/history.png" class="shot" alt="Trade history screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="en/images/history.jpg" class="shot" alt="Trade history screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## Admin Tools
 
