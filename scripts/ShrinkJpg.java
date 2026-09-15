@@ -32,6 +32,14 @@ public class ShrinkJpg {
             g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             g.drawImage(src, 0, 0, nw, nh, null);
             g.dispose();
+        } else if (src.getType() != BufferedImage.TYPE_INT_RGB) {
+            // 不需要缩放时也必须转成 RGB：JPEG 不支持 alpha 通道，
+            // 直接把 RGBA 丢给 writer 会抛 "Bogus input colorspace"
+            //（游戏截图存 PNG 时都是 RGBA，所以只要 maxW >= 原宽就会踩到）
+            img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g = img.createGraphics();
+            g.drawImage(src, 0, 0, null);
+            g.dispose();
         }
 
         ImageWriter writer = ImageIO.getImageWritersByFormatName("jpeg").next();

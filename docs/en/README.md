@@ -46,7 +46,7 @@
   <div class="cm-stat"><span class="cm-stat-num">0</span><span class="cm-stat-label">Locked features</span></div>
 </div>
 
-<img src="en/images/entry.jpg" class="shot" alt="Market entry screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="en/images/entry.jpg" class="shot" loading="lazy" alt="Market entry screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## Trading Systems
 
