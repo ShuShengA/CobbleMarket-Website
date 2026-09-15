@@ -728,8 +728,11 @@
       width: auto;
       display: block;
     }
-    .cm-cover-card--left  { left: -210px; }
-    .cm-cover-card--right { right: -210px; }
+    /* ⚠ 横向位置也必须跟着卡片尺寸算：卡片是正方形（宽 = 高），
+       写死 -210px 时只要卡片一变大，内侧那截就会捅进黑框里。
+       40px 是离黑框边缘的间距（留出 hover 放大 8% 的余量）。 */
+    .cm-cover-card--left  { left: calc(-1 * (var(--cm-card-h, 180px) + 40px)); }
+    .cm-cover-card--right { right: calc(-1 * (var(--cm-card-h, 180px) + 40px)); }
     .cm-cover-card:hover {
       transform: scale(1.08);               /* 悬浮放大（不再需要 translateY） */
     }
@@ -780,7 +783,9 @@
       100% { transform: rotate(45deg) scale(1); }
     }
 
-    @media (max-width: 1180px) {
+    /* 卡片随黑框变高后会横向占更多地方（宽=高），所以隐藏门槛比原来放宽：
+       620（黑框）+ 2×(卡片 + 40 间距)，按卡片约 300px 估 ≈ 1300px */
+    @media (max-width: 1320px) {
       /* 窄屏：两张卡片顶到屏幕边缘，直接隐藏；版本号也收小、退回框内，
          否则 45° 斜着会捅出屏幕被裁掉 */
       .cm-cover-card { display: none; }
