@@ -558,15 +558,15 @@
       /* ⚠ 底色必须用 --bg-panel（面板色，比背景略深），不能用 --color-bg ——
          后者在浅色模式下就等于背景色 #ffffff，白玻璃叠白背景，什么都看不出来
          （第一版就是这么翻车的）。深色那边一直用的是 --bg-panel，所以没这问题。 */
-      /* ⚠ 这里不用 backdrop-filter：Chrome 会把带它的元素提升为独立合成层，层内文字
-         一律降级为灰度抗锯齿（关闭次像素/LCD 渲染）——侧边栏目录文字明显发虚；
-         Firefox 不做这个降级，所以同一页面在 Zen 下看着正常（2026-09-15 用户反馈）。
-         改用更高不透明度的实色，接近原来「玻璃压住背景」的观感。 */
-      background: color-mix(in srgb, var(--bg-panel) 88%, transparent);
+      background: color-mix(in srgb, var(--bg-panel) 68%, transparent);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
+      backdrop-filter: blur(16px) saturate(150%);
     }
     body.dark .sidebar {
-      background: color-mix(in srgb, var(--bg-panel) 90%, transparent);
+      background: color-mix(in srgb, var(--bg-panel) 72%, transparent);
       border-right: 1px solid var(--cm-border);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
+      backdrop-filter: blur(16px) saturate(150%);
     }
 
     /* ===== 侧边栏顶部的站名（点它回首页）=====
