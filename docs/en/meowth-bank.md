@@ -91,7 +91,6 @@ The Purple/Black card "deposit balance" requirement is judged by **net deposit**
 | `tradePairWindowDays` | `30` | Anti-abuse: same-pair detection window in days |
 | `tradePairMaxTrades` | `3` | Anti-abuse: same-pair trade cap within the window |
 | `ipDebtLimit` | `100000` | Cap on total outstanding debt per IP (`0` = disabled) |
-| `creditLimit.debtWeight` | — | **Deprecated**: debt is deducted in full, so this weight no longer takes part in the calculation — changing it has no effect (kept only for old config files) |
 
 ```
 Credit base = max(last-30-day buying volume × 0.5 + all-time buying volume × 0.1, limit min)
