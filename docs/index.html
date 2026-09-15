@@ -727,23 +727,35 @@
       transform: translateY(-50%) scale(1.08);   /* 悬浮放大 */
     }
 
-    /* 封面右上角的 45° 版本号 */
+    /* 封面右上角的 45° 版本号。故意用负偏移**探到黑框外面**（黑色方框没有 overflow:hidden，
+       子元素可以越界），压着边框斜着跨在角上，比缩在框里醒目得多。 */
     .cm-cover-ver {
       position: absolute;
-      top: 6px;
-      right: 18px;
+      top: -30px;
+      right: -30px;
       transform: rotate(45deg);
-      font-weight: 800;
-      font-size: 1.05rem;
-      letter-spacing: 0.06em;
+      font-weight: 900;
+      font-size: 2.1rem;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
       color: var(--theme-color);
-      text-shadow: 0 0 6px rgba(0, 0, 0, 0.95), 0 2px 5px rgba(0, 0, 0, 0.85);
+      text-shadow:
+        0 0 8px rgba(0, 0, 0, 0.95),
+        0 0 18px rgba(0, 0, 0, 0.85),
+        0 3px 7px rgba(0, 0, 0, 0.9);
       pointer-events: none;                 /* 纯装饰，别挡住下面元素的点击 */
       z-index: 4;
     }
 
     @media (max-width: 1180px) {
+      /* 窄屏：两张卡片顶到屏幕边缘，直接隐藏；版本号也收小、退回框内，
+         否则 45° 斜着会捅出屏幕被裁掉 */
       .cm-cover-card { display: none; }
+      .cm-cover-ver {
+        top: -12px;
+        right: -6px;
+        font-size: 1.5rem;
+      }
     }
 
     /* 封面文字强化：多重阴影模拟描边 */
