@@ -2,9 +2,9 @@
 
 <!-- ⚠ 版本亮点装饰：换版本时改下面的版本号，或把这三个元素整段删掉
      （样式见 index.html 的 .cm-cover-card / .cm-cover-ver） -->
-<a class="cm-cover-card cm-cover-card--left" href="#/meowth-bank" title="喵·紫金卡"><img src="images/meowth-purple-card.png" alt="喵·紫金卡"></a>
-<a class="cm-cover-card cm-cover-card--right" href="#/meowth-bank" title="喵·黑金卡"><img src="images/meowth-black-card.png" alt="喵·黑金卡"></a>
-<div class="cm-cover-ver">1.1.0</div>
+<a class="cm-cover-card cm-cover-card--left" href="#/meowth-bank?id=喵%C2%B7紫金卡" title="喵·紫金卡"><img src="images/meowth-purple-card.png" alt="喵·紫金卡"></a>
+<a class="cm-cover-card cm-cover-card--right" href="#/meowth-bank?id=喵%C2%B7黑金卡" title="喵·黑金卡"><img src="images/meowth-black-card.png" alt="喵·黑金卡"></a>
+<div class="cm-cover-ver">1.1</div>
 
 # CobbleMarket
 
