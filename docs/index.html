@@ -831,15 +831,6 @@
       height: 100svh;
       height: var(--cm-vh, 100svh);
     }
-    /* ⚠ 覆盖 docsify 主题的 body { overflow-x: hidden }（_base.css）：
-       只要 body 有 overflow 非 visible，它就成了滚动容器，Chrome 会把 body
-       提升为独立合成层 —— 层内文字一律降级为灰度抗锯齿（关闭次像素/LCD 渲染），
-       表现为「整页文字发虚」；Firefox 不做这个降级，所以同一个页面在 Zen 下正常。
-       改用 clip：同样裁掉横向溢出，但**不创建滚动容器**、不触发合成。
-       （2026-09-15 用户反馈「Chrome 上整页文字发虚、其它网站不虚」后定位） */
-    body {
-      overflow-x: clip;
-    }
 
     /* ====================== ① 首屏与封面 ====================== */
 
