@@ -713,8 +713,10 @@
          表现就是刷新时卡片从上方（还没位移的样子）滑到中间。
          改用 calc 定位后，初始 transform 是 none，压根没有"变化"可播。
          于是 transform 就腾出来专供 hover 放大用了。 */
-      top: calc(50% - 90px);                /* 90 = 高度 180px 的一半 */
-      height: 180px;                        /* ≈ 文字区高度的一半 */
+      top: calc(50% - var(--cm-card-h, 180px) / 2);
+      /* 高度 = 黑色方框高度的一半，由脚本实测后写进 --cm-card-h（见页面底部的 syncCoverCard）。
+         不用写死的像素值：方框高度是内容撑开的，会随窗口宽度和字体大小变。 */
+      height: var(--cm-card-h, 180px);
       transition: transform var(--duration-medium), filter var(--duration-medium);
       z-index: 3;
       display: block;
@@ -2946,6 +2948,33 @@
        把排在它后面的插件钩子（含本页的滚动高亮 __cmScrollSpy）全部带崩 ——
        表现为「文件是最新的、逻辑也对，但功能就是不生效」。 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@5/dist/plugins/search.min.js"></script>
+  <!-- 封面两张卡片图标的高度 = 黑色方框（.cover-main）高度的一半。
+       方框高度是内容撑开的，写死像素值对不准，所以实测后写进 CSS 变量 --cm-card-h，
+       由 .cm-cover-card 的 height 取用（取值失败时退回 180px 兜底）。 -->
+  <script>
+    (function () {
+      function syncCoverCard() {
+        var cm = document.querySelector('.cover .cover-main');
+        if (!cm || !cm.offsetHeight) return;
+        document.documentElement.style.setProperty(
+          '--cm-card-h', Math.round(cm.offsetHeight / 2) + 'px');
+      }
+      // 封面是「异步 fetch markdown 再渲染」的，元素出现时机不确定 ——
+      // 轮询等它出现，然后用 ResizeObserver 盯着（方框变高/窗口缩放都会自动重算）
+      var obs = new ResizeObserver(syncCoverCard);
+      var timer = setInterval(function () {
+        var cm = document.querySelector('.cover .cover-main');
+        if (cm) {
+          obs.observe(cm);
+          syncCoverCard();
+          clearInterval(timer);
+        }
+      }, 150);
+      setTimeout(function () { clearInterval(timer); }, 10000);   // 非首页时别一直轮询
+      window.addEventListener('resize', syncCoverCard);
+    })();
+  </script>
+
   <!-- 截图点击放大：点图浮起、点图外的暗色区域或按 Esc 收回 -->
   <script>
     (function () {
