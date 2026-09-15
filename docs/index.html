@@ -752,9 +752,24 @@
        装饰元素被带上就会出现——卡片"从上方落下来"、版本号先以没旋转的样子出现、
        等动画结束才归位到 45°（动画期间 transform 被 cm-rise 接管）。
        这里的选择器特异性更高（3 个类 vs 2 类 + 1 个元素），不用 !important 也压得住。 */
-    .cover .cover-main > .cm-cover-card,
-    .cover .cover-main > .cm-cover-ver {
+    .cover .cover-main > .cm-cover-card {
       animation: none;
+    }
+    /* 版本号：同样不参与错峰浮现，但入场后自己弹一下（果冻）。
+       延迟 0.9s 是为了等封面文字那波入场播完，两者别挤在一起。 */
+    .cover .cover-main > .cm-cover-ver {
+      animation: cm-jelly 1.3s cubic-bezier(0.34, 1.56, 0.64, 1) 0.9s 1 both;
+    }
+
+    /* ===== 版本号果冻：放大 → 回原尺寸 → 再放大（幅度小些）→ 回原尺寸 =====
+       ⚠ 每一帧都必须带上 rotate(45deg)：animation 会整体接管 transform，
+          少写旋转的那一帧版本号会"躺平"回去（与之前那个刷新错位是同源的坑）。 */
+    @keyframes cm-jelly {
+      0%   { transform: rotate(45deg) scale(1); }
+      22%  { transform: rotate(45deg) scale(1.22); }
+      44%  { transform: rotate(45deg) scale(1); }
+      66%  { transform: rotate(45deg) scale(1.12); }
+      100% { transform: rotate(45deg) scale(1); }
     }
 
     @media (max-width: 1180px) {
