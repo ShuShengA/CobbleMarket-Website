@@ -502,6 +502,16 @@
       margin: 18px auto;
       border: 2px solid var(--cm-border);
       box-shadow: 4px 4px 0 var(--pixel-shadow);
+      cursor: zoom-in;                 /* 提示可点击放大 */
+      transition: transform var(--duration-medium),
+                  box-shadow var(--duration-medium),
+                  border-color var(--duration-medium);
+    }
+    /* 悬停抬起：与功能卡片 / 赞助卡同一套参数（位移 + 硬阴影加大 + 边框变主题色） */
+    .markdown-section img.shot:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0 var(--pixel-shadow);
+      border-color: var(--theme-color);
     }
 
     /* ===== 搜索框 ===== */
