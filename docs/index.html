@@ -701,6 +701,51 @@
       box-shadow: 0 12px 44px rgba(0, 0, 0, 0.5);
     }
 
+    /* ===== 封面版本亮点装饰（左右卡片图标 + 右上角版本号）=====
+       ⚠ 换版本时：改 _coverpage.md 里的版本号文字，或把那三个元素整段删掉。
+       卡片放在方框**外侧**（一左一右飘着），所以不挤压中间文字；
+       窄屏下两张卡片会顶到屏幕边缘，直接隐藏、只留版本号。 */
+    .cm-cover-card {
+      position: absolute;
+      top: 50%;
+      height: 180px;                        /* ≈ 文字区高度的一半 */
+      transform: translateY(-50%);
+      transition: transform var(--duration-medium), filter var(--duration-medium);
+      z-index: 3;
+      display: block;
+      /* drop-shadow 而不是 box-shadow：卡片是透明底的 PNG，box-shadow 会给整块矩形描边 */
+      filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.55));
+    }
+    .cm-cover-card img {
+      height: 100%;
+      width: auto;
+      display: block;
+    }
+    .cm-cover-card--left  { left: -210px; }
+    .cm-cover-card--right { right: -210px; }
+    .cm-cover-card:hover {
+      transform: translateY(-50%) scale(1.08);   /* 悬浮放大 */
+    }
+
+    /* 封面右上角的 45° 版本号 */
+    .cm-cover-ver {
+      position: absolute;
+      top: 6px;
+      right: 18px;
+      transform: rotate(45deg);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
+      color: var(--theme-color);
+      text-shadow: 0 0 6px rgba(0, 0, 0, 0.95), 0 2px 5px rgba(0, 0, 0, 0.85);
+      pointer-events: none;                 /* 纯装饰，别挡住下面元素的点击 */
+      z-index: 4;
+    }
+
+    @media (max-width: 1180px) {
+      .cm-cover-card { display: none; }
+    }
+
     /* 封面文字强化：多重阴影模拟描边 */
     .cover .cover-main h1,
     .cover .cover-main p,
