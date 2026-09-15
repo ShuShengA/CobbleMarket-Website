@@ -73,11 +73,25 @@ The Purple/Black card "deposit balance" requirement is judged by **net deposit**
 ## 6. Credit limit (credit-card model)
 
 > [!NOTE]
-> **The limit is calculated, not configured**
+> **The limit is calculated — nothing to configure by default**
 >
-> Each player's limit is derived from **your own server's trade volume** — on a busy server with high prices, limits rise on their own; on a young server, they stay low on their own. **No formula to learn, no parameters to tune** — it follows your server automatically.
+> Each player's limit is derived from **your own server's trade volume** — on a busy server with high prices, limits rise on their own; on a young server, they stay low on their own. **Works out of the box, no formula to learn.**
 >
-> <small>The one exception: very large economies (where volume far exceeds the default cap of 100,000) should raise `finance.creditLimit.max`. Everything else can be left alone.</small>
+> <small>Owners who want to fine-tune can use the table below — raise the cap for a large economy, or set the cooldown to `0` for instant credit growth.</small>
+
+**Tunable parameters** (under the `finance` section of `config/cobblemarket.json`):
+
+| Key | Default | Description |
+|---|---|---|
+| `creditLimit.recent30Weight` | `0.5` | Weight of the last-30-day volume |
+| `creditLimit.historyWeight` | `0.1` | Weight of the all-time volume |
+| `creditLimit.min` | `0` | Limit floor (a baseline every player gets) |
+| `creditLimit.max` | `100000` | Limit ceiling (raise it for large economies) |
+| `creditLimit.cooldownHours` | `24` | Credit-growth cooldown: trades don't count for N hours (set `0` to disable) |
+| `tradePairWindowDays` | `30` | Anti-abuse: same-pair detection window in days |
+| `tradePairMaxTrades` | `3` | Anti-abuse: same-pair trade cap within the window |
+| `ipDebtLimit` | `100000` | Cap on total outstanding debt per IP (`0` = disabled) |
+| `creditLimit.debtWeight` | — | **Deprecated**: debt is deducted in full, so this weight no longer takes part in the calculation — changing it has no effect (kept only for old config files) |
 
 ```
 Credit base = max(last-30-day buying volume × 0.5 + all-time buying volume × 0.1, limit min)
