@@ -10,7 +10,7 @@ CobbleMarket 把「玩家之间怎么交易」这件事做完整了 —— 从�
 - **悬停详情**：等级、球种、属性、性格（含性格薄荷的生效性格）、特性、六项个体值（特训显示为「真实值（特训值）」）、亲密度、证章、体型、携带物
 - **精灵 3D 图标**：列表与详情里的精灵图标默认播放 Cobblemon 内置待机动画，可在设置里切回完全静态
 
-<img src="images/pokemon-market.jpg" class="shot" alt="精灵市场界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="images/pokemon-market.jpg" class="shot" loading="lazy" alt="精灵市场界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## 物品市场
 
@@ -20,7 +20,7 @@ CobbleMarket 把「玩家之间怎么交易」这件事做完整了 —— 从�
 - **完整物品词条**：所有列表与悬停使用真实物品词条，招式名、附魔名与罗马数字等级完整可见；按住 `Shift` 展开完整词条、按住 `Ctrl` 显示组件明细
 - **稀有度着色**：物品名按稀有度着色，与物品栏一致
 
-<img src="images/item-market.jpg" class="shot" alt="物品市场界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="images/item-market.jpg" class="shot" loading="lazy" alt="物品市场界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## 拍卖场
 
@@ -33,7 +33,7 @@ CobbleMarket 把「玩家之间怎么交易」这件事做完整了 —— 从�
 - **全服播报**：上架与成交都会在聊天框播报，拍品名可悬停查看详情、点击直达出价界面
 - **拍卖音效**：出价确认音；结束前 10/6 / 3 秒三声渐强锤声；成交落槌与铃声（只发给参与方，不打扰围观者）
 
-<img src="images/auction.jpg" class="shot" alt="拍卖场界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="images/auction.jpg" class="shot" loading="lazy" alt="拍卖场界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## 求购单
 
@@ -45,7 +45,7 @@ CobbleMarket 把「玩家之间怎么交易」这件事做完整了 —— 从�
 - **买家确认制**：卖家交付先进入「待确认」，货物悬空、资金不结算、重启不丢；买家看过完整货物信息后再决定接受或拒绝（拒绝可留言）
 - **部分交付**：多个卖家可对同一物品单分别交付，凑满件数自动关闭
 
-<img src="images/buy-order.jpg" class="shot" alt="求购单界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="images/buy-order.jpg" class="shot" loading="lazy" alt="求购单界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## 喵喵银行（可选金融系统）
 
@@ -61,7 +61,7 @@ CobbleMarket 把「玩家之间怎么交易」这件事做完整了 —— 从�
 - **防刷设计**：额度增长冷却、同 IP 欠款上限、交易对检测、存贷利率护栏（杜绝「借钱存银行吃利息」）
 - **信用账本**：借贷与还款全量写入独立 CSV 账本，中英双份按天分文件，供服主查账
 
-<img src="images/meowth-bank.jpg" class="shot" alt="喵喵银行界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="images/meowth-bank.jpg" class="shot" loading="lazy" alt="喵喵银行界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## 交易历史与账本
 
@@ -70,7 +70,7 @@ CobbleMarket 把「玩家之间怎么交易」这件事做完整了 —— 从�
 - **CSV 信用账本**：借款创建/逾期/结清事件与每笔还款的本金利息拆分，还款方式分明
 - 账本**同步写盘**，不依赖自动保存，崩溃或杀进程也不丢
 
-<img src="images/history.jpg" class="shot" alt="交易历史界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+<img src="images/history.jpg" class="shot" loading="lazy" alt="交易历史界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
 ## 服主管理工具
 

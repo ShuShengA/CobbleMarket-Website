@@ -1802,6 +1802,33 @@
         animation: none;
       }
     }
+
+    /* ===== 截图点击放大（lightbox）=====
+       点正文里的截图 → 全屏浮起；点图本身或点图外的暗色区域 → 收回（Esc 同效）。
+       图按原始分辨率显示（线上截图是 2560px 宽，在 2K 屏上几乎 1:1），所以放大后依旧清晰。 */
+    .cm-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;              /* 要盖住 docsify 的侧边栏 / 导航栏 / 搜索框 */
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(0, 0, 0, 0.82);
+      cursor: zoom-out;
+      overflow: auto;
+    }
+    .cm-lightbox.open { display: flex; }
+    .cm-lightbox img {
+      max-width: 96vw;
+      max-height: 92vh;
+      width: auto;
+      height: auto;
+      border: 3px solid var(--cm-border);
+      border-radius: 4px;
+      box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.45);
+      cursor: zoom-out;
+    }
   </style>
 
   <!-- 视口高度锁定：见样式表末尾「视口高度」那段说明。
@@ -2821,5 +2848,49 @@
        把排在它后面的插件钩子（含本页的滚动高亮 __cmScrollSpy）全部带崩 ——
        表现为「文件是最新的、逻辑也对，但功能就是不生效」。 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@5/dist/plugins/search.min.js"></script>
+  <!-- 截图点击放大：点图浮起、点图外的暗色区域或按 Esc 收回 -->
+  <script>
+    (function () {
+      var lb = null;
+      function build() {
+        lb = document.createElement('div');
+        lb.className = 'cm-lightbox';
+        lb.innerHTML = '<img alt="">';
+        document.body.appendChild(lb);
+      }
+      function open(src, alt) {
+        if (!lb) build();
+        var im = lb.querySelector('img');
+        im.src = src;
+        im.alt = alt || '';
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';   // 放大时别让背景跟着滚
+      }
+      function close() {
+        if (!lb || !lb.classList.contains('open')) return;
+        lb.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+      // 事件委托：docsify 的正文是动态渲染的，绑不到具体的 img 上
+      document.addEventListener('click', function (e) {
+        var t = e.target;
+        if (lb && lb.classList.contains('open')) {
+          // 浮起状态下：点图 or 点暗色区域都收回
+          if (t === lb || (lb.contains(t) && t.tagName === 'IMG')) {
+            close();
+            e.preventDefault();
+            return;
+          }
+        }
+        var img = t.closest && t.closest('.markdown-section img.shot');
+        if (!img) return;
+        e.preventDefault();
+        open(img.src, img.alt);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') close();
+      });
+    })();
+  </script>
 </body>
 </html>
