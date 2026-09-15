@@ -139,6 +139,31 @@
     ::-webkit-scrollbar-corner {
       cursor: url('images/cursor.png') 1 1, auto !important;
     }
+    /* ⚠ 滚动条外观：Chromium 在 Windows 11 上默认用「覆盖式」滚动条（细、半透明、
+       静止时几乎隐去），Firefox 用传统滚动条 —— 同一页面两边观感差很多，
+       用户反馈「Chrome 里根本看不到，只能盲拖」。这里显式声明一套，两边都看得见。
+       注意：Chrome 121+ 起也认标准的 scrollbar-width，会盖过 ::-webkit-scrollbar，
+       所以用 @supports 把标准属性只留给不认 webkit 伪元素的浏览器（即 Firefox 系）。 */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: color-mix(in srgb, var(--bg-deep) 55%, transparent);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--cm-border);
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--theme-color);
+    }
+    @supports not selector(::-webkit-scrollbar) {
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--cm-border) transparent;
+      }
+    }
 
     /* ===== 侧边栏分割线 ===== */
     .sidebar-nav hr {
