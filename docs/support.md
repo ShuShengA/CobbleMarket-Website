@@ -38,6 +38,7 @@ CobbleMarket 完全免费、没有任何功能限制 —— 所有功能对所�
 <div class="cm-spon-box">
   <div class="cm-spon-list">
     <div class="cm-spon"><img src="images/ball-great.png" alt="超级球"> 美女淼</div>
+    <div class="cm-spon"><img src="images/ball-poke.png" alt="精灵球"> 嗯</div>
   </div>
 </div>
 <!-- SPONSORS:END -->
