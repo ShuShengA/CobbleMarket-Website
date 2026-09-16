@@ -2841,6 +2841,21 @@
       var clickKind = null;           // null=后退/前进 | 'page'=普通页面链接 | 'anchor'=带 ?id=
       var pending = null;             // 待恢复的位置；null = 本次不干预
 
+      // 「点首页」的落点：跳过整屏封面，落到内容区（.cm-hero）。
+      // ⚠ 与站点名的点击要**有区别**：封面是满屏背景图，两个入口都停在 0 等于没区别 ——
+      //   站点名（.app-name-link）→ 停在封面；首页条目 → 落到内容。
+      // 位置得等渲染完成后才算（切语言时封面与内容的高度都不同），所以用哨兵值占位。
+      var HOME_CONTENT = {};
+      function isHome(h) {
+        h = (h || '').replace(/^#/, '').replace(/\/+$/, '');
+        return h === '' || h === '/en';
+      }
+      function homeContentY() {
+        var el = document.querySelector('.cm-hero');
+        if (!el) return 0;
+        return Math.max(0, el.getBoundingClientRect().top + window.scrollY - 8);
+      }
+
       // 点站内链接时标记来源（捕获阶段，早于 docsify 的路由处理）
       document.addEventListener('click', function (e) {
         var el = e.target;
@@ -2869,7 +2884,8 @@
         if (clickKind === 'anchor') {
           pending = null;                        // 交给 docsify 滚到那一节
         } else if (clickKind === 'page') {
-          pending = 0;                           // 有意导航 → 顶部（接管原 auto2top 的职责）
+          // 有意导航 → 顶部（接管原 auto2top 的职责）；但「首页」例外，见 HOME_CONTENT 注释
+          pending = isHome(to) ? HOME_CONTENT : 0;
         } else {
           pending = positions[to] != null ? positions[to] : 0;   // 后退/前进 → 回原位
         }
@@ -2882,7 +2898,7 @@
       // 由 doneEach 调用：渲染完成后才滚
       window.__cmRestoreScroll = function () {
         if (pending === null) return;
-        var y = pending;
+        var y = pending === HOME_CONTENT ? homeContentY() : pending;   // 哨兵 → 此刻才算位置
         pending = null;
         if (Math.abs(window.scrollY - y) > 1) window.scrollTo(0, y);
       };
