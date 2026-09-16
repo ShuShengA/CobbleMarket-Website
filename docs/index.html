@@ -705,18 +705,17 @@
        ⚠ 换版本时：改 _coverpage.md 里的版本号文字，或把那三个元素整段删掉。
        卡片放在方框**外侧**（一左一右飘着），所以不挤压中间文字；
        窄屏下两张卡片会顶到屏幕边缘，直接隐藏、只留版本号。 */
+    /* 高度与位置全部交给 CSS 推导，**不测量、不写死像素**。
+       为什么不用 JS 量：只要尺寸依赖脚本，ResizeObserver 就会在卡片显示之后
+       继续改值（字体加载完、布局微调都算），卡片就会再滑一次 —— 试过两轮都压不住。
+       这里的做法是绝对定位的经典用法：同时给 top 和 bottom，高度就由两者撑出来；
+       横向同理用 right:100% / left:100% 贴住黑框两旁，全程不知道黑框有多少像素。 */
     .cm-cover-card {
       position: absolute;
-      /* ⚠ 纵向居中用 calc 而不是 translateY(-50%)：
-         docsify 是客户端渲染，元素插入 DOM 时 transition 就已经生效，
-         浏览器会把首帧的「transform 从 none 变成 translateY(-50%)」也当成一次变化动画出来 ——
-         表现就是刷新时卡片从上方（还没位移的样子）滑到中间。
-         改用 calc 定位后，初始 transform 是 none，压根没有"变化"可播。
-         于是 transform 就腾出来专供 hover 放大用了。 */
-      top: calc(50% - var(--cm-card-h, 180px) / 2);
-      /* 高度 = 黑色方框高度的一半，由脚本实测后写进 --cm-card-h（见页面底部的 syncCoverCard）。
-         不用写死的像素值：方框高度是内容撑开的，会随窗口宽度和字体大小变。 */
-      height: var(--cm-card-h, 180px);
+      top: 25%;                             /* 上下各留 1/4 → 卡片高 = 黑框高的 1/2 */
+      bottom: 25%;
+      height: auto;
+      width: auto;
       transition: transform var(--duration-medium), filter var(--duration-medium);
       z-index: 3;
       display: block;
@@ -728,11 +727,9 @@
       width: auto;
       display: block;
     }
-    /* ⚠ 横向位置也必须跟着卡片尺寸算：卡片是正方形（宽 = 高），
-       写死 -210px 时只要卡片一变大，内侧那截就会捅进黑框里。
-       40px 是离黑框边缘的间距（留出 hover 放大 8% 的余量）。 */
-    .cm-cover-card--left  { left: calc(-1 * (var(--cm-card-h, 180px) + 40px)); }
-    .cm-cover-card--right { right: calc(-1 * (var(--cm-card-h, 180px) + 40px)); }
+    /* 40px 是离黑框边缘的间距（也留出 hover 放大 8% 的余量，不会蹭到框线） */
+    .cm-cover-card--left  { right: 100%; margin-right: 40px; }
+    .cm-cover-card--right { left: 100%;  margin-left: 40px; }
     .cm-cover-card:hover {
       transform: scale(1.08);               /* 悬浮放大（不再需要 translateY） */
     }
@@ -755,15 +752,6 @@
         0 3px 7px rgba(0, 0, 0, 0.9);
       pointer-events: none;                 /* 纯装饰，别挡住下面元素的点击 */
       z-index: 4;
-    }
-
-    /* 测量稳定前先把卡片藏起来（脚本约 0.45 秒后给 html 加 cm-cover-ready）：
-       封面渲染过程中 .cover-main 的高度是逐步变大的，脚本每测一次就改写一次
-       --cm-card-h，top 跟着一点点下移 —— 连着看就是卡片"从上方滑到正确位置"。
-       藏起来等测稳再放，就看不到这个过程了（用 visibility 而不是 display，
-       保留布局，测量照常）。 */
-    html:not(.cm-cover-ready) .cm-cover-card {
-      visibility: hidden;
     }
 
     /* 这三个是**装饰**，不参与封面的「错峰浮现」：
@@ -792,9 +780,9 @@
       100% { transform: rotate(45deg) scale(1); }
     }
 
-    /* 卡片随黑框变高后会横向占更多地方（宽=高），所以隐藏门槛比原来放宽：
-       620（黑框）+ 2×(卡片 + 40 间距)，按卡片约 300px 估 ≈ 1300px */
-    @media (max-width: 1320px) {
+    /* 卡片变宽后会占更多横向空间，所以隐藏门槛比最初放宽：
+       620（黑框）+ 2×(卡片 + 40 间距) */
+    @media (max-width: 1200px) {
       /* 窄屏：两张卡片顶到屏幕边缘，直接隐藏；版本号也收小、退回框内，
          否则 45° 斜着会捅出屏幕被裁掉 */
       .cm-cover-card { display: none; }
@@ -2962,42 +2950,6 @@
        把排在它后面的插件钩子（含本页的滚动高亮 __cmScrollSpy）全部带崩 ——
        表现为「文件是最新的、逻辑也对，但功能就是不生效」。 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@5/dist/plugins/search.min.js"></script>
-  <!-- 封面两张卡片图标的高度 = 黑色方框（.cover-main）高度的一半。
-       方框高度是内容撑开的，写死像素值对不准，所以实测后写进 CSS 变量 --cm-card-h，
-       由 .cm-cover-card 的 height 取用（取值失败时退回 180px 兜底）。 -->
-  <script>
-    (function () {
-      function syncCoverCard() {
-        var cm = document.querySelector('.cover .cover-main');
-        if (!cm || !cm.offsetHeight) return;
-        document.documentElement.style.setProperty(
-          '--cm-card-h', Math.round(cm.offsetHeight / 2) + 'px');
-      }
-      // ⚠ 不能「量一次就停」：封面是异步 fetch markdown 再渲染的，
-      //   元素刚插进 DOM 那一刻布局还没稳，offsetHeight 量到的是个偏小的值，
-      //   停在这里就会让卡片一直停在错的尺寸上（表现为"大小变回去了"）。
-      //   所以持续测一段时间，重复写同一个值没有副作用，宁可多测几次。
-      var obs = new ResizeObserver(syncCoverCard);
-      var observed = false;
-      var ticks = 0;        // 总轮询次数（兜底上限）
-      var settle = 0;       // 测到元素之后的拍数
-      var timer = setInterval(function () {
-        var cm = document.querySelector('.cover .cover-main');
-        if (cm) {
-          if (!observed) { obs.observe(cm); observed = true; }
-          syncCoverCard();
-          // 测到元素后再等 3 拍（约 0.45 秒）才放开显示卡片：这几拍里布局才稳定下来。
-          // 放开之前卡片是 visibility:hidden 的，所以看不到它随中间值逐帧下移。
-          if (++settle === 3) document.documentElement.classList.add('cm-cover-ready');
-        }
-        // 约 6 秒后停（覆盖渲染 + 布局稳定 + 字体加载）；之后交给 ResizeObserver，
-        // 方框变高或窗口缩放都会自动重算
-        if (++ticks > 40) clearInterval(timer);
-      }, 150);
-      window.addEventListener('resize', syncCoverCard);
-    })();
-  </script>
-
   <!-- 截图点击放大：点图浮起、点图外的暗色区域或按 Esc 收回 -->
   <script>
     (function () {
