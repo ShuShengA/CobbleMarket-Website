@@ -2838,7 +2838,7 @@
     //   · 语言切换要跳过（它有 __cmRestoreHeading 按小节对齐，见 __cmSwitchLang）。
     (function () {
       var positions = {};             // hash → 该页最后一次的 scrollY（由 scroll 事件实时写）
-      var clickKind = null;           // null=后退/前进 | 'page'=普通页面链接 | 'anchor'=带 ?id=
+      var clickKind = null;           // null=后退/前进 | 'page'=普通页面链接 | 'anchor'=带 ?id= | 'appname'=站点名
       var pending = null;             // 待恢复的位置；null = 本次不干预
 
       // 「点首页」的落点：滚过整屏封面，停在「内容刚露头」的位置。
@@ -2864,7 +2864,11 @@
           if (el.tagName === 'A') {
             var href = el.getAttribute('href') || '';
             if (href.slice(0, 2) === '#/') {
-              clickKind = href.indexOf('?id=') > -1 ? 'anchor' : 'page';
+              // 站点名单独一档：它跳的也是首页，但落点是「封面顶部」——与「首页」条目
+              // 的落点（0.8 屏，见 HOME_CONTENT）正好相反，两者必须分开记
+              clickKind = el.classList && el.classList.contains('app-name-link')
+                ? 'appname'
+                : (href.indexOf('?id=') > -1 ? 'anchor' : 'page');
             }
             return;
           }
@@ -2884,6 +2888,8 @@
 
         if (clickKind === 'anchor') {
           pending = null;                        // 交给 docsify 滚到那一节
+        } else if (clickKind === 'appname') {
+          pending = 0;                           // 站点名 → 封面顶部（从子页点也一样）
         } else if (clickKind === 'page') {
           // 有意导航 → 顶部（接管原 auto2top 的职责）；但「首页」例外，见 HOME_CONTENT 注释
           pending = isHome(to) ? HOME_CONTENT : 0;
