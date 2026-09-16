@@ -2841,19 +2841,20 @@
       var clickKind = null;           // null=后退/前进 | 'page'=普通页面链接 | 'anchor'=带 ?id=
       var pending = null;             // 待恢复的位置；null = 本次不干预
 
-      // 「点首页」的落点：跳过整屏封面，落到内容区（.cm-hero）。
+      // 「点首页」的落点：滚过整屏封面，停在「内容刚露头」的位置。
       // ⚠ 与站点名的点击要**有区别**：封面是满屏背景图，两个入口都停在 0 等于没区别 ——
-      //   站点名（.app-name-link）→ 停在封面；首页条目 → 落到内容。
-      // 位置得等渲染完成后才算（切语言时封面与内容的高度都不同），所以用哨兵值占位。
+      //   站点名（.app-name-link）→ 停在封面；首页条目 → 滚到内容。
+      // 实际位置由 homeContentY() 现算（依赖视口高度），所以用哨兵值占位、渲染完成后再取值。
       var HOME_CONTENT = {};
       function isHome(h) {
         h = (h || '').replace(/^#/, '').replace(/\/+$/, '');
         return h === '' || h === '/en';
       }
       function homeContentY() {
-        var el = document.querySelector('.cm-hero');
-        if (!el) return 0;
-        return Math.max(0, el.getBoundingClientRect().top + window.scrollY - 8);
+        // 落点 = 右下角「回到顶部」按钮刚出现的那个滚动位置（0.8 屏，见 #cmBackTop 的 sync）。
+        // 那里整屏封面刚滚出大半、大标题与简介刚进入视野，是「开始看内容」的视觉起点，
+        // 且随视口高度自适应。⚠ 与那边的 0.8 阈值保持一致：改一处要记得改另一处。
+        return Math.round(window.innerHeight * 0.8);
       }
 
       // 点站内链接时标记来源（捕获阶段，早于 docsify 的路由处理）
