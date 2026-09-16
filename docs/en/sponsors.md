@@ -10,4 +10,5 @@ Thanks to these generous supporters — they're the reason CobbleMarket keeps ge
 
 <div class="cm-spon-grid">
   <div class="cm-spon-card"><img src="images/ball-great.png" alt="Great Ball"> <span>美女淼</span></div>
+  <div class="cm-spon-card"><img src="images/ball-poke.png" alt="Poké Ball"> <span>嗯</span></div>
 </div>
