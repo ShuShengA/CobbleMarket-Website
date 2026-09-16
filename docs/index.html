@@ -2871,6 +2871,13 @@
 
     window.$docsify = {
       name: 'CobbleMarket',
+      // 站点名点击的落点。⚠ 不配 nameLink 时 docsify 默认跳 '/'，英文站点了站点名
+      //   会掉回中文首页；⚠ '/en/' 必须排在 '/' 前面 —— docsify 按 key 顺序取第一个
+      //   前缀匹配，'/' 在前会让 /en/ 下的页面也匹配到 '/'（与 search.placeholder 同坑）。
+      nameLink: {
+        '/en/': '/en/',
+        '/': '/'
+      },
       repo: 'https://github.com/ShuShengA/cobblemarket',
 
       // ⚠ 关掉 auto2top（2026-09-14）：它的行为是「每次换页都跳顶部」，**包括浏览器后退** ——
