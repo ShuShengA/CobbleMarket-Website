@@ -2413,6 +2413,25 @@
       sync();
     })();
 
+    // 站点名（.app-name-link）点击补动作：docsify 跳过这类原生链接的点击
+    // （源码里对 app-name-link / page-link 直接 return），所以当目标恰好是当前路由时
+    // hash 不变 → 浏览器不动作 → 视觉上「点了没反应」。这里补一次滚顶，
+    // 与点「首页」条目（走 docsify 处理器、会滚顶）的观感保持一致。
+    (function () {
+      function norm(h) {
+        h = (h || '').replace(/^#/, '');
+        return h === '' ? '/' : h;
+      }
+      document.addEventListener('click', function (e) {
+        var t = e.target;
+        var a = t && t.closest ? t.closest('.app-name-link') : null;
+        if (!a) return;
+        if (norm(a.getAttribute('href')) === norm(window.location.hash)) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    })();
+
     // ===== 正文细节：复制按钮 / 文末装饰 / 滚动入场 =====
     // 这三样都要在「每次正文渲染完之后」重新做一遍 —— docsify 换页是整块替换
     // .markdown-section 的内容，上一页插进去的节点会跟着没掉。
