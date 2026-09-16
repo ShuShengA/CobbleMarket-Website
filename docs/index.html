@@ -2871,12 +2871,15 @@
 
     window.$docsify = {
       name: 'CobbleMarket',
-      // 站点名点击的落点。⚠ 不配 nameLink 时 docsify 默认跳 '/'，英文站点了站点名
-      //   会掉回中文首页；⚠ '/en/' 必须排在 '/' 前面 —— docsify 按 key 顺序取第一个
-      //   前缀匹配，'/' 在前会让 /en/ 下的页面也匹配到 '/'（与 search.placeholder 同坑）。
+      // 站点名点击的落点（docsify@5 源码：取第一个「是当前 route.path 子串」的 key，
+      // 把对应 value 直接 setAttribute 成原生 href）。⚠ 三条都踩过：
+      // ① 不配时默认值 window.location.pathname → 英文站点了站点名会掉回中文首页；
+      // ② value 必须写 '#/...' —— 它是原生 href、不经 docsify 链接编译，写 '/en/' 会
+      //    解析成站点根下的 /en/，而单页应用里没有这个真实目录 → 404；
+      // ③ key 侧 '/en/' 要排在 '/' 前面（'/' 是所有路径的子串，排前面会抢占匹配）。
       nameLink: {
-        '/en/': '/en/',
-        '/': '/'
+        '/en/': '#/en/',
+        '/': '#/'
       },
       repo: 'https://github.com/ShuShengA/cobblemarket',
 
