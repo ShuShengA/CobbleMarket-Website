@@ -757,6 +757,15 @@
       z-index: 4;
     }
 
+    /* 测量稳定前先把卡片藏起来（脚本约 0.45 秒后给 html 加 cm-cover-ready）：
+       封面渲染过程中 .cover-main 的高度是逐步变大的，脚本每测一次就改写一次
+       --cm-card-h，top 跟着一点点下移 —— 连着看就是卡片"从上方滑到正确位置"。
+       藏起来等测稳再放，就看不到这个过程了（用 visibility 而不是 display，
+       保留布局，测量照常）。 */
+    html:not(.cm-cover-ready) .cm-cover-card {
+      visibility: hidden;
+    }
+
     /* 这三个是**装饰**，不参与封面的「错峰浮现」：
        那条规则写在 `.cover .cover-main > *` 上（cm-rise 上浮 + 依次延迟），
        装饰元素被带上就会出现——卡片"从上方落下来"、版本号先以没旋转的样子出现、
@@ -2970,12 +2979,16 @@
       //   所以持续测一段时间，重复写同一个值没有副作用，宁可多测几次。
       var obs = new ResizeObserver(syncCoverCard);
       var observed = false;
-      var ticks = 0;
+      var ticks = 0;        // 总轮询次数（兜底上限）
+      var settle = 0;       // 测到元素之后的拍数
       var timer = setInterval(function () {
         var cm = document.querySelector('.cover .cover-main');
         if (cm) {
           if (!observed) { obs.observe(cm); observed = true; }
           syncCoverCard();
+          // 测到元素后再等 3 拍（约 0.45 秒）才放开显示卡片：这几拍里布局才稳定下来。
+          // 放开之前卡片是 visibility:hidden 的，所以看不到它随中间值逐帧下移。
+          if (++settle === 3) document.documentElement.classList.add('cm-cover-ready');
         }
         // 约 6 秒后停（覆盖渲染 + 布局稳定 + 字体加载）；之后交给 ResizeObserver，
         // 方框变高或窗口缩放都会自动重算
