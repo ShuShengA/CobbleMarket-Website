@@ -78,7 +78,7 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 - **Price limits** — upper and lower bounds per Pokémon form or item variant, with the most specific entry taking precedence
 - **Bans** — ban players from trading with an optional duration and reason; bans restrict trading only and **never freeze assets**
 - **Forced delisting** — admins can view and force-delist any listing, auction or buy order; both parties are notified (queued and delivered on next login if offline)
-- **Market master switch** — stop the market in an emergency with one button (with confirmation); OPs can still use the Admin Panel to clean up
+- **Market master switch** — stop the market in an emergency with one button (with confirmation); the trading entries (Pokémon / Items / Auction / Buy Orders) and Meowth Bank's borrowing entry are greyed out and explain why when clicked; **only trading is blocked** — Settings and History keep working, as do Meowth Bank deposits / withdrawals / repayments and card applications, while pending claims, balance collection and delisting wait until the market reopens (nothing is lost); OPs / admins can still use the Admin Panel to clean up
 - **Server Config screen** — edit fees, limits, durations and switches in-game, with no need to touch the config file
 
 ## And More
