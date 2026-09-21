@@ -35,6 +35,7 @@
 - **Purple Gold Card holder fee discount**: owners can configure a market fee discount for Purple Gold Card holders (covers listing / auction settlement / buy-order fees, stacks with overdue doubling, off by default) — holding the card makes trading cheaper
 - **Purple Gold Card reissue fee**: reissuing a Purple Gold Card now costs a configurable fee (free by default), which goes to the reserve pool; the application screen shows the reissue fee for holders
 - **Net-deposit card requirement**: the Purple Gold Card / Black Gold Card "deposit balance" requirement is now judged by net deposit (demand deposit − outstanding debt), so borrowed money can't inflate deposits to qualify; the application screen shows the net value
+- **Card-apply Pokédex threshold auto-levelling**: when the configured "Pokédex seen" requirement is lower than the "caught" one, it is raised to match, so the two conditions can never contradict each other
 - **Card celebration animation & sound**: receiving a Meow·Purple Gold Card / Meow·Black Gold Card plays a dedicated celebration — the card flies from the application screen to the centre of the screen with its own sound (one per card, the Black Gold Card's longer), and the two cards run at different paces, with the Black Gold Card slower and grander
 
 #### Others
@@ -51,7 +52,6 @@
 
 ### Changes
 
-- Card apply Pokédex thresholds: the seen count is auto-raised to the caught count when set lower (prevents self-contradictory configs)
 - Selected buttons and labels de-texted
 - Item names in item list rows now use rarity colors (matching the inventory tooltip)
 - Auction list rows (Auction House and Admin Panel) now show abbreviated prices (e.g. 1.2k / 3.5M, consistent with the Item Market and Buy Orders; hover tooltips and bid dialogs still show full amounts with thousands separators), and the "From" prefix is dropped from the row; the seller avatar now sits at a fixed position (aligned across rows, matching the Pokémon Market) with the countdown right after it, so Pokémon names and size badges no longer get squeezed
