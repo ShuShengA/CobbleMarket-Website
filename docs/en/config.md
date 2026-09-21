@@ -17,7 +17,7 @@ Path: `config/cobblemarket.json` (generated on first launch)
 
 | Field | Default | Description |
 |---|---|---|
-| `currency.cobblemonEconomy` | auto | ⚠ **Incompatible with Cobblemon 1.8+** (enabling it crashes the server whenever a player obtains, levels up or evolves a Pokémon; a startup warning is logged). Prefer Cobblemon Economy's currency API. **Fabric only** — no NeoForge build, so this switch is always ignored on NeoForge |
+| `currency.cobblemonEconomy` | auto | Prefer Cobblemon Economy's currency API. ⚠ That mod needs **0.0.18 or later** to work on Cobblemon 1.8. **Fabric only** — no NeoForge build, so this switch is always ignored on NeoForge |
 | `currency.cobecoCurrency` | `POKE` | Cobblemon Economy settlement currency: `POKE`=PokeDollars, `PCO`=PokeCoins (either `PCO` or `PokeCoins`, case-insensitive) |
 | `currency.cobbledollars` | auto | Use CobbleDollars (ignored when `cobblemonEconomy=true`) |
 | `currency.impactor` | `false` | Direct Impactor integration (works on both loaders). Lower priority than the two above, and **not** auto-detected on fresh installs — set it to `true` explicitly |

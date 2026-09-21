@@ -2,11 +2,9 @@
 
 本文档解释 CobbleMarket 支持的四种货币模式、自动选择规则，以及它与 Cobblemon Economy、CobbleDollars、Impactor 的配合方式（含 Fabric / NeoForge 平台差异）。
 
-> ⚠ **Cobblemon Economy 与 Cobblemon 1.8+ 不兼容**
+> ⚠ **Cobblemon Economy 需 0.0.18 及以上**
 >
-> Cobblemon 1.8 更改了图鉴的字段名，而 Cobblemon Economy（截至 0.0.17）尚未跟进 —— 两者同时安装且启用该货币时，**玩家获得、升级或进化精灵时（选初始精灵、捕捉、孵化、交易、升级、进化、形态变化）都会导致服务器崩溃**。
->
-> 本模组**不会替你自动切换货币**（静默换掉货币后端会让玩家余额对不上，那比崩溃更危险）。启用了该货币的服务器会在**启动时收到醒目警告** —— 请自行把 `currency.cobblemonEconomy` 改为 `false`，并改用 **CobbleDollars / Impactor / 物品货币**。待 Cobblemon Economy 适配 1.8 后即可改回。
+> 该模组 **0.0.18 起**已适配 Cobblemon 1.8，可正常使用；**0.0.17 及以下**仍会在玩家获得、升级或进化精灵时导致服务器崩溃（选初始精灵、捕捉、孵化、交易、升级、进化、形态变化），请先升级该模组
 
 ## 一、四种货币模式
 
