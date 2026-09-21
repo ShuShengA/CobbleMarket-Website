@@ -2,11 +2,9 @@
 
 This document explains CobbleMarket's four currency modes, the auto-selection rules, and how it works with Cobblemon Economy, CobbleDollars, and Impactor (including Fabric / NeoForge platform differences).
 
-> ⚠ **Cobblemon Economy is incompatible with Cobblemon 1.8+**
+> ⚠ **Cobblemon Economy 0.0.18 or later required**
 >
-> Cobblemon 1.8 renamed a Pokédex field that Cobblemon Economy (up to 0.0.17) still references — with both installed and this currency enabled, **the server crashes whenever a player obtains, levels up or evolves a Pokémon** (starter selection, catching, hatching, trading, levelling, evolution, form changes).
->
-> This mod **will not switch your currency for you** (silently swapping the backend leaves player balances unaccounted for — worse than a crash). Servers with this currency enabled get a **prominent warning at startup** — set `currency.cobblemonEconomy` to `false` and move to **CobbleDollars / Impactor / item currency**. Switch back once Cobblemon Economy catches up with 1.8.
+> That mod **0.0.18 and later** work with Cobblemon 1.8 — use it as normal; **0.0.17 and earlier** still crash the server whenever a player obtains, levels up or evolves a Pokémon (starter selection, catching, hatching, trading, levelling, evolution, form changes), so upgrade it first
 
 ## 1. Four Currency Modes
 
