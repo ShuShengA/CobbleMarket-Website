@@ -1,6 +1,17 @@
 # Changelog
 
-> This page lists the changes for **every version**; the latest is **1.1.0**, followed by all previously released versions below.
+> This page lists the changes for **every version**; the latest is **1.1.1**, followed by all previously released versions below.
+
+## 1.1.1
+
+### Fixes
+
+- **Text overflowing its control in a few screens in English mode**: with "Force Unicode Font" off, some English text drew past its button or dialog border (the Chinese UI is unaffected) — every issue found has been fixed
+- **Chinese search missed Pokemon**: when one term matches several names (searching "鬼斯" — but also "鬼斯通") only one of them ever showed up — now every name containing the text appears (English and pinyin search are unaffected)
+- **Typing a Chinese Pokemon name in the blacklist / price limit / buy order screens picked the wrong Pokemon**: typing "鬼斯" actually selected "鬼斯通", so the rule silently landed on a different Pokemon — now an exact name match wins, and when several match left/right arrows appear next to the preview to flip through them
+- **Balance HUD was not hidden by F1**: it stayed on screen after the vanilla HUD was hidden (in the way when taking screenshots or recording) — it now hides together with the vanilla HUD
+- **Balance HUD sat on top of vanilla screens**: it covered the pause menu, options and inventory — it now drops below those screens (still faintly visible), while this mod's own screens keep it on top
+- **Marks were missing from the auction announcement hover in chat**: every Pokemon detail panel shows marks, yet this one place showed none, so the same Pokemon read differently in two places — it now matches the rest
 
 ## 1.1.0
 
