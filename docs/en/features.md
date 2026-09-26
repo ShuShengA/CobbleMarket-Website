@@ -87,7 +87,7 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 - **Offline notifications** — trade notifications received while offline are queued and delivered on next login, rendered in the player's own language
 - **Balance HUD** — your market balance always visible in the corner, draggable anywhere on screen with snapping and alignment guides
 - **Server-wide trade volume** — the entry screen shows the server's cumulative traded value
-- **Hyper Training support** — integrates with Cobblemon Utility+, showing trained IVs as "real (trained)" and judging by effective values
+- **Hyper Training display** — shows trained IVs as "real (trained)" and judges by effective values
 - **Container content checks** — blacklists, price limits and the egg-trading switch also apply to items inside shulker boxes and similar containers
 - **Egg trading** — Cobbreeding compatible (off by default; owners enable it with a confirmation step)
 - **Config hot reload** — apply config changes with `/market reload`, no restart needed
