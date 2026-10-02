@@ -6,7 +6,7 @@
 
 ### Fixes
 
-- **Items briefly vanishing when closing a screen with Esc**: with materials in a crafting table (or an item on your cursor), pressing Esc left them out of your inventory until you opened any container again — with shop mods (Shopkeepers and the like) it could also leave their trade state out of sync (affects versions from 1.0.1 onward)
+- **Closing a screen with Esc could make items on it briefly "vanish"**: with materials in a crafting table (or an item on your cursor), pressing Esc to close meant they didn't return to your inventory right away — they looked gone until you opened any container again (your own inventory counts). With shop mods like Shopkeepers / PlayerShops it could also leave their trade state out of sync. The cause: our "close animation" intercepted Esc and closed the screen its own way, skipping the vanilla step that tells the server "the container is closed" — so the server still believed the container was open. The close animation now only applies to this mod's own screens; everything else goes through vanilla (affects versions from 1.0.1 onward)
 
 ## 1.1.2
 
