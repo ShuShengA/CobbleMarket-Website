@@ -6,7 +6,7 @@
 
 ### Fixes
 
-- **Items briefly vanishing when closing a screen with Esc**: they now return to your inventory right away; with shop mods this could also leave their trade state out of sync
+- **Items briefly vanishing when closing a screen with Esc**: with materials in a crafting table (or an item on your cursor), pressing Esc left them out of your inventory until you opened any container again — with shop mods (Shopkeepers and the like) it could also leave their trade state out of sync (affects versions from 1.0.1 onward)
 
 ## 1.1.2
 
