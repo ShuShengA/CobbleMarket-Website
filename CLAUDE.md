@@ -29,7 +29,7 @@
 | 新增/改配置项 | `config.md` |
 | 新增/改命令 | `commands.md` |
 | 模组 `CHANGELOG.md` 改动 | `changelog.md`（中英各一份），格式见第五节 |
-| 版本发布 | 全站口径、`_coverpage.md` 表述 |
+| 版本发布 | 全站口径、`_coverpage.md` 表述、**`docs/version.json` 的版本号**（⚠ 每次必改：模组的「有新版本可用」提示读它，忘了改提示就永远不出现；**先在 CurseForge 上架、再改这里**） |
 
 每次改完模组功能，**主动检查网站是否需要同步**，别等用户提。
 
