@@ -1,6 +1,12 @@
 # Changelog
 
-> This page lists the changes for **every version**; the latest is **1.1.2**, followed by all previously released versions below.
+> This page lists the changes for **every version**; the latest is **1.1.3**, followed by all previously released versions below.
+
+## 1.1.3
+
+### Fixes
+
+- **Items briefly vanishing when closing a screen with Esc**: they now return to your inventory right away; with shop mods this could also leave their trade state out of sync
 
 ## 1.1.2
 
