@@ -16,7 +16,7 @@ The following commands require **OP permission**.
 |---|---|
 | `/market on` | Turn the market on |
 | `/market off` | Turn the market off (emergency master switch; while off, every buy / sell / auction / buy-order action is blocked) |
-| `/market ban <player> [duration] [reason]` | Ban a player from trading |
+| `/market ban <player> [duration] [reason]` | Ban a player from trading (see [Ban Management](/en/moderation) for the exact scope) |
 | `/market unban <player>` | Lift a ban |
 | `/market banlist` | List active bans |
 | `/market card give <player> [kind]` | Issue a card credential |

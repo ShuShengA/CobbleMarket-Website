@@ -13,6 +13,7 @@
 - [配置参考](/config)
 - [货币系统](/currency)
 - [喵喵银行](/meowth-bank)
+- [封禁管理](/moderation)
 - [存档数据位置](/save-data)
 
 ---

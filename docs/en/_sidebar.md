@@ -13,6 +13,7 @@
 - [Configuration](/en/config)
 - [Currency](/en/currency)
 - [Meowth Bank](/en/meowth-bank)
+- [Ban Management](/en/moderation)
 - [Save Data Locations](/en/save-data)
 
 ---
