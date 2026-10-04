@@ -16,7 +16,7 @@
 |---|---|
 | `/market on` | 开启整个市场 |
 | `/market off` | 关闭整个市场（紧急总开关，关市期间所有买卖/拍卖/求购操作被拦截） |
-| `/market ban <玩家> [时长] [理由]` | 封禁玩家交易 |
+| `/market ban <玩家> [时长] [理由]` | 封禁玩家交易（限制范围见[封禁管理](/moderation)）|
 | `/market unban <玩家>` | 解除封禁 |
 | `/market banlist` | 列出当前生效的封禁 |
 | `/market card give <玩家> [卡种]` | 发放卡片凭证 |
