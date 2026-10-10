@@ -11,6 +11,7 @@
 - **Server Owner Guide**
 - [Commands](/en/commands)
 - [Configuration](/en/config)
+- [Permission Nodes](/en/permission)
 - [Currency](/en/currency)
 - [Meowth Bank](/en/meowth-bank)
 - [Ban Management](/en/moderation)

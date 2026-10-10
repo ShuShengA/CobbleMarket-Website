@@ -10,20 +10,24 @@ All commands live under `/market`.
 
 ## Admin Commands
 
-The following commands require **OP permission**.
+Admin commands are judged by **permission nodes** (server owners always pass) — see [Permission Nodes](/en/permission) for the full system. The table below lists the permission each command requires:
 
-| Command | Description |
-|---|---|
-| `/market on` | Turn the market on |
-| `/market off` | Turn the market off (emergency master switch; while off, every buy / sell / auction / buy-order action is blocked) |
-| `/market ban <player> [duration] [reason]` | Ban a player from trading (see [Ban Management](/en/moderation) for the exact scope) |
-| `/market unban <player>` | Lift a ban |
-| `/market banlist` | List active bans |
-| `/market card give <player> [kind]` | Issue a card credential |
-| `/market card revoke <player> [kind]` | Revoke a card credential |
-| `/market card list` | List issued cards |
-| `/market loan clear <player>` | Revoke a player's bad debt |
-| `/market reload` | Reload the config file (currency settings still need a restart) |
+| Command | Required Permission | Description |
+|---|---|---|
+| `/market on` | Market Switch | Turn the market on |
+| `/market off` | Market Switch | Turn the market off (emergency master switch; while off, every buy / sell / auction / buy-order action is blocked) |
+| `/market ban <player> [duration] [reason]` | Bans | Ban a player from trading (see [Ban Management](/en/moderation) for the exact scope) |
+| `/market unban <player>` | Bans | Lift a ban |
+| `/market banlist` | Bans | List active bans |
+| `/market card give <player> [kind]` | Finance | Issue a card credential |
+| `/market card revoke <player> [kind]` | Finance | Revoke a card credential |
+| `/market card list` | Finance | List issued cards |
+| `/market loan clear <player>` | Server owner only | Revoke a player's bad debt (an owner intervention, not granted by any node) |
+| `/market perm grant <player> <node>` | Server owner only | Grant a permission node to a player |
+| `/market perm revoke <player> <node>` | Server owner only | Revoke a player's permission node |
+| `/market perm list [player]` | Server owner only | View permission grant records |
+| `/market owner list` | Server owner only | View the server owner list |
+| `/market reload` | OP only | Reload the config file (currency settings still need a restart) |
 
 ### Arguments
 
@@ -41,20 +45,28 @@ The following commands require **OP permission**.
 
 Example: `/market ban Steve 7d Shill bidding`
 
-**Card kind** — `purple` (Meow·Purple Gold Card, the default) or `black` (Meow·Black Gold Card):
+**Card kind** — `purple` (Meowth·Volt Card, the default) or `black` (Meowth·Genesis Card):
 
 ```
 /market card give Steve black
 /market card revoke Steve
 ```
 
+**Permission nodes** — node names for `/market perm grant|revoke` (in-game Tab completion offers them):
+
+`blacklist` (Blacklist) · `pricelimit` (Price Limits) · `ban` (Bans) · `market` (Listing Admin) · `auction` (Auctions) · `buyorder` (Buy Orders) · `finance` (Finance) · `marketswitch` (Market Switch)
+
+⚠ Commands take the **short English name**; see [Permission Nodes](/en/permission) for what each node covers
+
 ## Permissions
 
-Admin commands require **OP permission**. In particular:
+Admin permissions follow a **permission node system** — see [Permission Nodes](/en/permission) for the full explanation and setup guide. Key points:
 
-- **Turning the market on / off** and the **Server Config** can also be handled from the Admin Panel on the market entry screen — no commands needed
-- **Revoking bad debt** (`/market loan clear`) is OP-only and sits outside the other admin duties
-- While the market is off, OPs can still use the Admin Panel for delistings, blacklists and other cleanup
+- **The market does not go by OP level**: who manages which area is decided by the permission nodes the server owner grants. The only difference between an OP and a regular player is that **an OP with no permission nodes can still see the Admin Panel button** (inside, every function is greyed out, so they can see what to ask the server owner to grant)
+- **Turning the market on / off** (`/market on`, `/market off`) and the **Server Config** can also be handled from the Admin Panel on the market entry screen — no commands needed (Server Config is server-owner-only)
+- **Revoking bad debt** (`/market loan clear`) is **server-owner-only** and sits outside the other admin duties
+- While the market is off, anyone holding the permission nodes can still use the Admin Panel for delistings, blacklists and other cleanup
+- **`/market reload` is the only admin command still reserved for OPs**: server owners edit the config by hand and rely on it to apply — a singleplayer host with cheats enabled can use it too
 
 ## Equivalent Screens
 

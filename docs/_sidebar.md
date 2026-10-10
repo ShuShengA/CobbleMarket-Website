@@ -11,6 +11,7 @@
 - **服主指南**
 - [命令参考](/commands)
 - [配置参考](/config)
+- [权限节点](/permission)
 - [货币系统](/currency)
 - [喵喵银行](/meowth-bank)
 - [封禁管理](/moderation)
