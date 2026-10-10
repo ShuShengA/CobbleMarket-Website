@@ -238,7 +238,7 @@ grep -o '"cobblemarket\.[^"]*"[[:space:]]*:[[:space:]]*"[^"]*"' \
 | 物品市场 | Item Market | |
 | 求购单 | Buy Orders | |
 | 喵喵银行 | Meowth Bank | |
-| 喵·紫金卡 / 喵·黑金卡 | Meow·Purple Gold Card / Meow·Black Gold Card | |
+| 喵·紫电卡 / 喵·金轮卡 | Meowth·Volt Card / Meowth·Genesis Card | |
 | 准备金池 | reserve pool | |
 | 上架 / 下架 | list / delist | |
 | 服主 | server owner | |

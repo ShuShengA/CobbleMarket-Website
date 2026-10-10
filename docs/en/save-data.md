@@ -31,11 +31,11 @@ All data is persisted via Minecraft's PersistentState mechanism in the server wo
 - **Backup plugins/scripts must include the `data/` directory**: backing up only world region files while omitting `data/` creates a mismatch after rollback — player data is old (items already returned to inventories) while market data is new (listings still exist), causing item duplication.
 - Each `.dat` file has a same-named `.bak` backup (maintained automatically by the mod): if a state file is corrupted, startup recovers it from `.bak`; `.bak` is refreshed on every trade save and on a clean shutdown.
 - The mod writes trade data to disk shortly after every trade (~3 seconds). Even so, **server owners should still shut down with `/stop`** — killing the process loses vanilla data changes (inventories, blocks, etc.) within the autosave window; this is vanilla Minecraft behavior the mod cannot change.
-- If a trade-data save fails, the server log prints `CobbleMarket state save failed` and online OPs receive a red warning — when this appears, **run `/stop` for a clean shutdown first** (the shutdown save writes again and refreshes backups, salvaging as much data as possible), then check disk space and file permissions.
+- If a trade-data save fails, the server log prints `CobbleMarket state save failed` and online server owners receive a red warning — when this appears, **run `/stop` for a clean shutdown first** (the shutdown save writes again and refreshes backups, salvaging as much data as possible), then check disk space and file permissions.
 
 ## Trade History CSV and Compensation Reconciliation
 
-Since beta.4 the mod writes every trade **synchronously** to a CSV ledger (independent of autosave, survives crashes/process kills) at `config/cobblemarket/history/history_<date>_<lang>.csv`, with fields: time (second precision), type, category, seller, buyer, Pokémon/item, price, fee, details.
+Since beta.4 the mod writes every trade **synchronously** to a CSV ledger (independent of autosave, survives crashes/process kills) at `config/cobblemarket/history/history_<date>_<lang>.csv`, with fields: time (second precision), type, category, seller, buyer, seller UUID, buyer UUID, Pokémon/item, price, fee, details, primary type.
 
 Types (market/auction/buy-order full chain): listed (market/auction listing), buy order (buy order posted, the poster occupies the seller column), sold (market/auction sale, buy order delivery), removed (manual close/expired/unsold/admin force; the `reason=` column distinguishes: user / expired / admin / unsold), returned (pending return claimed).
 

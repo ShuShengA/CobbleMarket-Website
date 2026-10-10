@@ -10,7 +10,7 @@ This page explains what a ban actually blocks, what it leaves untouched, and how
 | Commands | `/market ban <player> [duration] [reason]` · `/market unban <player>` · `/market banlist` |
 
 - **Duration**: `30m` (minutes) / `12h` (hours) / `7d` (days) — they combine, e.g. `1d12h`; **leaving it out = permanent**
-- **Permission**: requires **OP permission** (the same as the admin commands and the Admin Panel)
+- **Permission**: requires the **Bans** permission node (server owners always pass; see [Permission Nodes](/en/permission))
 
 ## 2. What a ban blocks
 

@@ -6,7 +6,7 @@ CobbleMarket covers the whole of "how do players trade with each other" — list
 
 List Pokémon from your **party or PC**, and browse every listing on the server.
 
-- **Filters** — type, ability, nature, IVs, shininess, Hyper Training and gender, narrowed down one at a time
+- **Filter panel** — the **Filter** button at the right end of the search row opens a **panel beside the list**: shininess, gender, type, ability, nature, Hyper Training and IVs, plus one-click reset; collapsed by default, and opening it no longer pushes the list around
 - **Hover details** — level, ball, type, nature (including the effective nature when a Nature Mint was used), ability, all six IVs (Hyper Trained values shown as "real (trained)"), friendship, Marks, size, held item
 - **3D Pokémon icons** — icons in lists and detail panels play Cobblemon's built-in idle animation by default, and can be switched to fully static in the settings
 
@@ -57,7 +57,7 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 - **Three tiers of overdue penalties** — 7 days doubles market fees → 14 days freezes market trading → 30 days writes the debt off as bad debt (the owner is alerted and can revoke it manually)
 - **Deposits** — spare money earns daily interest and can be withdrawn at any time, feeding the reserve pool and closing the deposit-lending loop
 - **Meowth Pay** — pay for a purchase on credit, with the server reserve paying the seller upfront and the buyer repaying in installments
-- **Card credentials** — the Meow·Purple Gold Card and Meow·Black Gold Card are high-limit credentials whose credit line is bound to the holder rather than the item (duplicated cards are worthless), with configurable fee discounts and self-application requirements
+- **Card credentials** — the Meowth·Volt Card and Meowth·Genesis Card are high-limit credentials whose credit line is bound to the holder rather than the item (duplicated cards are worthless), with configurable fee discounts and self-application requirements
 - **Anti-abuse design** — credit-line growth cooldown, a per-IP debt cap, trade-pair detection and a deposit-rate guard rail (so "borrow money, deposit it, live off the interest" can't work)
 - **Credit ledger** — every loan and repayment is written to its own CSV ledger, in both Chinese and English, split by day, for owners to audit offline
 
@@ -66,6 +66,7 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 ## History & Ledgers
 
 - **In-game history screen** — personal history reads the last 14 days of the ledger (up to 500 entries each), while admins can view the server-wide feed
+- **Hover for the full row** — hovering a row highlights it and shows the complete info for that line: long player names, Pokémon names and amounts are no longer cut off; Pokémon names use the primary-type colour and item names the rarity colour (same as the market lists)
 - **CSV trade ledger** — covers the market, auctions and Buy Orders end to end, with a "details" column recording full Pokémon stats and item components so that goods can be **reproduced exactly**
 - **CSV credit ledger** — loan creation / overdue / settlement events plus each repayment split into principal and interest, with the repayment method recorded
 - Ledgers are written **synchronously**, independent of world autosaves, so a crash or a killed process doesn't lose them
@@ -74,11 +75,13 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 
 ## Admin Tools
 
+- **Permission nodes** — the market does not go by OP (`/op` can be passed on by any OP): who manages which area is decided by the nodes the server owner grants, across **eight admin nodes**; the owner list is hand-edited in the config file. Full guide: [Permission Nodes](/en/permission)
 - **Blacklists** — separate tabs for Pokémon and items, precise down to the **item variant** (ban only "Sharpness V" enchanted books without touching other books; entries match by containment so adding a junk enchantment can't slip past), with add-from-held-item, bulk banning and exact unbanning by search results
+- **Honours vanilla "untradeable"** — a Pokémon marked untradeable in Cobblemon (the vanilla trade screen locks it) is blocked from all three paths — market, auctions and buy orders — and the picker screens draw the same lock on that row
 - **Price limits** — upper and lower bounds per Pokémon form or item variant, with the most specific entry taking precedence
 - **Bans** — ban a player from the **market's trading** (buying Pokémon / items, listing them, creating auctions, bidding, creating buy orders, delivering, paying for a delivery) for a set duration or permanently, with a reason; **assets are never seized** (cancelling listings, claiming returns and collecting pending balance keep working), and Meowth Bank is unaffected — see [Ban Management](/en/moderation) for the exact scope
 - **Forced delisting** — admins can view and force-delist any listing, auction or buy order; both parties are notified (queued and delivered on next login if offline)
-- **Market master switch** — stop the market in an emergency with one button (with confirmation); the trading entries (Pokémon / Items / Auction / Buy Orders) and Meowth Bank's borrowing entry are greyed out and explain why when clicked; **only trading is blocked** — Settings and History keep working, as do Meowth Bank deposits / withdrawals / repayments and card applications, while pending claims, balance collection and delisting wait until the market reopens (nothing is lost); OPs / admins can still use the Admin Panel to clean up
+- **Market master switch** — stop the market in an emergency with one button (with confirmation); the trading entries (Pokémon / Items / Auction / Buy Orders) and Meowth Bank's borrowing entry are greyed out and explain why when clicked; **only trading is blocked** — Settings and History keep working, as do Meowth Bank deposits / withdrawals / repayments and card applications, while pending claims, balance collection and delisting wait until the market reopens (nothing is lost); server owners and admins holding the corresponding permission nodes can still use the Admin Panel to clean up (OPs can see the entry too, though its functions are still judged by the nodes)
 - **Server Config screen** — edit fees, limits, durations and switches in-game, with no need to touch the config file
 
 ## And More

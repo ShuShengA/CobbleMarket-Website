@@ -48,7 +48,7 @@ deposit daily rate cap = min( per-period fee × (periods + 1) ÷ (14 × periods)
 
 ### Net-deposit requirement (blocks "borrow-to-inflate-deposit" card qualification)
 
-The Purple/Black card "deposit balance" requirement is judged by **net deposit**: net deposit = demand deposit balance − outstanding debt (bad-debt write-offs excluded). A player borrowing 50k and depositing it gains +50k deposit but +50k debt — net deposit unchanged, so borrowed money can't dress up assets to qualify. The apply screen's condition row shows the net value, making the rule transparent.
+The Volt/Genesis card "deposit balance" requirement is judged by **net deposit**: net deposit = demand deposit balance − outstanding debt (bad-debt write-offs excluded). A player borrowing 50k and depositing it gains +50k deposit but +50k debt — net deposit unchanged, so borrowed money can't dress up assets to qualify. The apply screen's condition row shows the net value, making the rule transparent.
 
 ## 4. Loans and repayment
 
@@ -65,7 +65,7 @@ The Purple/Black card "deposit balance" requirement is judged by **net deposit**
 | Any | Overdue status: new loans / Meowth Pay blocked, red notice | Catching up on installments restores it |
 | ≥ 7 days | Market fees doubled (for the payer) | Drops back under 7 days |
 | ≥ 14 days | Market trading frozen (reuses the ban system — blocks trading, never asset claims) | Repayment unfreezes automatically |
-| ≥ 30 days | Written off as bad debt: principal unrecoverable, trading stays frozen, OPs get an alert | Owner intervention (see §9) |
+| ≥ 30 days | Written off as bad debt: principal unrecoverable, trading stays frozen, server owners get an alert | Owner intervention (see §9) |
 
 - Sanctions recompute in real time after every repayment: one installment paid reduces overdue days by 7, downgrades apply immediately
 - Bad-debt players stay frozen permanently. Owners have two levels of intervention: **unban only** (trading restored, borrowing still blocked) or **revoke the bad debt** (trading and borrowing fully restored)
@@ -102,33 +102,33 @@ Available limit = max(0, credit base − total outstanding debt), then clamped t
 - Three anti-abuse layers (snapshotted at trade time, silently excluded from the volume):
   1. Meowth Pay trades never count; buying trades never count while the buyer has any open loan (blocks borrow→buy→limit-up→borrow loops)
   2. Same-pair detection: once the same buyer-seller pair reaches the trade cap (default 3) within the window (default 30 days), their later trades don't count — **both the window and the cap are owner-configurable**
-  3. Same IP on both sides (buyer not OP) → the trade counts ×0.9
+  3. Same IP on both sides (buyer is not a server owner) → the trade counts ×0.9
 - **Credit growth cooldown** (default 24 hours, 0 = off): trades don't count toward the limit during the cooldown — the limit grows on a delay, closing the "farm-then-borrow-then-run" window for organized groups
-- **Same-IP debt cap** (`ipDebtLimit`): total outstanding debt of every player who used this IP within 30 days, plus the new loan, must not exceed the cap — blocks alt-army borrowing (OPs exempt; 0 = disabled)
+- **Same-IP debt cap** (`ipDebtLimit`): total outstanding debt of every player who used this IP within 30 days, plus the new loan, must not exceed the cap — blocks alt-army borrowing (server owners exempt; 0 = disabled)
 
-## 7. Card system (Meow·Purple Gold Card / Meow·Black Gold Card)
+## 7. Card system (Meowth·Volt Card / Meowth·Genesis Card)
 
 High-limit credential items — holders get a **fixed borrowing limit** (independent of the trade-volume formula). The limit is bound to holder state, not the item, so cards duplicated by item bugs are worthless; dropped cards vanish instantly (no trading), and holders can re-obtain the card at Meowth Bank for a reissue fee.
 
-### Meow·Purple Gold Card
+### Meowth·Volt Card
 
 - Limit `purpleCardCreditLimit` (default 1M); server-wide cap `purpleCardCount` (default 20, 0 = unlimited)
-- How to get: the owner issues it via `/market card give <player>`; or, with self-apply enabled, players apply via the Purple Gold Card icon on the left of Meowth Bank (the application fee goes to the reserve pool)
+- How to get: the owner issues it via `/market card give <player>`; or, with self-apply enabled, players apply via the Volt Card icon on the left of Meowth Bank (the application fee goes to the reserve pool)
 - Seven self-apply conditions (all configurable, 0 = not required): asset (cash balance) / spending (all-time counted buying volume) / credit (credit base) / **net deposit** (demand deposit − outstanding debt, see §3) / Pokédex seen count (includes caught) / Pokédex caught count / clean record
 - Fee discount: market fees are discounted by `purpleCardFeeDiscount` (listing/auction settlement/buy-order fees, stacks with overdue doubling, off by default)
 - Card holders are exempt from the same-IP debt cap (alts can't hold cards: server-wide cap + seven conditions)
 
-### Meow·Black Gold Card
+### Meowth·Genesis Card
 
-- One tier above Purple: limit `blackCardCreditLimit` (default 5M); server cap `blackCardCount` (default 5)
-- Hard apply requirement: **must already hold the Purple Gold Card** + the seven conditions (same shape, configurable) + the application fee
-- **Upgrade replacement**: obtaining the Black Gold Card auto-removes the Purple Gold Card qualification (no double slot); the Black Gold Card's limit and fee discount apply
-- Everything else matches the Purple Gold Card (drop-to-vanish / reissue fee / same-IP exemption)
+- One tier above Volt: limit `blackCardCreditLimit` (default 5M); server cap `blackCardCount` (default 5)
+- Hard apply requirement: **must already hold the Volt Card** + the seven conditions (same shape, configurable) + the application fee
+- **Upgrade replacement**: obtaining the Genesis Card auto-removes the Volt Card qualification (no double slot); the Genesis Card's limit and fee discount apply
+- Everything else matches the Volt Card (drop-to-vanish / reissue fee / same-IP exemption)
 
 ### Owner tools
 
 - `/market card give|revoke|list <player> [purple|black]`: issue/revoke/list (purple by default; revoke works for offline players)
-- Card management screen (under the Rules button in Meowth Bank, OP only): every holder listed with a per-row revoke button
+- Card management screen (under the Rules button in Meowth Bank, requires the Finance node): every holder listed with a per-row revoke button
 - Holder display panels (under each card in Meowth Bank, visible to everyone): the title shows holders/cap, and the panel lists holders (skin avatar + name, scrollable)
 
 ## 8. Configuration (editable in the in-game Server Config screen)
@@ -153,7 +153,7 @@ High-limit credential items — holders get a **fixed borrowing limit** (indepen
 
 ## 9. Owner tools
 
-- **All Loans** screen (Meowth Bank bottom-right, OP only): the server-wide loan ledger with each borrower's latest IP (alt spotting); a "Bad Debt" tab filters all bad debts; a "Revoke" button per bad-debt row (5-second cooldown confirmation dialog)
+- **All Loans** screen (Meowth Bank bottom-right, requires the Finance node): the server-wide loan ledger with each borrower's latest IP (alt spotting); a "Bad Debt" tab filters all bad debts; a "Revoke" button per bad-debt row (5-second cooldown confirmation dialog)
 - **`/market loan clear <player>`**: the command twin of the revoke button
 - **Admin Panel alert line**: current reserve pool + total bad debt; a negative pool (= owner debt) renders the whole line red
 - **Audit ledgers**: `config/cobblemarket/credit/` contains `loan_records_<date>_<lang>.csv` and `repayment_records_<date>_<lang>.csv` — Chinese and English copies, split by day, append-only; repayments split principal/interest with method (manual/auto/early)

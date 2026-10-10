@@ -77,10 +77,11 @@ Every transaction is validated server-side and the client is display-only, so ch
 
 ## More Capabilities
 
-- **Meowth Bank** (optional, off by default) — credit loans, 3 / 6 / 12-installment repayment, interest-bearing deposits, three tiers of overdue penalties, and the Meow·Purple Gold Card / Meow·Black Gold Card credit credentials
+- **Meowth Bank** (optional, off by default) — credit loans, 3 / 6 / 12-installment repayment, interest-bearing deposits, three tiers of overdue penalties, and the Meowth·Volt Card / Meowth·Genesis Card credit credentials
 - **History & Ledgers** — an in-game history screen plus CSV ledgers for server owners (the trade ledger answers "where did the goods go", the credit ledger answers "where did the money go")
-- **Admin Tools** — blacklists, price limits, bans, forced delistings, a market master switch, and an in-game Server Config screen
-- **Personalisation** — 3D Pokémon icons and animations, Marks and size badges, a repositionable balance HUD, celebration animations and other client-side switches
+- **Admin Tools** — blacklists, price limits, bans, forced delistings, a market master switch, **permission nodes** (the owner decides who manages which area — see [Permission Nodes](/en/permission)), and an in-game Server Config screen (server owners only)
+- **Personalisation** — 3D Pokémon icons and animations, click-to-cry, Marks and size badges, a repositionable balance HUD, celebration animations, a custom cursor and other client-side switches (grouped under "Pokémon" / "Items" in the settings); being outbid, a loan auto-deduction, an overdue reminder or a sale landing each get their own sound
+- **Fuller Pokémon info** — trading screens show the Pokémon's four moves, coloured by type; hover any row for the complete line, and chat broadcasts can be hovered for full details
 
 See [Features](/en/features) for the full list, and the [Changelog](/en/changelog) for every change.
 

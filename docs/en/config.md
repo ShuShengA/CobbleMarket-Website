@@ -6,7 +6,7 @@ Path: `config/cobblemarket.json` (generated on first launch)
 
 **Two ways to edit it:**
 
-1. **In-game (recommended)** — the **Server Config** screen at the bottom of the Admin Panel covers fees, limits, durations and switches; Meowth Bank settings live in the **Meowth Bank Config** screen reached from there
+1. **In-game (recommended)** — the **Server Config** screen at the bottom of the Admin Panel (**server owners only**) covers fees, limits, durations and switches; Meowth Bank settings live in the **Meowth Bank Config** screen reached from there
 2. **Edit the file directly** — then run `/market reload` to apply changes without a restart
 
 > ⚠ **Currency settings (the `currency` block) are read only at server startup.** After changing them you must restart; `/market reload` will not apply them (it tells you so when it detects a change).
@@ -26,6 +26,14 @@ Path: `config/cobblemarket.json` (generated on first launch)
 Priority: **Cobblemon Economy → CobbleDollars → Impactor → item currency**. Installing one of those mods enables it automatically on a fresh install.
 
 Full details, including how the market cooperates with each currency mod, are in [Currency](/en/currency).
+
+## Permission (Server Owners)
+
+| Field | Default | Description |
+|---|---|---|
+| `serverOwners` | `[]` | Server owner list (UUID array) — owners hold every admin permission and are the only ones who can edit the server config or grant permission nodes to others. ⚠ **Hand-edited only** (there is no command entry point); how to fill it in and how to find your UUID are covered in [Permission Nodes](/en/permission) |
+
+> ⚠ An **empty list means nobody has admin access** (secure default) — the startup log prints how many owners were loaded so you can confirm it took
 
 ## Market
 
@@ -76,12 +84,12 @@ Off as a whole by default. Enabling it involves lending and the server economy �
 | `finance.creditLimit` | see below | Credit-limit formula weights and bounds — see [Meowth Bank](/en/meowth-bank) |
 | `finance.dailyDepositRate` | `0.0001` | Daily interest on demand deposits (`0.0001` = 0.01% per day ≈ 3.65% per year), **accrued by actual deposit time and prorated for partial days**. ⚠ Guarded against arbitrage: values above the safe bound are auto-clamped and logged, and all fee-free loan plans clamp it to 0 |
 | `finance.autoRepayMinBalance` | `1000` | Balance kept during automatic collection; any shortfall moves the loan into overdue |
-| `finance.ipDebtLimit` | `100000` | Cap on total outstanding debt per IP (blocks alt-account funnelling; OPs exempt; `0` = disabled) |
+| `finance.ipDebtLimit` | `100000` | Cap on total outstanding debt per IP (blocks alt-account funnelling; server owners exempt; `0` = disabled) |
 | `finance.tradePairWindowDays` | `30` | Same-pair detection window in days (anti wash-trading) |
 | `finance.tradePairMaxTrades` | `3` | Same-pair trade cap |
 | `finance.overdueDays` | 7 / 14 / 30 | Three overdue tiers: `feeDouble` (fees double) / `freeze` (trading frozen) / `badDebt` (written off) |
-| `finance.purpleCard*` | — | Issue cap, credit line, self-apply switch, seven application conditions, application / reissue fees and fee discount for the Meow·Purple Gold Card. **12 settings in total** |
-| `finance.blackCard*` | — | The same set for the Meow·Black Gold Card. **12 settings in total**; holding a Purple Gold Card is a hard requirement |
+| `finance.purpleCard*` | — | Issue cap, credit line, self-apply switch, seven application conditions, application / reissue fees and fee discount for the Meowth·Volt Card. **12 settings in total** |
+| `finance.blackCard*` | — | The same set for the Meowth·Genesis Card. **12 settings in total**; holding a Volt Card is a hard requirement |
 
 > The card settings are numerous and interlocking (application conditions, the net-deposit requirement, fee discounts stacking with overdue doubling). See [Meowth Bank](/en/meowth-bank) for the full explanation.
 
