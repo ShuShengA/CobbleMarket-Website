@@ -57,3 +57,7 @@
 - `repayment_records_<日期>_<语言>.csv`（还款事件）：时间、玩家、贷款ID、本金部分、利息、方式、详情。方式：主动/自动划扣/提前结清。
 
 与交易账本分工：交易账本回答「货去哪了」，信用账本回答「钱怎么走的」。玩家报告借贷纠纷时：先在 loan_records 按玩家名找创建记录（记下贷款ID），再在 repayment_records 按贷款ID 核对该笔全部还款流水。目录内 README 有完整字段说明。
+
+---
+
+相关文档：[命令参考](/commands) · [配置参考](/config) · [权限节点](/permission) · [货币系统](/currency) · [喵喵银行](/meowth-bank) · [封禁管理](/moderation) · [存档数据位置](/save-data)

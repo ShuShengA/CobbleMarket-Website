@@ -85,4 +85,4 @@
 
 ---
 
-其他文档：[命令参考](/commands) · [配置参考](/config) · [封禁管理](/moderation) · [喵喵银行](/meowth-bank)
+相关文档：[命令参考](/commands) · [配置参考](/config) · [权限节点](/permission) · [货币系统](/currency) · [喵喵银行](/meowth-bank) · [封禁管理](/moderation) · [存档数据位置](/save-data)

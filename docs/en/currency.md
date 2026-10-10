@@ -140,3 +140,7 @@ Set `currency.cobblemonEconomy = false` and `currency.cobbledollars = true` in y
 - Emergency response: set both virtual currency switches to `false` and fall back to item currency; the market keeps working
 
 See also [Security](/en/security), section 7 "Currency Dependency Boundary".
+
+---
+
+Related docs: [Commands](/en/commands) · [Configuration](/en/config) · [Permission Nodes](/en/permission) · [Currency](/en/currency) · [Meowth Bank](/en/meowth-bank) · [Ban Management](/en/moderation) · [Save Data Locations](/en/save-data)

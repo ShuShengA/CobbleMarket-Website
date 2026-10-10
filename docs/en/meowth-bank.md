@@ -206,3 +206,7 @@ By **net deposit**: net deposit = demand deposit balance − outstanding debt (b
 - IP-based anti-abuse stops casual alts, not dedicated attackers behind proxies; the credit formula (new accounts have zero limit, volume-backed) + the credit growth cooldown + the sanction chain are the main defenses
 - Organized wash-trading cash-outs are squeezed by three layers: volume cost (1 credit needs 2 of real trades), same-pair detection (raises the cost), and the growth cooldown (closes the quick in-and-out window) — patient long-term farming can't be fully sealed off, and the limit max is the owner's risk-exposure dial
 - Turning the master switch off only blocks **new** lending — existing loans keep running, mirroring the market switch philosophy ("block new trades, never lock up assets")
+
+---
+
+Related docs: [Commands](/en/commands) · [Configuration](/en/config) · [Permission Nodes](/en/permission) · [Currency](/en/currency) · [Meowth Bank](/en/meowth-bank) · [Ban Management](/en/moderation) · [Save Data Locations](/en/save-data)

@@ -85,4 +85,4 @@ Because **"permission nodes cannot be passed on" is the foundation of this desig
 
 ---
 
-More docs: [Commands](/en/commands) · [Configuration](/en/config) · [Ban Management](/en/moderation) · [Meowth Bank](/en/meowth-bank)
+Related docs: [Commands](/en/commands) · [Configuration](/en/config) · [Permission Nodes](/en/permission) · [Currency](/en/currency) · [Meowth Bank](/en/meowth-bank) · [Ban Management](/en/moderation) · [Save Data Locations](/en/save-data)

@@ -49,3 +49,7 @@ A ban **never seizes assets**, and it does not take over other systems:
 - **Screens still open normally** (there is no permanent "you are banned" banner)
 - Only when they **click a blocked action** does the server reject it, with a red message showing **the remaining time and the ban reason**
 - ⇒ For now players only find out by trying; there is no way to see your own ban status up front
+
+---
+
+Related docs: [Commands](/en/commands) · [Configuration](/en/config) · [Permission Nodes](/en/permission) · [Currency](/en/currency) · [Meowth Bank](/en/meowth-bank) · [Ban Management](/en/moderation) · [Save Data Locations](/en/save-data)

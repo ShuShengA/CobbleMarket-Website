@@ -140,3 +140,7 @@ Cobblemon Economy 自己的配置（`world/config/cobblemon-economy/` 下）中�
 - 紧急应对：把两个虚拟货币开关都设为 `false`，切换回物品货币模式，市场功能不受影响
 
 详见 [安全设计](/security) 第 7 节「货币系统依赖边界」。
+
+---
+
+相关文档：[命令参考](/commands) · [配置参考](/config) · [权限节点](/permission) · [货币系统](/currency) · [喵喵银行](/meowth-bank) · [封禁管理](/moderation) · [存档数据位置](/save-data)

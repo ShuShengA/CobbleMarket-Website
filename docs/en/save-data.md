@@ -57,3 +57,7 @@ Finance loan/repayment events are **synchronously appended** to a separate credi
 - `repayment_records_<date>_<lang>.csv` (repayment events): Time, Player, Loan ID, Principal Part, Interest, Method, Details. Methods: Manual / Auto / Early payoff.
 
 Split of duties: the trade ledger answers "where did the goods go", the credit ledger answers "where did the money go". For loan disputes: find the Created record in loan_records by player name (note the loan ID), then check every repayment for that loan ID in repayment_records. Full field descriptions are in the directory's README.
+
+---
+
+Related docs: [Commands](/en/commands) · [Configuration](/en/config) · [Permission Nodes](/en/permission) · [Currency](/en/currency) · [Meowth Bank](/en/meowth-bank) · [Ban Management](/en/moderation) · [Save Data Locations](/en/save-data)
