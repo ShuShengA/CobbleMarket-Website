@@ -83,8 +83,6 @@ The only difference: **an OP with no permission nodes can still see the Admin Pa
 
 Because **"permission nodes cannot be passed on" is the foundation of this design**: hook up an external permission source and "who can grant market permissions" turns into "whoever holds `luckperms.*`" — a chain that can be passed on further, which amounts to handing the foundation away. The market only recognises the server owner list, and the list can only be changed in a file on the server.
 
-> An external permission bridge is reserved in the design (deliberately not in phase one); if it is ever hooked up, the right shape is "server owner list always passes + external permissions as an **extra read-only** source only"
-
 ---
 
 More docs: [Commands](/en/commands) · [Configuration](/en/config) · [Ban Management](/en/moderation) · [Meowth Bank](/en/meowth-bank)
