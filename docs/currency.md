@@ -20,7 +20,9 @@ CobbleMarket 的货币由 `config/cobblemarket.json` 中的 `currency` 配置决
 
 优先级：**Cobblemon Economy → CobbleDollars → Impactor → 物品货币**。
 
-货币单位显示：虚拟货币（PokeDollars / PokeCoins / CobbleDollars）模式的价格单位在行内、弹窗、悬停与聊天消息中统一为 **₽**（不显示货币名）；物品模式显示物品名。
+货币单位显示：虚拟货币（PokeDollars / PokeCoins / CobbleDollars）模式的价格单位在行内、弹窗、悬停与聊天消息中统一为 **₽**（不显示货币名）。
+
+物品模式：**凡是画得下图标的地方都显示那件物品的图标** —— 余额 HUD、市场/拍卖/求购的列表行、出价与购买弹窗、悬停窗、贷款存款还款等金额界面都是；**只有画不进图标的地方**才退回物品名：聊天栏消息正文、输入框占位符、货币切换按钮的悬停提示。
 
 ### 各平台可用性
 

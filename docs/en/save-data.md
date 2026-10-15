@@ -39,7 +39,11 @@ Since beta.4 the mod writes every trade **synchronously** to a CSV ledger (indep
 
 Types (market/auction/buy-order full chain): listed (market/auction listing), buy order (buy order posted, the poster occupies the seller column), sold (market/auction sale, buy order delivery), removed (manual close/expired/unsold/admin force; the `reason=` column distinguishes: user / expired / admin / unsold), returned (pending return claimed).
 
-Details column: full Pokémon stats (level/shiny/IVs/EVs/hyper training/nature/ability/gender/ball/held item/form) and item components (count/enchantment summary/full NBT) — goods can be recreated faithfully.
+Details column: full Pokémon data (level/shiny/IVs/EVs/hyper training/nature/ability/gender/ball/held item's full NBT/form/**nickname**/**size**/**Gigantamax and Dynamax Level**/**Original Trainer**/**Tera type**/**friendship**/**moves**/**marks**) and item components (count/enchantment summary/full NBT) — goods can be recreated faithfully.
+
+⚠ The Pokémon part is read from the Pokémon's **full data**, so **records written before this update are filled in as well** (nickname, size, Gigantamax and Original Trainer were not recorded before and can now be looked up).
+
+⚠ When there are many marks they **wrap inside the same cell** (up to nearly 200 marks on one Pokémon, 10 per line): turn on "Wrap Text" in Excel to see them all; when reading programmatically, parse it as standard CSV (a newline inside quotes belongs to the same cell — **do not split by line**).
 
 If a player reports "my listed Pokémon/item disappeared", server owners can reconcile in three steps to confirm whether it was lost and compensate:
 
