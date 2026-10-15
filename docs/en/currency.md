@@ -20,7 +20,9 @@ CobbleMarket's currency is controlled by the `currency` section in `config/cobbl
 
 Priority: **Cobblemon Economy → CobbleDollars → Impactor → item currency**.
 
-Currency unit display: virtual currency modes (PokeDollars / PokeCoins / CobbleDollars) use **₽** as the price unit everywhere — inline, dialogs, hovers, and chat messages (no currency names shown); item mode shows the item name.
+Currency unit display: virtual currency modes (PokeDollars / PokeCoins / CobbleDollars) use **₽** as the price unit everywhere — inline, dialogs, hovers, and chat messages (no currency names shown).
+
+Item mode: **anywhere an icon fits, that item's icon is shown** — the balance HUD, market / auction / buy-order list rows, bid and purchase dialogs, hover windows, and the loan / deposit / repayment screens; the item name is only used where an icon does not fit: chat message text, input placeholders, and the currency toggle button's tooltip.
 
 ### Platform availability
 
