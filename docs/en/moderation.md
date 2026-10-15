@@ -6,7 +6,7 @@ This page explains what a ban actually blocks, what it leaves untouched, and how
 
 | Method | How |
 |---|---|
-| Admin panel | The "Ban" tab: enter a player name, duration and reason → confirm. The list shows who banned them and how much time is left, and you can lift it at any time |
+| Admin panel | The "Ban Management" screen: the **Bans** tab takes a player name, duration and reason → confirm. The list shows who banned them and how much time is left, and you can lift it at any time; an **info icon** in the top-left corner shows the exact scope ("what it blocks / what it leaves alone"); there is also a "**Change Log**" tab (see section 6) |
 | Commands | `/market ban <player> [duration] [reason]` · `/market unban <player>` · `/market banlist` |
 
 - **Duration**: `30m` (minutes) / `12h` (hours) / `7d` (days) — they combine, e.g. `1d12h`; **leaving it out = permanent**
@@ -31,7 +31,7 @@ In one sentence: **every action that spends money in the market, or sells someth
 A ban **never seizes assets**, and it does not take over other systems:
 
 - **Getting your own things back**: cancelling a listing, claiming returns (Pokémon / items), collecting a pending balance, **rejecting a delivery** (sending it back)
-- **Meowth Bank**: deposits / withdrawals / borrowing / repaying all work as usual — the bank has its own limits (credit line, overdue, bad debt) and **does not look at bans**
+- **Meowth Bank**: deposits / withdrawals / repaying **always work**; **borrowing works by default too**, and is only blocked when you tick "**Also block loans**" while banning (that toggle is **off by default**). ⚠ **Repayments must stay open** — paying back is how a player clears their overdue status
 - **Cards**: applying for and using them works as usual
 
 ⚠ So the accurate way to put it is: **a ban closes the market's trade entries** — it does not "freeze the player".
@@ -47,8 +47,18 @@ A ban **never seizes assets**, and it does not take over other systems:
 ## 5. What a banned player sees
 
 - **Screens still open normally** (there is no permanent "you are banned" banner)
-- Only when they **click a blocked action** does the server reject it, with a red message showing **the remaining time and the ban reason**
-- ⇒ For now players only find out by trying; there is no way to see your own ban status up front
+- Only when they **click a blocked action** does the server reject it, with a red message showing **the remaining time and the ban reason** — the remaining time **follows the client's language** ("3 天 5 小时" in Chinese, `3d 5h` in English)
+- Also: **the first time they open the market after logging in**, a red message (remaining time + reason) appears in chat
+- ⇒ Apart from those two, players only find out by trying; there is no way to check your own ban status at will
+
+## 6. Change Log (a ledger of every ban and unban)
+
+The "**Change Log**" tab at the top of the Ban Management screen lists **every ban and unban** (time, operator → target, action, duration, reason).
+
+- The ledger lives in `config/cobblemarket/bans/` (bilingual CSVs, split by day) and is **kept forever, never auto-deleted**
+- **Automatic freezes / unfreezes are recorded too** (shown as "Meowth Bank Manager")
+- **Each unban entry carries the original banner** — A bans, B unbans, and one row tells the whole story
+- ⚠ This release **changes the ban-related packet format**, so server and client must be updated together
 
 ---
 
