@@ -7,7 +7,7 @@ CobbleMarket covers the whole of "how do players trade with each other" — list
 List Pokémon from your **party or PC**, and browse every listing on the server.
 
 - **Filter panel** — the **Filter** button at the right end of the search row opens a **panel beside the list**: shininess, gender, type, ability, nature, Hyper Training and IVs, plus one-click reset; collapsed by default, and opening it no longer pushes the list around
-- **Hover details** — level, ball, type, nature (including the effective nature when a Nature Mint was used), ability, all six IVs (Hyper Trained values shown as "real (trained)"), friendship, Marks, size, held item
+- **Hover details** — level, ball, type (**with the Tera type at the end**), nature (including the effective nature when a Nature Mint was used), ability, all six IVs (Hyper Trained values shown as "real (trained)"), friendship, Marks, size, held item; **Gigantamax (with its Dynamax Level) and Original Trainer each get their own line**, shown only when present
 - **3D Pokémon icons** — icons in lists and detail panels play Cobblemon's built-in idle animation by default, and can be switched to fully static in the settings
 
 <img src="en/images/pokemon-market.jpg" class="shot" loading="lazy" alt="Pokémon market screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
@@ -19,6 +19,7 @@ List items from your inventory; buyers can purchase **any quantity**.
 - **Search that reaches variants** — search by item ID, name or full tooltip text; Cobblemon TMs are searchable by move name and enchanted books by enchantment name and level (searching "Snore" takes you straight to the Snore TM)
 - **Full item tooltips** — every list and hover uses real item tooltips, with move names, enchantment names and Roman-numeral levels fully visible; hold `Shift` to expand the full tooltip and `Ctrl` to show component details
 - **Rarity colouring** — item names are coloured by rarity, matching your inventory
+- **Filter panel** — the **Filter** button at the right end of the search row opens a panel beside the list: sorting (Newest → Price ↑ → Price ↓), showing only your own listings, and filtering by **creative category** (a grid of the creative inventory's categories — pick one to see just that category); it combines with the search box as AND
 
 <img src="en/images/item-market.jpg" class="shot" loading="lazy" alt="Item Market screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
@@ -26,11 +27,11 @@ List items from your inventory; buyers can purchase **any quantity**.
 
 Timed auctions with **live countdowns** and bidding, settled automatically on expiry.
 
-- **Three tabs** — Mine / Pokémon / Items
+- **Three tabs** — Mine / Pokémon / Items; the right-hand filter panel can **sort** (Newest → Price ↑ → Price ↓ → Ends soon, shared by all three tabs), and the Items tab can also filter by **creative category**
 - **Bidding rules** — bids are charged immediately; being outbid refunds you to pending earnings; consecutive bids of your own only pay the difference; you cannot bid on your own auction; bids below "current price + minimum increment" are rejected with a message
 - **Anti-snipe** — a bid within the last 120 seconds (configurable) extends the end time
 - **Automatic settlement** — the server settles auctions when they expire, with nobody needing the screen open: the winner's goods go to Pending Claims, the seller is paid minus the fee, and auctions with no bids are returned
-- **Server-wide broadcast** — new listings and results are announced in chat; hover the item name for details or click it to jump straight to the bidding screen
+- **Server-wide broadcast** — new listings and results are announced in chat; hover the item name for details or click it to jump straight to the bidding screen — the **large render sits in the centre of the screen** with a backed panel of full details to its right (matching the regular tooltips; auctions also list the seller, current price, starting price, minimum increment, time left and who is leading)
 - **Auction sound** — a confirmation chime on bidding; three escalating hammer strikes at 10 / 6 / 3 seconds remaining; a final hammer and bell on settlement (sent only to participants, so bystanders aren't disturbed)
 
 <img src="en/images/auction.jpg" class="shot" loading="lazy" alt="Auction House screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
@@ -67,7 +68,7 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 
 - **In-game history screen** — personal history reads the last 14 days of the ledger (up to 500 entries each), while admins can view the server-wide feed
 - **Hover for the full row** — hovering a row highlights it and shows the complete info for that line: long player names, Pokémon names and amounts are no longer cut off; Pokémon names use the primary-type colour and item names the rarity colour (same as the market lists)
-- **CSV trade ledger** — covers the market, auctions and Buy Orders end to end, with a "details" column recording full Pokémon stats and item components so that goods can be **reproduced exactly**
+- **CSV trade ledger** — covers the market, auctions and Buy Orders end to end, with a "details" column recording **full Pokémon data** (nickname, size, Tera type, Gigantamax, Original Trainer, moves, friendship and Marks included) and item components so that goods can be **reproduced exactly**
 - **CSV credit ledger** — loan creation / overdue / settlement events plus each repayment split into principal and interest, with the repayment method recorded
 - Ledgers are written **synchronously**, independent of world autosaves, so a crash or a killed process doesn't lose them
 
@@ -79,7 +80,7 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 - **Blacklists** — separate tabs for Pokémon and items, precise down to the **item variant** (ban only "Sharpness V" enchanted books without touching other books; entries match by containment so adding a junk enchantment can't slip past), with add-from-held-item, bulk banning and exact unbanning by search results
 - **Honours vanilla "untradeable"** — a Pokémon marked untradeable in Cobblemon (the vanilla trade screen locks it) is blocked from all three paths — market, auctions and buy orders — and the picker screens draw the same lock on that row
 - **Price limits** — upper and lower bounds per Pokémon form or item variant, with the most specific entry taking precedence
-- **Bans** — ban a player from the **market's trading** (buying Pokémon / items, listing them, creating auctions, bidding, creating buy orders, delivering, paying for a delivery) for a set duration or permanently, with a reason; **assets are never seized** (cancelling listings, claiming returns and collecting pending balance keep working), and Meowth Bank is unaffected — see [Ban Management](/en/moderation) for the exact scope
+- **Bans** — ban a player from the **market's trading** (buying Pokémon / items, listing them, creating auctions, bidding, creating buy orders, delivering, paying for a delivery) for a set duration or permanently, with a reason; **assets are never seized** (cancelling listings, claiming returns and collecting pending balance keep working); **borrowing also keeps working by default**, and is only blocked when you tick "Also block loans" while banning (deposits, withdrawals and repayments are never affected) — see [Ban Management](/en/moderation) for the exact scope
 - **Forced delisting** — admins can view and force-delist any listing, auction or buy order; both parties are notified (queued and delivered on next login if offline)
 - **Market master switch** — stop the market in an emergency with one button (with confirmation); the trading entries (Pokémon / Items / Auction / Buy Orders) and Meowth Bank's borrowing entry are greyed out and explain why when clicked; **only trading is blocked** — Settings and History keep working, as do Meowth Bank deposits / withdrawals / repayments and card applications, while pending claims, balance collection and delisting wait until the market reopens (nothing is lost); server owners and admins holding the corresponding permission nodes can still use the Admin Panel to clean up (OPs can see the entry too, though its functions are still judged by the nodes)
 - **Server Config screen** — edit fees, limits, durations and switches in-game, with no need to touch the config file
@@ -89,6 +90,7 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 - **Professor Oak** — a resident character on the entry screen whose speech bubble shows random Pokémon trivia (498 bilingual entries built in, freely editable)
 - **Offline notifications** — trade notifications received while offline are queued and delivered on next login, rendered in the player's own language
 - **Balance HUD** — your market balance always visible in the corner, draggable anywhere on screen with snapping and alignment guides
+- **UI scale** — the settings let you scale this mod's screens on their own (six steps: Auto / 1-5, default 3) — this mod's screens only, leaving the chat and other mods untouched; "Auto" follows vanilla exactly
 - **Server-wide trade volume** — the entry screen shows the server's cumulative traded value
 - **Hyper Training display** — shows trained IVs as "real (trained)" and judges by effective values
 - **Container content checks** — blacklists, price limits and the egg-trading switch also apply to items inside shulker boxes and similar containers
