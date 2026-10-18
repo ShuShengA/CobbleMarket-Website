@@ -77,11 +77,13 @@ Every transaction is validated server-side and the client is display-only, so ch
 
 ## More Capabilities
 
-- **Meowth Bank** (optional, off by default) — credit loans, 3 / 6 / 12-installment repayment, interest-bearing deposits, three tiers of overdue penalties, and the Meowth·Volt Card / Meowth·Genesis Card credit credentials
+- **Meowth Bank** (optional, off by default) — credit loans, 3 / 6 / 12-installment repayment, interest-bearing deposits, three tiers of overdue penalties, and the Meowth·Volt Card / Meowth·Genesis Card credit credentials; the Finance Management screen lets owners block loans, adjust limits and audit the books
+- **Market ID Card** — a card-style profile every player can open (listings / balance / limit / debt / deposits / Pokédex and more), with an owner-replaceable background; the Admin Panel adds a Player Overview that sorts the whole server by any field and shows each player's full info card on hover
+- **Showcase to Chat** — post a Pokémon, an item or your ID card to server chat; hover the message for the full details, or hold `X` for a quick showcase. The cooldown is configurable
 - **History & Ledgers** — an in-game history screen plus CSV ledgers for server owners (the trade ledger answers "where did the goods go", the credit ledger answers "where did the money go")
-- **Admin Tools** — blacklists, price limits, bans, forced delistings, a market master switch, **permission nodes** (the owner decides who manages which area — see [Permission Nodes](/en/permission)), and an in-game Server Config screen (server owners only)
-- **Personalisation** — 3D Pokémon icons and animations, click-to-cry, Marks and size badges, a repositionable balance HUD, **a UI scale for this mod's screens**, celebration animations, a custom cursor and other client-side switches (grouped under "Pokémon" / "Items" in the settings); being outbid, a loan auto-deduction, an overdue reminder or a sale landing each get their own sound
-- **Fuller Pokémon info** — trading screens show the Pokémon's four moves, coloured by type, plus the **Tera type, Gigantamax and Original Trainer**; hover any row for the complete line, and hovering a chat broadcast shows the **large render in the centre of the screen** with the full details beside it
+- **Admin Tools** — blacklists, price limits, bans, forced delistings, a market master switch, **permission nodes** (ten nodes; the owner decides who manages which area — see [Permission Nodes](/en/permission)), and an in-game Server Config screen (server owners only)
+- **Personalisation** — 3D Pokémon icons and animations (blinking, idle quirks, and a random normal cry / battle cry / battle intro on click), Marks and size badges, listing notification bubbles, a repositionable balance HUD, **a UI scale for this mod's screens**, celebration animations, a custom cursor and other client-side switches (grouped under "Pokémon" / "Items" in the settings); being outbid, a loan auto-deduction, an overdue reminder or a sale landing each get their own sound
+- **Fuller Pokémon info** — trading screens show the Pokémon's four moves, coloured by type, plus the **Tera type, Gigantamax, Original Trainer and nickname**; hover any row for the complete line, and hovering a chat broadcast shows the **large render in the centre of the screen** with the full details beside it
 
 See [Features](/en/features) for the full list, and the [Changelog](/en/changelog) for every change.
 
