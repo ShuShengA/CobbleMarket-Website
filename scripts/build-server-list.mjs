@@ -250,7 +250,7 @@ export function parseIssueBody(body) {
       icon,
       website: normalizeUrl(sections['Website URL'], false),
       discord: normalizeUrl(sections['Discord invite URL'], false),
-      qq: clean(sections['QQ group']).slice(0, 60),
+      qq: clean(sections['QQ group']).slice(0, 200),
       languages,
       platforms,
       gameplay,

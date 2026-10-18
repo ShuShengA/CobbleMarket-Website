@@ -79,8 +79,8 @@ body:
     id: qq
     attributes:
       label: QQ group
-      description: 可选，填群号 / optional QQ group number
-      placeholder: "123456789"
+      description: "可选：填群号，或 QQ 群邀请链接 / optional: QQ group number or invite link"
+      placeholder: "123456789 或 https://qm.qq.com/..."
     validations:
       required: false
 
