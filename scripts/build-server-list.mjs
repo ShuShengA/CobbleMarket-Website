@@ -12,6 +12,8 @@
  */
 
 import fs from 'node:fs';
+import { connect } from 'node:net';
+import { lookup, resolveSrv } from 'node:dns/promises';
 
 const KNOWN_HEADINGS = [
   'Server name',
@@ -256,6 +258,165 @@ export function parseIssueBody(body) {
   };
 }
 
+// ── 在线状态：Java 版 Server List Ping ──
+// 浏览器没有 TCP，状态只能由 Action 定时查。这里手写 SLP，不引入第三方依赖。
+// ⚠ 定时任务会有延迟，页面必须注明「非实时」。
+
+function isPrivateHost(host) {
+  const h = String(host).toLowerCase();
+  if (h === 'localhost' || h.endsWith('.local')) return true;
+  if (/^(127\.|10\.|192\.168\.|169\.254\.|0\.)/.test(h)) return true;
+  if (/^172\.(1[6-9]|2\d|3[01])\./.test(h)) return true;
+  if (h === '::1' || /^fe[89ab][0-9a-f]:/i.test(h) || /^f[cd][0-9a-f]{2}:/i.test(h)) return true;
+  if (h.startsWith('::ffff:') && isPrivateHost(h.slice(7))) return true;
+  return false;
+}
+
+function parseAddress(address) {
+  const match = /^([^:]+)(?::(\d+))?$/.exec(address);
+  if (!match) throw new Error('invalid address');
+  return { host: match[1], port: match[2] ? Number(match[2]) : null };
+}
+
+async function resolveTarget(address) {
+  const parsed = parseAddress(address);
+  const allowPrivate = process.env.ALLOW_PRIVATE_PING === '1'; // 仅本地测试用
+  if (!allowPrivate && isPrivateHost(parsed.host)) {
+    throw new Error('private address refused');
+  }
+  const resolved = await lookup(parsed.host, { all: true });
+  if (!allowPrivate && resolved.some((entry) => isPrivateHost(entry.address))) {
+    throw new Error('private address refused');
+  }
+  if (parsed.port) {
+    return { connectHost: parsed.host, connectPort: parsed.port, handshakeHost: parsed.host };
+  }
+  try {
+    const records = await resolveSrv(`_minecraft._tcp.${parsed.host}`);
+    if (records.length) {
+      return {
+        connectHost: records[0].name.replace(/\.$/, ''),
+        connectPort: records[0].port,
+        handshakeHost: parsed.host,
+      };
+    }
+  } catch (error) {
+    // 没有 SRV 记录就按默认端口
+  }
+  return { connectHost: parsed.host, connectPort: 25565, handshakeHost: parsed.host };
+}
+
+function writeVarInt(value) {
+  const bytes = [];
+  let v = value;
+  do {
+    let byte = v & 0x7f;
+    v >>>= 7;
+    if (v !== 0) byte |= 0x80;
+    bytes.push(byte);
+  } while (v !== 0);
+  return Buffer.from(bytes);
+}
+
+function readVarInt(buffer, offset) {
+  let value = 0;
+  let shift = 0;
+  let pos = offset;
+  for (;;) {
+    if (pos >= buffer.length) return null;
+    const byte = buffer[pos++];
+    value |= (byte & 0x7f) << shift;
+    if ((byte & 0x80) === 0) return { value, size: pos - offset };
+    shift += 7;
+    if (shift > 35) throw new Error('VarInt too long');
+  }
+}
+
+function writeString(value) {
+  const data = Buffer.from(value, 'utf8');
+  return Buffer.concat([writeVarInt(data.length), data]);
+}
+
+/** 返回 { online, players, maxPlayers }；连接/协议失败时抛错（上层记为离线）。 */
+export async function pingMinecraftServer(address) {
+  const target = await resolveTarget(address);
+  const port = Buffer.alloc(2);
+  port.writeUInt16BE(target.connectPort);
+
+  const handshake = Buffer.concat([
+    writeVarInt(0x00),
+    writeVarInt(767),                    // Minecraft 1.21.1
+    writeString(target.handshakeHost),
+    port,
+    writeVarInt(1),                      // next state = status
+  ]);
+  const request = Buffer.concat([writeVarInt(handshake.length), handshake]);
+  const statusRequest = Buffer.from([0x01, 0x00]);
+
+  return new Promise((resolve, reject) => {
+    const socket = connect({ host: target.connectHost, port: target.connectPort });
+    let buffer = Buffer.alloc(0);
+    let settled = false;
+    const finish = (fn, value) => {
+      if (settled) return;
+      settled = true;
+      socket.destroy();
+      fn(value);
+    };
+
+    socket.setTimeout(5000);
+    socket.on('timeout', () => finish(reject, new Error('timeout')));
+    socket.on('error', (error) => finish(reject, error));
+    socket.on('connect', () => {
+      socket.write(request);
+      socket.write(statusRequest);
+    });
+    socket.on('data', (chunk) => {
+      buffer = Buffer.concat([buffer, chunk]);
+      try {
+        const lengthInfo = readVarInt(buffer, 0);
+        if (!lengthInfo) return;
+        const packetEnd = lengthInfo.size + lengthInfo.value;
+        if (buffer.length < packetEnd) return;
+        let offset = lengthInfo.size;
+        const packetId = readVarInt(buffer, offset);
+        if (!packetId) return;
+        if (packetId.value !== 0x00) throw new Error(`unexpected packet ${packetId.value}`);
+        offset += packetId.size;
+        const stringLength = readVarInt(buffer, offset);
+        if (!stringLength) return;
+        offset += stringLength.size;
+        const json = buffer.subarray(offset, offset + stringLength.value).toString('utf8');
+        const status = JSON.parse(json);
+        const players = status.players || {};
+        finish(resolve, {
+          online: true,
+          players: Number(players.online) || 0,
+          maxPlayers: Number(players.max) || 0,
+        });
+      } catch (error) {
+        finish(reject, error);
+      }
+    });
+  });
+}
+
+async function pingServers(servers) {
+  const LIMIT = 5;
+  for (let i = 0; i < servers.length; i += LIMIT) {
+    await Promise.all(servers.slice(i, i + LIMIT).map(async (server) => {
+      try {
+        Object.assign(server, await pingMinecraftServer(server.address));
+      } catch (error) {
+        console.warn(`Ping #${server.issue} (${server.address}) failed: ${error.message}`);
+        server.online = false;
+        server.players = 0;
+        server.maxPlayers = 0;
+      }
+    }));
+  }
+}
+
 async function main() {
   const repo = process.env.GITHUB_REPOSITORY;
   const token = process.env.GITHUB_TOKEN;
@@ -294,6 +455,9 @@ async function main() {
     data.icon = await localizeIcon(data.icon, issue.number);
     servers.push({ ...data, issue: issue.number });
   }
+
+  // 拉在线状态（定时任务每次都会重查；状态不变则 JSON 不变、不会提交）
+  await pingServers(servers);
 
   // 输出顺序固定（按 Issue 编号），页面的随机排序在浏览器端做 ——
   // 这样内容没变时不会产生无意义的提交。

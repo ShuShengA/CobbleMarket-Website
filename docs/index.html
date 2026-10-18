@@ -1904,6 +1904,36 @@
       gap: 8px;
       margin-top: 8px;
     }
+    .cm-server-status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+      padding: 3px 9px;
+      border: 1px solid var(--cm-border);
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--bg-panel) 70%, transparent);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      line-height: 1.35;
+      white-space: nowrap;
+      cursor: help;
+    }
+    .cm-server-status-dot {
+      width: 7px;
+      height: 7px;
+      flex: none;
+      border-radius: 50%;
+      background: #9a9aa4;
+    }
+    .cm-server-status--online {
+      color: var(--text-primary);
+    }
+    .cm-server-status--online .cm-server-status-dot {
+      background: #35c759;
+      box-shadow: 0 0 0 2px color-mix(in srgb, #35c759 22%, transparent);
+    }
     .cm-server-icon {
       position: relative;
       flex: none;
@@ -3229,6 +3259,10 @@
           version: '版本',
           qq: 'QQ 群',
           website: '官网',
+          online: '在线',
+          offline: '离线',
+          statusUnknown: '状态未知',
+          statusHint: '在线状态由后台定期检查（约每 10 分钟），非实时',
           tags: {
             zh: '中文', en: 'English', multi: '多语言',
             fabric: 'Fabric', neoforge: 'NeoForge',
@@ -3256,6 +3290,10 @@
           version: 'Version',
           qq: 'QQ group',
           website: 'Website',
+          online: 'Online',
+          offline: 'Offline',
+          statusUnknown: 'Status unknown',
+          statusHint: 'Online status is polled periodically (~every 10 min), not real-time',
           tags: {
             zh: 'Chinese', en: 'English', multi: 'Multilingual',
             fabric: 'Fabric', neoforge: 'NeoForge',
@@ -3419,9 +3457,26 @@
 
         main.appendChild(meta);
 
-        // 社交链接放到左侧图标下方，利用那块空白（2026-10-19 用户要求）
+        // 左侧列：服务器图标 → 在线状态 → 社交链接（2026-10-19 用户要求）
         var side = element('div', 'cm-server-side');
         side.appendChild(icon);
+
+        var status = element('span', 'cm-server-status');
+        status.appendChild(element('span', 'cm-server-status-dot'));
+        var statusText = text.statusUnknown;
+        if (server.online === true) {
+          status.classList.add('cm-server-status--online');
+          var players = Number(server.players) || 0;
+          var maxPlayers = Number(server.maxPlayers) || 0;
+          statusText = maxPlayers > 0 ? players + ' / ' + maxPlayers : text.online;
+        } else if (server.online === false) {
+          status.classList.add('cm-server-status--offline');
+          statusText = text.offline;
+        }
+        status.appendChild(element('span', '', statusText));
+        status.title = text.statusHint;
+        side.appendChild(status);
+
         var social = element('div', 'cm-server-side-links');
         var website = safeUrl(server.website, false);
         if (website) {
