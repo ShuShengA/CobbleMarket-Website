@@ -7,8 +7,8 @@ CobbleMarket covers the whole of "how do players trade with each other" — list
 List Pokémon from your **party or PC**, and browse every listing on the server.
 
 - **Filter panel** — the **Filter** button at the right end of the search row opens a **panel beside the list**: shininess, gender, type, ability, nature, Hyper Training and IVs, plus one-click reset; collapsed by default, and opening it no longer pushes the list around
-- **Hover details** — level, ball, type (**with the Tera type at the end**), nature (including the effective nature when a Nature Mint was used), ability, all six IVs (Hyper Trained values shown as "real (trained)"), friendship, Marks, size, held item; **Gigantamax (with its Dynamax Level) and Original Trainer each get their own line**, shown only when present
-- **3D Pokémon icons** — icons in lists and detail panels play Cobblemon's built-in idle animation by default, and can be switched to fully static in the settings
+- **Hover details** — level, ball, type (**with the Tera type at the end**), nature (including the effective nature when a Nature Mint was used), ability, all six IVs (Hyper Trained values shown as "real (trained)"), friendship, Marks, size, held item; **Gigantamax (with its Dynamax Level) and Original Trainer each get their own line**, shown only when present; **a nickname the player gave the Pokémon appears on the line under its name** (hover windows and dialogs only — list rows do not show it)
+- **3D Pokémon icons** — icons in lists and detail panels play Cobblemon's built-in idle animation by default, and can be switched to fully static in the settings; icons **blink at random intervals**, and some species occasionally play a little idle animation (none while walking, and very little movement while asleep). **Clicking an icon** picks at random between the normal cry / the battle cry / the battle intro (some species such as Ceruledge have a dedicated battle-entry animation in the world) — the intro only appears for species that actually have one, so a click is never silent
 
 <img src="en/images/pokemon-market.jpg" class="shot" loading="lazy" alt="Pokémon market screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
@@ -40,13 +40,27 @@ Timed auctions with **live countdowns** and bidding, settled automatically on ex
 
 Post **what you want, and your price** — other players deliver it.
 
-- **Pokémon orders** — species (blank = any), shininess, Hyper Training, all six IVs, form, ability and nature
+- **Pokémon orders** — species (blank = any), shininess, Hyper Training, all six IVs (**at least**: entering 20 means 20 or higher; existing buy orders follow the same rule), form, ability and nature
 - **Item orders** — optionally require components such as enchantments; deliveries that don't match are rejected
 - **Escrow** — "highest unit price × quantity" is frozen when posting; settlement uses the actual price and refunds the difference, and closing or expiry returns the remainder
 - **Buyer confirmation** — a delivery first enters "pending confirmation" with the goods held and funds unsettled (surviving restarts); the buyer reviews the full goods before accepting (settling the sale) or rejecting (returning the goods, optionally with a note)
 - **Partial delivery** — several sellers can each deliver part of an item order, which closes automatically once the quantity is filled
 
 <img src="en/images/buy-order.jpg" class="shot" loading="lazy" alt="Buy Orders screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+
+## Showcase to Chat
+
+Post your Pokémon, an item, or your Market ID Card to server chat — **hover the message for the full details** (Pokémon and ID cards show the complete hover window, items the full tooltip).
+
+- **Entry** — the showcase button left of Settings on the entry screen opens three sub-buttons: **Pokémon / ID Card / Item**; pick one to post it
+- **Quick showcase** — hold `X` to show the selected party Pokémon / the item in your main hand (an extra ID Card box appears below; rebindable in Controls)
+- **Cooldown** — **10 seconds** by default, adjustable in the server config screen (1–3600 seconds; shared by Pokémon / ID card / item showcases); server owners can also turn the whole feature off with `shareEnabled`
+
+## Market ID Card
+
+Click the card at the bottom of the entry screen (or press `I`) to open **your own market ID**: your 3D avatar on the left, and two columns on the right listing listings / auctions / buy orders / pending claims, balance, borrowable limit, debt, deposits and interest, lifetime trade volume, and Pokédex seen / caught counts (the Pokédex lines use Cobblemon's own icons).
+
+⚠ **The background image can be replaced with your server's own**: drop an image into `config/cobblemarket/idcard/` and enter its file name in the server config (blank = the built-in one). The card can also be showcased to chat directly.
 
 ## Meowth Bank (optional finance system)
 
@@ -56,11 +70,12 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 - **Repayment counter** — outstanding loans at a glance, with "pay one installment" or "settle early" (remaining principal plus actual interest in one payment)
 - **Automatic collection & overdue** — each installment is collected from the player's balance on its due date (keeping a floor balance); insufficient funds move the loan into overdue, which blocks new borrowing and accrues daily interest until the overdue installments are cleared
 - **Three tiers of overdue penalties** — 7 days doubles market fees → 14 days freezes market trading → 30 days writes the debt off as bad debt (the owner is alerted and can revoke it manually)
-- **Deposits** — spare money earns daily interest and can be withdrawn at any time, feeding the reserve pool and closing the deposit-lending loop
+- **Deposits** — spare money earns daily interest and can be withdrawn at any time, feeding the reserve pool and closing the deposit-lending loop; the deposit / withdraw screen also shows your current balance, and the daily rate is displayed at its actual precision (up to 6 decimals, trailing zeros trimmed)
 - **Meowth Pay** — pay for a purchase on credit, with the server reserve paying the seller upfront and the buyer repaying in installments
 - **Card credentials** — the Meowth·Volt Card and Meowth·Genesis Card are high-limit credentials whose credit line is bound to the holder rather than the item (duplicated cards are worthless), with configurable fee discounts and self-application requirements
 - **Anti-abuse design** — credit-line growth cooldown, a per-IP debt cap, trade-pair detection and a deposit-rate guard rail (so "borrow money, deposit it, live off the interest" can't work)
 - **Credit ledger** — every loan and repayment is written to its own CSV ledger, in both Chinese and English, split by day, for owners to audit offline
+- **Finance Management screen (admins)** — the Meowth Bank entry now opens Finance Management with five tabs: Loan Ban, Cards, Credits, Change Log and Top Limits; **the borrowable limit can be lowered or zeroed by hand** (⚠ it is not pinned — repayments and trade volume still move it; card holders' limits come from the card config and cannot be adjusted); players receive a notice with your reason when their limit is changed; the change log lives in its own ledger under `config/cobblemarket/finance/`
 
 <img src="en/images/meowth-bank.jpg" class="shot" loading="lazy" alt="Meowth Bank screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
@@ -76,11 +91,12 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 
 ## Admin Tools
 
-- **Permission nodes** — the market does not go by OP (`/op` can be passed on by any OP): who manages which area is decided by the nodes the server owner grants, across **eight admin nodes**; the owner list is hand-edited in the config file. Full guide: [Permission Nodes](/en/permission)
+- **Permission nodes** — the market does not go by OP (`/op` can be passed on by any OP): who manages which area is decided by the nodes the server owner grants, across **ten admin nodes** (including the new "Player Overview"); the owner list is hand-edited in the config file. Full guide: [Permission Nodes](/en/permission)
+- **Player Overview** — an Admin Panel entry (requires the "Player Overview" node) listing every player on one line, showing the field you currently sort by, with name search and sorting by balance / limit / debt / deposits / trade volume / Pokédex counts and more; hover a row for that player's full info card (the same items as the Market ID Card). ⚠ Offline players show the data recorded while they were last online (marked on the line); online players show live values
 - **Blacklists** — separate tabs for Pokémon and items, precise down to the **item variant** (ban only "Sharpness V" enchanted books without touching other books; entries match by containment so adding a junk enchantment can't slip past), with add-from-held-item, bulk banning and exact unbanning by search results
 - **Honours vanilla "untradeable"** — a Pokémon marked untradeable in Cobblemon (the vanilla trade screen locks it) is blocked from all three paths — market, auctions and buy orders — and the picker screens draw the same lock on that row
 - **Price limits** — upper and lower bounds per Pokémon form or item variant, with the most specific entry taking precedence
-- **Bans** — ban a player from the **market's trading** (buying Pokémon / items, listing them, creating auctions, bidding, creating buy orders, delivering, paying for a delivery) for a set duration or permanently, with a reason; **assets are never seized** (cancelling listings, claiming returns and collecting pending balance keep working); **borrowing also keeps working by default**, and is only blocked when you tick "Also block loans" while banning (deposits, withdrawals and repayments are never affected) — see [Ban Management](/en/moderation) for the exact scope
+- **Bans** — ban a player from the **market's trading** (buying Pokémon / items, listing them, creating auctions, bidding, creating buy orders, delivering, paying for a delivery) for a set duration or permanently, with a reason; **assets are never seized** (cancelling listings, claiming returns and collecting pending balance keep working); **borrowing also keeps working by default**; to block someone from borrowing, add them on the Finance Management screen's "Loan Ban" tab (the ban dialog no longer has that toggle; deposits, withdrawals and repayments are never affected) — see [Ban Management](/en/moderation) for the exact scope
 - **Forced delisting** — admins can view and force-delist any listing, auction or buy order; both parties are notified (queued and delivered on next login if offline)
 - **Market master switch** — stop the market in an emergency with one button (with confirmation); the trading entries (Pokémon / Items / Auction / Buy Orders) and Meowth Bank's borrowing entry are greyed out and explain why when clicked; **only trading is blocked** — Settings and History keep working, as do Meowth Bank deposits / withdrawals / repayments and card applications, while pending claims, balance collection and delisting wait until the market reopens (nothing is lost); server owners and admins holding the corresponding permission nodes can still use the Admin Panel to clean up (OPs can see the entry too, though its functions are still judged by the nodes)
 - **Server Config screen** — edit fees, limits, durations and switches in-game, with no need to touch the config file
@@ -88,6 +104,7 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 ## And More
 
 - **Professor Oak** — a resident character on the entry screen whose speech bubble shows random Pokémon trivia (498 bilingual entries built in, freely editable)
+- **Listing notifications** — when someone else lists a Pokémon or an item or puts one up for auction, a round bubble drops from the top of your screen (with that Pokémon's 3D model / that item's icon) and a chime plays; your own listings show nothing. The icon and the sound can be turned off separately in the settings
 - **Offline notifications** — trade notifications received while offline are queued and delivered on next login, rendered in the player's own language
 - **Balance HUD** — your market balance always visible in the corner, draggable anywhere on screen with snapping and alignment guides
 - **UI scale** — the settings let you scale this mod's screens on their own (six steps: Auto / 1-5, default 3) — this mod's screens only, leaving the chat and other mods untouched; "Auto" follows vanilla exactly
