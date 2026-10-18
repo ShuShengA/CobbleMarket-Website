@@ -7,7 +7,7 @@
     "icon": "images/servers/server-1.png",
     "website": "https://shushenga.github.io/CobbleMarket-Website/#/",
     "discord": "https://discord.gg/9AjbRw2u9",
-    "qq": "",
+    "qq": "http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=7pZUwzEPbCKlRtqXNyoHdvIl30xWFUrA&authKey=RoLBTWn4v5TYiyjmPAgWJdMQ%2FstEn3oN279r9i8bKF21BL4Xm7uNYJwm0fZ6Mf84&noverify=0&group_code=514530846",
     "languages": [
       "zh"
     ],
@@ -20,8 +20,8 @@
       "economy"
     ],
     "issue": 1,
-    "online": true,
-    "players": 1,
-    "maxPlayers": 20
+    "online": false,
+    "players": 0,
+    "maxPlayers": 0
   }
 ]
