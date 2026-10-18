@@ -3588,7 +3588,8 @@
         box.textContent = '';
         box.appendChild(element('div', 'cm-servers-loading', text.loading));
 
-        fetch(DATA_URL, { cache: 'no-cache' })
+        // 带版本参数：批准 / 改图标后立刻拿到新 JSON，避免浏览器或 Pages CDN 的旧缓存
+        fetch(DATA_URL + '?v=' + Date.now(), { cache: 'no-cache' })
           .then(function (response) {
             if (!response.ok) throw new Error('HTTP ' + response.status);
             return response.json();
