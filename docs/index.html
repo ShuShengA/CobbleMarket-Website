@@ -3304,7 +3304,7 @@
           online: '在线',
           offline: '离线',
           statusUnknown: '状态未知',
-          statusHint: '在线状态由 mcstatus.io 实时查询（每 60 秒刷新）',
+          statusHint: '在线状态由第三方接口查询（每 60 秒刷新）',
           tags: {
             zh: '中文', en: 'English', multi: '多语言',
             fabric: 'Fabric', neoforge: 'NeoForge',
@@ -3335,7 +3335,7 @@
           online: 'Online',
           offline: 'Offline',
           statusUnknown: 'Status unknown',
-          statusHint: 'Online status via mcstatus.io (refreshed every 60 seconds)',
+          statusHint: 'Online status via third-party API (refreshed every 60 seconds)',
           tags: {
             zh: 'Chinese', en: 'English', multi: 'Multilingual',
             fabric: 'Fabric', neoforge: 'NeoForge',
@@ -3431,9 +3431,7 @@
         }
       }
 
-      function fetchLiveStatus(server) {
-        var url = 'https://api.mcstatus.io/v2/status/java/' +
-          encodeURIComponent(server.address).replace(/%3A/g, ':');
+      function fetchJson(url) {
         var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
         var timeout = controller ? setTimeout(function () { controller.abort(); }, 8000) : null;
         var options = { cache: 'no-store' };
@@ -3443,15 +3441,41 @@
             if (!response.ok) throw new Error('HTTP ' + response.status);
             return response.json();
           })
+          .finally(function () { if (timeout) clearTimeout(timeout); });
+      }
+
+      function fetchLiveStatus(server) {
+        var match = /^([^:]+)(?::(\d+))?$/.exec(server.address);
+        if (!match) return Promise.reject(new Error('invalid address'));
+        var host = match[1];
+        var port = match[2] || '25565';
+        // 樱花穿透 / 部分 FRP 地址对 mcstatus.io、mcsrvstat.us 不可达；
+        // minetools / mcapi.us 实测可以，所以用它们（minetools 主、mcapi.us 备）。
+        return fetchJson('https://api.minetools.eu/ping/' +
+            encodeURIComponent(host) + '/' + encodeURIComponent(port))
           .then(function (data) {
-            if (!data || typeof data.online !== 'boolean') throw new Error('invalid status');
+            var players = data && data.players;
+            if (!players || typeof players.online !== 'number') {
+              throw new Error('minetools offline');
+            }
             return {
-              online: data.online,
-              players: data.online ? (Number(data.players && data.players.online) || 0) : 0,
-              maxPlayers: data.online ? (Number(data.players && data.players.max) || 0) : 0
+              online: true,
+              players: Number(players.online) || 0,
+              maxPlayers: Number(players.max) || 0
             };
           })
-          .finally(function () { if (timeout) clearTimeout(timeout); });
+          .catch(function () {
+            return fetchJson('https://mcapi.us/server/status?ip=' +
+                encodeURIComponent(host) + '&port=' + encodeURIComponent(port))
+              .then(function (data) {
+                if (!data || typeof data.online !== 'boolean') throw new Error('invalid mcapi response');
+                return {
+                  online: data.online,
+                  players: data.online ? (Number(data.players && data.players.now) || 0) : 0,
+                  maxPlayers: data.online ? (Number(data.players && data.players.max) || 0) : 0
+                };
+              });
+          });
       }
 
       function refreshAllLive(servers) {
