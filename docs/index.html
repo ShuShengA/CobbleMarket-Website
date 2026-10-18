@@ -2045,6 +2045,21 @@
       height: 22px;
       fill: currentColor;
     }
+    /* 官网用站点主题红；Discord 用官方 Blurple */
+    .cm-server-icon-link--website {
+      color: var(--theme-color);
+    }
+    .cm-server-icon-link--website:hover {
+      color: var(--theme-color);
+      background: color-mix(in srgb, var(--theme-color) 12%, transparent);
+    }
+    .cm-server-icon-link--discord {
+      color: #5865f2;
+    }
+    .cm-server-icon-link--discord:hover {
+      color: #5865f2;
+      background: color-mix(in srgb, #5865f2 14%, transparent);
+    }
     .cm-server-tags {
       display: flex;
       flex-wrap: wrap;
@@ -3437,9 +3452,9 @@
         meta.appendChild(element('span', 'cm-server-version',
           text.version + (en ? ': ' : '：') + server.version));
 
-        function iconLink(href, label, svg) {
+        function iconLink(href, label, svg, modifier) {
           var link = document.createElement('a');
-          link.className = 'cm-server-icon-link';
+          link.className = 'cm-server-icon-link' + (modifier ? ' ' + modifier : '');
           link.href = href;
           link.target = '_blank';
           link.rel = 'noopener noreferrer';
@@ -3480,11 +3495,13 @@
         var social = element('div', 'cm-server-side-links');
         var website = safeUrl(server.website, false);
         if (website) {
-          social.appendChild(iconLink(website, text.website, ICONS.globe));
+          social.appendChild(iconLink(website, text.website, ICONS.globe,
+            'cm-server-icon-link--website'));
         }
         var discord = safeUrl(server.discord, false);
         if (discord) {
-          social.appendChild(iconLink(discord, 'Discord', ICONS.discord));
+          social.appendChild(iconLink(discord, 'Discord', ICONS.discord,
+            'cm-server-icon-link--discord'));
         }
         if (social.childNodes.length) side.appendChild(social);
 
