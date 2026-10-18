@@ -1776,6 +1776,263 @@
       .cm-spon-card img { width: 26px; height: 26px; }
     }
 
+    /* ===== 服务器列表页 =====
+       版式参考 Cobblemon 官网的 Servers 页：左侧筛选栏 + 右侧横条卡片。
+       视觉沿用本站的像素边框 + 实心偏移阴影 + 玻璃底（同 .cm-card / .cm-spon-card）。 */
+    .cm-servers-layout {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+      margin: 20px 0 8px;
+    }
+    .cm-servers-filters {
+      position: sticky;
+      top: 84px;
+      max-height: calc(100vh - 104px);
+      overflow: auto;
+      padding: 16px;
+      border: 2px solid var(--cm-border);
+      border-radius: 4px;
+      background: color-mix(in srgb, var(--bg-panel) 78%, transparent);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      backdrop-filter: blur(12px) saturate(140%);
+      box-shadow: 4px 4px 0 var(--pixel-shadow);
+    }
+    .cm-servers-search {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 10px;
+      border: 2px solid var(--cm-border);
+      border-radius: 4px;
+      background: var(--bg-panel);
+      color: var(--text-primary);
+      font: inherit;
+      font-size: 0.86rem;
+    }
+    .cm-servers-search:focus {
+      outline: none;
+      border-color: var(--theme-color);
+    }
+    .cm-servers-filter-title {
+      margin: 15px 0 7px;
+      font-size: 0.74rem;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+    .cm-servers-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .cm-servers-chip {
+      padding: 4px 9px;
+      border: 2px solid var(--cm-border);
+      border-radius: 4px;
+      background: var(--bg-panel);
+      color: var(--text-muted);
+      font: inherit;
+      font-size: 0.78rem;
+      line-height: 1.35;
+      cursor: pointer;
+      transition: border-color var(--duration-medium), color var(--duration-medium),
+                  background var(--duration-medium);
+    }
+    .cm-servers-chip:hover {
+      border-color: var(--theme-color);
+      color: var(--text-primary);
+    }
+    .cm-servers-chip.active {
+      border-color: var(--theme-color);
+      background: var(--theme-color);
+      color: #fff;
+    }
+    .cm-servers-clear {
+      width: 100%;
+      margin-top: 15px;
+      padding: 6px 8px;
+      border: 2px solid var(--cm-border);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--text-muted);
+      font: inherit;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .cm-servers-clear:hover {
+      border-color: var(--theme-color);
+      color: var(--text-primary);
+    }
+    .cm-servers-count {
+      margin: 0 0 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .cm-servers-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .cm-server-card {
+      display: flex;
+      gap: 18px;
+      padding: 18px;
+      border: 2px solid var(--cm-border);
+      border-radius: 4px;
+      background: color-mix(in srgb, var(--bg-panel) 78%, transparent);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      backdrop-filter: blur(12px) saturate(140%);
+      box-shadow: 4px 4px 0 var(--pixel-shadow);
+      transition: transform var(--duration-medium), box-shadow var(--duration-medium),
+                  border-color var(--duration-medium);
+    }
+    .cm-server-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0 var(--pixel-shadow);
+      border-color: var(--theme-color);
+    }
+    .cm-server-icon {
+      flex: none;
+      width: 96px;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 2px solid var(--cm-border);
+      border-radius: 4px;
+      background: var(--bg-deep);
+    }
+    .cm-server-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .cm-server-icon-fallback {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+    }
+    .cm-server-main {
+      flex: 1;
+      min-width: 0;
+    }
+    .cm-server-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .cm-server-desc {
+      margin: 5px 0 10px;
+      font-size: 0.88rem;
+      line-height: 1.62;
+      color: var(--text-muted);
+    }
+    .cm-server-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 12px;
+      margin-bottom: 9px;
+      font-size: 0.78rem;
+    }
+    .cm-server-address {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 4px 3px 8px;
+      border: 2px solid var(--cm-border);
+      border-radius: 4px;
+      background: var(--bg-deep);
+    }
+    .cm-server-address code {
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--text-primary);
+      font-size: 0.8rem;
+    }
+    .cm-server-copy {
+      padding: 2px 5px;
+      border: 0;
+      background: transparent;
+      color: var(--text-muted);
+      font: inherit;
+      font-size: 0.74rem;
+      cursor: pointer;
+    }
+    .cm-server-copy:hover {
+      color: var(--theme-color);
+    }
+    .cm-server-copy.done {
+      color: var(--accent-gold);
+    }
+    .cm-server-version,
+    .cm-server-qq {
+      color: var(--text-muted);
+    }
+    .cm-server-link {
+      color: var(--theme-color);
+      text-decoration: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--theme-color) 45%, transparent);
+    }
+    .cm-server-link:hover {
+      border-bottom-color: var(--theme-color);
+    }
+    .cm-server-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .cm-server-tag {
+      padding: 2px 7px;
+      border: 1px solid var(--cm-border);
+      border-radius: 3px;
+      background: color-mix(in srgb, var(--bg-panel) 60%, transparent);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      line-height: 1.4;
+    }
+    .cm-server-tag--platform {
+      color: var(--accent-gold);
+    }
+    .cm-servers-loading,
+    .cm-servers-empty {
+      padding: 26px 18px;
+      border: 2px dashed var(--cm-border);
+      border-radius: 4px;
+      color: var(--text-muted);
+      text-align: center;
+      font-size: 0.88rem;
+    }
+    .cm-servers-empty a {
+      color: var(--theme-color);
+    }
+    @media (max-width: 900px) {
+      .cm-servers-layout {
+        grid-template-columns: 1fr;
+      }
+      .cm-servers-filters {
+        position: static;
+        max-height: none;
+      }
+    }
+    @media (max-width: 640px) {
+      .cm-server-card {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px;
+      }
+      .cm-server-icon {
+        width: 72px;
+        height: 72px;
+      }
+      .cm-server-icon-fallback {
+        font-size: 1.6rem;
+      }
+    }
+
     /* ===== 致谢带的纵向焦点滚动 =====
        内容整体向上走：名字从下方淡入 → 升到正中放大变清晰 → 继续上移缩小模糊 → 淡出。
        只做 5 个固定档位（正中 + 上下各两档），档位之间由 transition 补间 ——
@@ -2911,6 +3168,393 @@
       };
     })();
 
+    // ===== 服务器列表页 =====
+    // 数据来自 docs/servers.json（GitHub Action 从 approved Issue 生成）。
+    // 用户提交的内容一律用 textContent 写入 DOM，绝不拼 innerHTML。
+    (function () {
+      var DATA_URL = 'servers.json';
+      var SUBMIT_URL = 'https://github.com/ShuShengA/CobbleMarket-Website/issues/new?template=server-submission.yml';
+
+      var TEXT = {
+        zh: {
+          search: '搜索服务器…',
+          platform: '平台',
+          language: '语言',
+          gameplay: '玩法',
+          clear: '清除筛选',
+          count: function (n) { return '共 ' + n + ' 台服务器'; },
+          loading: '正在加载服务器列表…',
+          error: '服务器列表加载失败，请稍后刷新重试。',
+          empty: '暂无服务器。欢迎成为第一个入驻的服务器！',
+          noMatch: '没有匹配的服务器。',
+          submit: '提交你的服务器',
+          copy: '复制',
+          copied: '已复制 ✓',
+          copyFailed: '复制失败',
+          version: '版本',
+          qq: 'QQ 群',
+          website: '官网',
+          tags: {
+            zh: '中文', en: 'English', multi: '多语言',
+            fabric: 'Fabric', neoforge: 'NeoForge',
+            survival: '生存', creative: '创造', economy: '经济',
+            pvp: 'PvP', rpg: 'RPG', casual: '休闲'
+          }
+        },
+        en: {
+          search: 'Search servers…',
+          platform: 'Platform',
+          language: 'Language',
+          gameplay: 'Gameplay',
+          clear: 'Clear filters',
+          count: function (n) { return n === 1 ? '1 server' : n + ' servers'; },
+          loading: 'Loading servers…',
+          error: 'Failed to load the server list. Please refresh and try again.',
+          empty: 'No servers yet. Be the first to list yours!',
+          noMatch: 'No servers match these filters.',
+          submit: 'Submit your server',
+          copy: 'Copy',
+          copied: 'Copied ✓',
+          copyFailed: 'Copy failed',
+          version: 'Version',
+          qq: 'QQ group',
+          website: 'Website',
+          tags: {
+            zh: 'Chinese', en: 'English', multi: 'Multilingual',
+            fabric: 'Fabric', neoforge: 'NeoForge',
+            survival: 'Survival', creative: 'Creative', economy: 'Economy',
+            pvp: 'PvP', rpg: 'RPG', casual: 'Casual'
+          }
+        }
+      };
+
+      var GROUP_ORDER = {
+        platform: ['fabric', 'neoforge'],
+        language: ['zh', 'en', 'multi'],
+        gameplay: ['survival', 'creative', 'economy', 'pvp', 'rpg', 'casual']
+      };
+
+      function isEnRoute() {
+        return (location.hash || '').indexOf('#/en/') === 0;
+      }
+
+      function isServersRoute() {
+        var hash = (location.hash || '#/').split('?')[0];
+        return hash === '#/servers' || hash === '#/en/servers';
+      }
+
+      function element(tag, className, text) {
+        var node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text != null) node.textContent = text;
+        return node;
+      }
+
+      function safeUrl(raw, imageOnly) {
+        if (!raw) return '';
+        try {
+          var url = new URL(raw, location.href);
+          if (imageOnly) return url.protocol === 'https:' ? url.href : '';
+          return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : '';
+        } catch (error) {
+          return '';
+        }
+      }
+
+      function shuffle(items) {
+        for (var i = items.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = items[i];
+          items[i] = items[j];
+          items[j] = tmp;
+        }
+        return items;
+      }
+
+      function firstLetter(name) {
+        var chars = Array.from(name || '?');
+        return (chars[0] || '?').toUpperCase();
+      }
+
+      function copyText(text, done) {
+        function fallback() {
+          var area = document.createElement('textarea');
+          area.value = text;
+          area.setAttribute('readonly', '');
+          area.style.position = 'fixed';
+          area.style.opacity = '0';
+          document.body.appendChild(area);
+          area.select();
+          var ok = false;
+          try { ok = document.execCommand('copy'); } catch (error) { ok = false; }
+          document.body.removeChild(area);
+          done(ok);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
+        } else {
+          fallback();
+        }
+      }
+
+      function buildCard(server, text, en) {
+        var card = element('article', 'cm-server-card');
+
+        var icon = element('div', 'cm-server-icon');
+        var fallback = element('span', 'cm-server-icon-fallback', firstLetter(server.name));
+        icon.appendChild(fallback);
+        var iconUrl = safeUrl(server.icon, true);
+        if (iconUrl) {
+          var image = document.createElement('img');
+          image.alt = '';
+          image.loading = 'lazy';
+          image.referrerPolicy = 'no-referrer';
+          image.style.display = 'none';
+          image.addEventListener('load', function () {
+            image.style.display = 'block';
+            fallback.style.display = 'none';
+          });
+          image.addEventListener('error', function () {
+            image.remove();
+          });
+          image.src = iconUrl;
+          icon.appendChild(image);
+        }
+
+        var main = element('div', 'cm-server-main');
+        main.appendChild(element('div', 'cm-server-name', server.name));
+        main.appendChild(element('p', 'cm-server-desc', server.description));
+
+        var meta = element('div', 'cm-server-meta');
+        var address = element('span', 'cm-server-address');
+        address.appendChild(element('code', '', server.address));
+        var copy = element('button', 'cm-server-copy', text.copy);
+        copy.type = 'button';
+        copy.setAttribute('aria-label', text.copy + ' ' + server.address);
+        copy.addEventListener('click', function () {
+          copyText(server.address, function (ok) {
+            copy.textContent = ok ? text.copied : text.copyFailed;
+            copy.classList.toggle('done', ok);
+            clearTimeout(copy.__timer);
+            copy.__timer = setTimeout(function () {
+              copy.textContent = text.copy;
+              copy.classList.remove('done');
+            }, 1600);
+          });
+        });
+        address.appendChild(copy);
+        meta.appendChild(address);
+
+        meta.appendChild(element('span', 'cm-server-version',
+          text.version + (en ? ': ' : '：') + server.version));
+
+        var website = safeUrl(server.website, false);
+        if (website) {
+          var site = element('a', 'cm-server-link', text.website);
+          site.href = website;
+          site.target = '_blank';
+          site.rel = 'noopener noreferrer';
+          meta.appendChild(site);
+        }
+
+        var discord = safeUrl(server.discord, false);
+        if (discord) {
+          var chat = element('a', 'cm-server-link', 'Discord');
+          chat.href = discord;
+          chat.target = '_blank';
+          chat.rel = 'noopener noreferrer';
+          meta.appendChild(chat);
+        }
+
+        if (server.qq) {
+          meta.appendChild(element('span', 'cm-server-qq',
+            text.qq + (en ? ': ' : '：') + server.qq));
+        }
+
+        main.appendChild(meta);
+
+        var tags = element('div', 'cm-server-tags');
+        function addTag(value, platform) {
+          var label = (text.tags && text.tags[value]) || value;
+          tags.appendChild(element('span',
+            'cm-server-tag' + (platform ? ' cm-server-tag--platform' : ''), label));
+        }
+        (server.platforms || []).forEach(function (value) { addTag(value, true); });
+        (server.languages || []).forEach(function (value) { addTag(value, false); });
+        (server.gameplay || []).forEach(function (value) { addTag(value, false); });
+        main.appendChild(tags);
+
+        card.appendChild(icon);
+        card.appendChild(main);
+        return card;
+      }
+
+      function matches(server, state) {
+        var query = state.query.trim().toLowerCase();
+        if (query) {
+          var haystack = [server.name, server.description, server.address, server.version]
+            .join(' ').toLowerCase();
+          if (haystack.indexOf(query) === -1) return false;
+        }
+        function matchesGroup(selected, values) {
+          if (!selected.length) return true;
+          var list = values || [];
+          for (var i = 0; i < selected.length; i++) {
+            var value = selected[i];
+            if (list.indexOf(value) !== -1) return true;
+            // 多语言服在筛「中文 / English」时也算命中
+            if ((value === 'zh' || value === 'en') && list.indexOf('multi') !== -1) return true;
+          }
+          return false;
+        }
+        return matchesGroup(state.platform, server.platforms)
+          && matchesGroup(state.language, server.languages)
+          && matchesGroup(state.gameplay, server.gameplay);
+      }
+
+      function renderList(box, servers, en) {
+        var text = TEXT[en ? 'en' : 'zh'];
+        var order = shuffle(servers.slice());
+        var state = { query: '', platform: [], language: [], gameplay: [] };
+
+        box.textContent = '';
+        if (!servers.length) {
+          var empty = element('div', 'cm-servers-empty');
+          empty.appendChild(document.createTextNode(text.empty + ' '));
+          var link = element('a', '', text.submit);
+          link.href = SUBMIT_URL;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          empty.appendChild(link);
+          box.appendChild(empty);
+          return;
+        }
+
+        var layout = element('div', 'cm-servers-layout');
+        var filters = element('aside', 'cm-servers-filters');
+        var search = element('input', 'cm-servers-search');
+        search.type = 'search';
+        search.placeholder = text.search;
+        search.setAttribute('aria-label', text.search);
+        filters.appendChild(search);
+
+        var chipButtons = { platform: [], language: [], gameplay: [] };
+        var groups = [
+          ['platform', text.platform],
+          ['language', text.language],
+          ['gameplay', text.gameplay],
+        ];
+        groups.forEach(function (group) {
+          var key = group[0];
+          filters.appendChild(element('div', 'cm-servers-filter-title', group[1]));
+          var row = element('div', 'cm-servers-chips');
+          var valuesKey = key === 'platform' ? 'platforms' : key === 'language' ? 'languages' : key;
+          var present = GROUP_ORDER[key].filter(function (value) {
+            return servers.some(function (server) {
+              return (server[valuesKey] || []).indexOf(value) !== -1;
+            });
+          });
+          present.forEach(function (value) {
+            var chip = element('button', 'cm-servers-chip', (text.tags && text.tags[value]) || value);
+            chip.type = 'button';
+            chip.setAttribute('aria-pressed', 'false');
+            chip.addEventListener('click', function () {
+              var list = state[key];
+              var index = list.indexOf(value);
+              if (index === -1) list.push(value); else list.splice(index, 1);
+              var active = list.indexOf(value) !== -1;
+              chip.classList.toggle('active', active);
+              chip.setAttribute('aria-pressed', active ? 'true' : 'false');
+              apply();
+            });
+            row.appendChild(chip);
+            chipButtons[key].push(chip);
+          });
+          filters.appendChild(row);
+        });
+
+        var clear = element('button', 'cm-servers-clear', text.clear);
+        clear.type = 'button';
+        clear.addEventListener('click', function () {
+          state.query = '';
+          state.platform = [];
+          state.language = [];
+          state.gameplay = [];
+          search.value = '';
+          Object.keys(chipButtons).forEach(function (key) {
+            chipButtons[key].forEach(function (chip) {
+              chip.classList.remove('active');
+              chip.setAttribute('aria-pressed', 'false');
+            });
+          });
+          apply();
+        });
+        filters.appendChild(clear);
+
+        var column = element('div', 'cm-servers-list');
+        var count = element('div', 'cm-servers-count');
+        var cards = element('div', 'cm-servers-cards');
+        column.appendChild(count);
+        column.appendChild(cards);
+
+        function apply() {
+          var filtered = order.filter(function (server) { return matches(server, state); });
+          count.textContent = text.count(filtered.length);
+          cards.textContent = '';
+          if (!filtered.length) {
+            cards.appendChild(element('div', 'cm-servers-empty', text.noMatch));
+            return;
+          }
+          filtered.forEach(function (server) {
+            cards.appendChild(buildCard(server, text, en));
+          });
+        }
+
+        search.addEventListener('input', function () {
+          state.query = search.value;
+          apply();
+        });
+
+        layout.appendChild(filters);
+        layout.appendChild(column);
+        box.appendChild(layout);
+        apply();
+      }
+
+      function render() {
+        var box = document.getElementById('cm-server-list');
+        if (!box || box.dataset.cmRendered === '1') return;
+        box.dataset.cmRendered = '1';
+        var en = box.getAttribute('data-lang') === 'en' || isEnRoute();
+        var text = TEXT[en ? 'en' : 'zh'];
+        var ticket = (box.__cmTicket || 0) + 1;
+        box.__cmTicket = ticket;
+        box.textContent = '';
+        box.appendChild(element('div', 'cm-servers-loading', text.loading));
+
+        fetch(DATA_URL, { cache: 'no-cache' })
+          .then(function (response) {
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            return response.json();
+          })
+          .then(function (data) {
+            if (!box.isConnected || box.__cmTicket !== ticket) return;
+            renderList(box, Array.isArray(data) ? data : [], en);
+          })
+          .catch(function (error) {
+            console.error('Failed to load servers.json', error);
+            if (!box.isConnected || box.__cmTicket !== ticket) return;
+            box.textContent = '';
+            box.appendChild(element('div', 'cm-servers-empty', text.error));
+          });
+      }
+
+      window.__cmRenderServers = function () {
+        if (!isServersRoute()) return;
+        render();
+      };
+    })();
+
     window.$docsify = {
       name: 'CobbleMarket',
       // 站点名点击的落点（docsify@5 源码：取第一个「是当前 route.path 子串」的 key，
@@ -2974,6 +3618,8 @@
             window.__cmScrollSpy();
             // 复制按钮 / 文末装饰 / 滚动入场 —— 换页会整块替换正文，每次都得重做
             if (window.__cmAfterRender) window.__cmAfterRender();
+            // 服务器列表：只有当前路由是 /servers 或 /en/servers 时才拉取并渲染
+            if (window.__cmRenderServers) window.__cmRenderServers();
             // 渲染完成后才恢复滚动位置（放在最后：前面的重算可能改变页面高度）
             if (window.__cmRestoreScroll) window.__cmRestoreScroll();
           });
