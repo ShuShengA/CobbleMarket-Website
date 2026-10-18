@@ -1,1 +1,24 @@
-[]
+[
+  {
+    "name": "Feature Test",
+    "address": "frp-sea.com:52210",
+    "version": "Minecraft1.21.1 Cobblemon1.8.2",
+    "description": "Feature Test",
+    "icon": "",
+    "website": "",
+    "discord": "",
+    "qq": "",
+    "languages": [
+      "zh"
+    ],
+    "platforms": [
+      "fabric"
+    ],
+    "gameplay": [
+      "survival",
+      "creative",
+      "economy"
+    ],
+    "issue": 1
+  }
+]
