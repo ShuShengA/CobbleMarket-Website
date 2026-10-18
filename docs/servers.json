@@ -1,9 +1,9 @@
 [
   {
-    "name": "Feature Test",
+    "name": "功能测试",
     "address": "frp-sea.com:52210",
     "version": "Minecraft1.21.1 Cobblemon1.8.2",
-    "description": "Feature Test",
+    "description": "仅功能测试。反馈模组问题/bug可加入QQ群。",
     "icon": "images/servers/server-1.png",
     "website": "https://shushenga.github.io/CobbleMarket-Website/#/",
     "discord": "https://discord.gg/9AjbRw2u9",
