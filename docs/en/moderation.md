@@ -31,7 +31,7 @@ In one sentence: **every action that spends money in the market, or sells someth
 A ban **never seizes assets**, and it does not take over other systems:
 
 - **Getting your own things back**: cancelling a listing, claiming returns (Pokémon / items), collecting a pending balance, **rejecting a delivery** (sending it back)
-- **Meowth Bank**: deposits / withdrawals / repaying **always work**; **borrowing works by default too**, and is only blocked when you tick "**Also block loans**" while banning (that toggle is **off by default**). ⚠ **Repayments must stay open** — paying back is how a player clears their overdue status
+- **Meowth Bank**: deposits / withdrawals / repaying **always work**; **borrowing works by default too**. To block someone from borrowing, add them on the **Finance Management screen → Loan Ban** tab (the ban dialog no longer has an "Also block loans" toggle). ⚠ **Repayments must stay open** — paying back is how a player clears their overdue status
 - **Cards**: applying for and using them works as usual
 
 ⚠ So the accurate way to put it is: **a ban closes the market's trade entries** — it does not "freeze the player".
@@ -43,6 +43,8 @@ A ban **never seizes assets**, and it does not take over other systems:
 - ⚠ **Bad debt is neither lifted nor re-added automatically** — that is left to the server owner (`/market loan clear` deals with bad debt)
 - ⚠ **Manually lifting a ban** also lets that player trade again; the finance system will not re-freeze them on their next login
 - ⇒ If the ban list shows someone you never banned, it is most likely an **automatic overdue freeze** — check the reason column first
+
+> ⚠ "Cannot borrow" now has **three independent causes**: ① the manual **Loan Ban** list in Finance Management, ② an **overdue** loan freezing trading automatically, and ③ **bad debt** (permanent). Check all three when a player says they cannot borrow
 
 ## 5. What a banned player sees
 
@@ -58,6 +60,7 @@ The "**Change Log**" tab at the top of the Ban Management screen lists **every b
 - The ledger lives in `config/cobblemarket/bans/` (bilingual CSVs, split by day) and is **kept forever, never auto-deleted**
 - **Automatic freezes / unfreezes are recorded too** (shown as "Meowth Bank Manager")
 - **Each unban entry carries the original banner** — A bans, B unbans, and one row tells the whole story
+- ⚠ Starting with this version the ledger drops its "Block Loans / Prev Block Loans" columns ("Also block loans" moved to Finance Management)
 - ⚠ This release **changes the ban-related packet format**, so server and client must be updated together
 
 ---

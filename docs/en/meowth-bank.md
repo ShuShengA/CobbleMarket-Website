@@ -30,6 +30,7 @@ Loans and Meowth Pay share one credit pool; deposits are independent of the cred
 - Deposits go into the **reserve pool** (funding real lending) and earn a **daily interest rate** (default 0.0001 = 0.01% per day ≈ 3.65% per year, configurable)
 - Interest = principal × daily rate × the actual deposit duration; it is **settled in real time on view/deposit/withdraw** (partial days are prorated), and deposit/withdraw operations book accrued interest into the principal
 - Withdrawals are available anytime (interest included) back to the wallet; in item-currency mode any overflow goes to Pending Claims
+- The deposit / withdraw screen now shows your **current balance** (on servers with the balance HUD off, there was no way to tell how much you had available); the daily rate is shown at its **actual precision** (`0.047619%` / `0.047%`, up to 6 decimals with trailing zeros trimmed)
 - **Interest is paid from the reserve pool**: a negative pool (owner debt) still pays, with the red admin-panel alert visible
 - Deposits don't touch the credit limit and have no attack surface (it's the player's own money)
 - **With the master switch off, deposits are blocked but withdrawals always work** (players' money is never locked up)
@@ -128,7 +129,7 @@ High-limit credential items — holders get a **fixed borrowing limit** (indepen
 ### Owner tools
 
 - `/market card give|revoke|list <player> [purple|black]`: issue/revoke/list (purple by default; revoke works for offline players)
-- Card management screen (under the Rules button in Meowth Bank, requires the Finance node): every holder listed with a per-row revoke button
+- Card management: the **Finance Management screen → Cards** tab (requires the Finance node): every holder listed with a per-row revoke button
 - Holder display panels (under each card in Meowth Bank, visible to everyone): the title shows holders/cap, and the panel lists holders (skin avatar + name, scrollable)
 
 ## 8. Configuration (editable in the in-game Server Config screen)
@@ -152,6 +153,24 @@ High-limit credential items — holders get a **fixed borrowing limit** (indepen
 > All finance configs hot-apply immediately (new loans use new config; existing loans keep their snapshotted rates). The only exception remains the currency backend (restart required, same as the market).
 
 ## 9. Owner tools
+
+### Finance Management screen (five tabs)
+
+The entry button in Meowth Bank (the two-card icon) now opens **Finance Management**:
+
+| Tab | What it does |
+|---|---|
+| Loan Ban | Type a player name (with autocomplete) + duration + reason to add them to the list — listed players **cannot borrow** (⚠ deposits, withdrawals and **repayments keep working**); remove them on the same tab |
+| Cards | Purple / black card holders with a per-row revoke button (everything the old card management screen did) |
+| Credits | Look up a player and set their **borrowable limit** (see below) |
+| Change Log | A ledger of card / loan-ban / credit-limit actions plus self-service card applications (who, when, to whom, what, and the previous value), written to its own CSV under `config/cobblemarket/finance/` — kept separate from the trading / loan / ban / permission ledgers; ⚠ starts recording with 1.2.2 |
+| Top Limits | The **top 50 borrowable limits** server-wide (pulled when you open the tab, or via Refresh) — for **discovering** players with suspiciously high limits; each row also has a "set limit" button |
+
+**The borrowable limit can be adjusted by hand** (it used to be computed from a formula only and never went down, not even on overdue loans):
+
+- What gets stored is a correction **on top of** the formula, not a pinned number — **repayments and trade volume still move the limit afterwards**; that is exactly why a zeroed limit grows back
+- **Card holders cannot be adjusted** (their limit comes from the card config); the button is greyed out for them
+- The affected player **receives a notice** including your reason
 
 - **All Loans** screen (Meowth Bank bottom-right, requires the Finance node): the server-wide loan ledger with each borrower's latest IP (alt spotting); a "Bad Debt" tab filters all bad debts; a "Revoke" button per bad-debt row (5-second cooldown confirmation dialog)
 - **`/market loan clear <player>`**: the command twin of the revoke button
@@ -184,6 +203,10 @@ In real time on view/deposit/withdraw (principal × daily rate × the actual dep
 ### What happens to a player after bad debt?
 
 Trading is frozen and borrowing is permanently blocked. Owner intervention has two levels: unban via the ban screen (trading restored, borrowing still blocked), or revoke the bad debt (trading and borrowing fully restored; the audit ledger keeps a revoke event).
+
+### After lowering a limit by hand, will it grow back?
+
+Yes. The manual adjustment stores a correction on top of the formula, not a pinned number — repayments and a growing trade volume still move it. To stop someone from borrowing, use the Loan Ban list; stopping the limit from growing at all would be equivalent to banning their borrowing.
 
 ### Can players borrow, deposit, and farm interest?
 

@@ -20,6 +20,7 @@ All data is persisted via Minecraft's PersistentState mechanism in the server wo
 | Bans | `cobblemarket_bans.dat` |
 | Offline messages | `cobblemarket_offline_messages.dat` |
 | Finance system (loan state machine / reserve pool / total volume / IP records) | `cobblemarket_finance.dat` |
+| Player Overview snapshots (offline players' balance / Pokédex data) | `cobblemarket_overview.dat` |
 
 ## Notes
 
@@ -61,6 +62,20 @@ Finance loan/repayment events are **synchronously appended** to a separate credi
 - `repayment_records_<date>_<lang>.csv` (repayment events): Time, Player, Loan ID, Principal Part, Interest, Method, Details. Methods: Manual / Auto / Early payoff.
 
 Split of duties: the trade ledger answers "where did the goods go", the credit ledger answers "where did the money go". For loan disputes: find the Created record in loan_records by player name (note the loan ID), then check every repayment for that loan ID in repayment_records. Full field descriptions are in the directory's README.
+
+## Finance Management Change Log CSVs
+
+Actions taken on the Finance Management screen (Loan Ban, card issuing / revoking, credit-limit adjustments) plus self-service card applications are written to their own CSVs under `config/cobblemarket/finance/` (bilingual copies, split by day, append-only) — **kept separate from the trading / loan / ban / permission ledgers**.
+
+- Each record says who did what, to whom, when, and what the previous value was
+- ⚠ This ledger **starts recording with 1.2.2**; earlier card issues / revokes have no history
+
+## Market ID Card Background Image
+
+An owner-supplied ID card background image goes into `config/cobblemarket/idcard/` (PNG, max 1MB and max 2048×2048; enter the file name in the Server Config screen's "ID card image" field).
+
+- This is not save data — it **does not travel with the world save**, so multiple worlds and save swaps share one config
+- Leave it blank to use the mod's built-in background
 
 ---
 
