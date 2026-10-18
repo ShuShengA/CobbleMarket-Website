@@ -100,6 +100,7 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 - **Forced delisting** — admins can view and force-delist any listing, auction or buy order; both parties are notified (queued and delivered on next login if offline)
 - **Market master switch** — stop the market in an emergency with one button (with confirmation); the trading entries (Pokémon / Items / Auction / Buy Orders) and Meowth Bank's borrowing entry are greyed out and explain why when clicked; **only trading is blocked** — Settings and History keep working, as do Meowth Bank deposits / withdrawals / repayments and card applications, while pending claims, balance collection and delisting wait until the market reopens (nothing is lost); server owners and admins holding the corresponding permission nodes can still use the Admin Panel to clean up (OPs can see the entry too, though its functions are still judged by the nodes)
 - **Server Config screen** — edit fees, limits, durations and switches in-game, with no need to touch the config file
+- **Server list** — servers running this mod can be submitted to the [server list](/en/servers) (manual review); players can find yours by platform / language / gameplay
 
 ## And More
 

@@ -1,5 +1,6 @@
 - [首页](/)
 - [功能特色](/features)
+- [服务器列表](/servers)
 - [安装](/install)
 - [下载模组](https://www.curseforge.com/minecraft/mc-mods/cobblemarket)
 - [☕ 支持开发](/support)

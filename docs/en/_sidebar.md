@@ -5,6 +5,7 @@
 - **Getting Started**
 - [Installation](/en/install)
 - [Features](/en/features)
+- [Servers](/en/servers)
 
 ---
 

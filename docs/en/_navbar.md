@@ -1,5 +1,6 @@
 - [Home](/en/)
 - [Features](/en/features)
+- [Servers](/en/servers)
 - [Install](/en/install)
 - [Download](https://www.curseforge.com/minecraft/mc-mods/cobblemarket)
 - [☕ Support](/en/support)
