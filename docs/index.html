@@ -1891,6 +1891,19 @@
       box-shadow: 7px 7px 0 var(--pixel-shadow);
       border-color: var(--theme-color);
     }
+    .cm-server-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: none;
+      width: 96px;
+    }
+    .cm-server-side-links {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+    }
     .cm-server-icon {
       flex: none;
       width: 96px;
@@ -3284,7 +3297,11 @@
         if (!raw) return '';
         try {
           var url = new URL(raw, location.href);
-          if (imageOnly) return url.protocol === 'https:' ? url.href : '';
+          if (imageOnly) {
+            // 站点内的相对路径（images/servers/...）在这里会解析成当前站点的协议；
+            // 本地预览是 http，线上是 https，两种都放行。
+            return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : '';
+          }
           return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : '';
         } catch (error) {
           return '';
@@ -3391,22 +3408,26 @@
           return link;
         }
 
-        var website = safeUrl(server.website, false);
-        if (website) {
-          meta.appendChild(iconLink(website, text.website, ICONS.globe));
-        }
-
-        var discord = safeUrl(server.discord, false);
-        if (discord) {
-          meta.appendChild(iconLink(discord, 'Discord', ICONS.discord));
-        }
-
         if (server.qq) {
           meta.appendChild(element('span', 'cm-server-qq',
             text.qq + (en ? ': ' : '：') + server.qq));
         }
 
         main.appendChild(meta);
+
+        // 社交链接放到左侧图标下方，利用那块空白（2026-10-19 用户要求）
+        var side = element('div', 'cm-server-side');
+        side.appendChild(icon);
+        var social = element('div', 'cm-server-side-links');
+        var website = safeUrl(server.website, false);
+        if (website) {
+          social.appendChild(iconLink(website, text.website, ICONS.globe));
+        }
+        var discord = safeUrl(server.discord, false);
+        if (discord) {
+          social.appendChild(iconLink(discord, 'Discord', ICONS.discord));
+        }
+        if (social.childNodes.length) side.appendChild(social);
 
         var tags = element('div', 'cm-server-tags');
         function addTag(value, platform) {
@@ -3419,7 +3440,7 @@
         (server.gameplay || []).forEach(function (value) { addTag(value, false); });
         main.appendChild(tags);
 
-        card.appendChild(icon);
+        card.appendChild(side);
         card.appendChild(main);
         return card;
       }

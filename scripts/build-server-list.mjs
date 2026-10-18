@@ -67,6 +67,15 @@ const GAMEPLAY_MAP = {
   '冒险': 'adventure',
 };
 
+const ICON_DIR = 'docs/images/servers';
+const ICON_TYPES = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/gif': 'gif',
+  'image/webp': 'webp',
+  'image/svg+xml': 'svg',
+};
+
 /** 把 Issue 正文按 `### 标题` 切成小节。只认已知标题，避免用户简介里的 ### 把内容切碎。 */
 function parseSections(body) {
   const sections = Object.create(null);
@@ -157,6 +166,33 @@ function validAddress(address) {
     if (port < 1 || port > 65535) return false;
   }
   return true;
+}
+
+/**
+ * 把用户上传的图标下载到站点自己的 docs/images/servers/ 下。
+ * GitHub 附件会 302 到 5 分钟有效的 S3 签名地址，部分网络/浏览器（例如国内网络）加载失败；
+ * 存到站点同源目录后就不再依赖 GitHub 的附件链路。
+ * 下载失败时保留原 URL 作为兜底。
+ */
+async function localizeIcon(iconUrl, issue) {
+  if (!iconUrl) return '';
+  if (/^images\//.test(iconUrl)) return iconUrl;
+  try {
+    const response = await fetch(iconUrl, { redirect: 'follow' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const type = (response.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
+    const ext = ICON_TYPES[type];
+    if (!ext) throw new Error(`unsupported content type: ${type || 'unknown'}`);
+    const bytes = Buffer.from(await response.arrayBuffer());
+    if (bytes.length > 10 * 1024 * 1024) throw new Error('image over 10MB');
+    fs.mkdirSync(ICON_DIR, { recursive: true });
+    const name = `server-${issue}.${ext}`;
+    fs.writeFileSync(`${ICON_DIR}/${name}`, bytes);
+    return `images/servers/${name}`;
+  } catch (error) {
+    console.warn(`Icon for #${issue} not localized (${error.message}); keeping remote URL`);
+    return iconUrl;
+  }
 }
 
 /**
@@ -254,7 +290,9 @@ async function main() {
       console.warn(`Skipping #${issue.number} (${issue.title}): ${parsed.error}`);
       continue;
     }
-    servers.push({ ...parsed.data, issue: issue.number });
+    const data = parsed.data;
+    data.icon = await localizeIcon(data.icon, issue.number);
+    servers.push({ ...data, issue: issue.number });
   }
 
   // 输出顺序固定（按 Issue 编号），页面的随机排序在浏览器端做 ——
