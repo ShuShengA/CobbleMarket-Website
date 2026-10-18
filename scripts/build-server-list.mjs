@@ -18,6 +18,7 @@ const KNOWN_HEADINGS = [
   'Address',
   'Version',
   'Description',
+  'Icon / banner',
   'Icon / banner URL',
   'Website URL',
   'Discord invite URL',
@@ -101,6 +102,27 @@ function mapChecked(section, map) {
   return out;
 }
 
+/**
+ * 从文本框里提取第一张图片的 URL。
+ * 支持三种写法：
+ *   - Markdown 图片（把图片拖进 textarea 时 GitHub 自动插入的格式）
+ *   - HTML <img src="...">
+ *   - 裸 URL（用户直接粘贴图片直链）
+ */
+function extractImageUrl(raw) {
+  const text = String(raw || '');
+  const patterns = [
+    /!\[[^\]]*\]\((https?:\/\/[^)\s]+)\)/i,
+    /<img[^>]+src=["']([^"']+)["']/i,
+    /(https?:\/\/[^\s<>()]+)/i,
+  ];
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match && match[1]) return match[1].trim().replace(/[.,;]+$/, '');
+  }
+  return '';
+}
+
 /** 只接受 http(s)；图片只接受 https（站点本身是 https，http 图片会被浏览器拦掉）。 */
 function normalizeUrl(raw, image) {
   const value = clean(raw);
@@ -135,7 +157,12 @@ export function parseIssueBody(body) {
   const name = clean(sections['Server name']).slice(0, 80);
   const address = clean(sections['Address']).slice(0, 120);
   const version = clean(sections['Version']).slice(0, 80);
-  const description = clean(sections['Description']).slice(0, 400);
+  const rawDescription = sections['Description'] || '';
+  const description = clean(
+    rawDescription
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+      .replace(/<img[^>]*>/gi, ' '),
+  ).slice(0, 400);
   const confirmed = checkedLabels(sections['Confirmation']).length > 0;
 
   const missing = [];
@@ -153,13 +180,24 @@ export function parseIssueBody(body) {
   if (!languages.length) return { error: 'missing language' };
   if (!platforms.length) return { error: 'missing platform' };
 
+  // 图标：新表单叫「Icon / banner」（textarea，可直接拖图上传），旧表单叫「Icon / banner URL」
+  const iconSection = sections['Icon / banner'] ?? sections['Icon / banner URL'] ?? '';
+  let iconRaw = extractImageUrl(iconSection);
+  if (!iconRaw) {
+    // 也接受直接粘贴的裸直链（不带 https://）
+    const bare = clean(iconSection);
+    if (bare && !/\s/.test(bare)) iconRaw = bare;
+  }
+  if (!iconRaw) iconRaw = extractImageUrl(rawDescription);
+  const icon = normalizeUrl(iconRaw, true);
+
   return {
     data: {
       name,
       address,
       version,
       description,
-      icon: normalizeUrl(sections['Icon / banner URL'], true),
+      icon,
       website: normalizeUrl(sections['Website URL'], false),
       discord: normalizeUrl(sections['Discord invite URL'], false),
       qq: clean(sections['QQ group']).slice(0, 60),

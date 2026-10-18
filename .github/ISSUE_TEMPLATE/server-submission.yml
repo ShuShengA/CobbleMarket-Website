@@ -48,12 +48,12 @@ body:
     validations:
       required: true
 
-  - type: input
+  - type: textarea
     id: icon
     attributes:
-      label: Icon / banner URL
-      description: 可选的方形图标或横幅图片直链（https，会以 cover 方式裁切）/ Optional square icon or banner image URL (https, cropped to cover)
-      placeholder: https://example.com/icon.png
+      label: Icon / banner
+      description: 可选。直接把图片拖进这个框（GitHub 会自动上传），或粘贴图片直链（https）。支持 PNG / JPG / GIF / WebP，会以 cover 方式裁切 / Optional. Drag an image into this box (GitHub uploads it automatically) or paste an https image URL. PNG / JPG / GIF / WebP, cropped to cover
+      placeholder: 拖入图片，或粘贴 https://...
     validations:
       required: false
 
