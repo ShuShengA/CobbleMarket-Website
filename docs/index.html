@@ -1980,6 +1980,25 @@
     .cm-server-link:hover {
       border-bottom-color: var(--theme-color);
     }
+    .cm-server-icon-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      color: var(--text-muted);
+      transition: color var(--duration-medium), background var(--duration-medium);
+    }
+    .cm-server-icon-link:hover {
+      color: var(--theme-color);
+      background: color-mix(in srgb, var(--theme-color) 12%, transparent);
+    }
+    .cm-server-icon-link svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
     .cm-server-tags {
       display: flex;
       flex-wrap: wrap;
@@ -3239,6 +3258,12 @@
           'modded', 'vanilla', 'fusion', 'gyms', 'tournaments', 'adventure']
       };
 
+      // 静态 SVG 图标（不含任何用户数据；用户提供的只有链接地址）
+      var ICONS = {
+        globe: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.93 6h-2.95a15.65 15.65 0 0 0-1.38-3.56A8.03 8.03 0 0 1 18.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14A8.16 8.16 0 0 1 4 12c0-.69.09-1.36.26-2h3.38a16.5 16.5 0 0 0 0 4H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56A8.03 8.03 0 0 1 5.08 16zm2.95-8H5.08a8.03 8.03 0 0 1 4.33-3.56A15.65 15.65 0 0 0 8.03 8zM12 19.96a13.8 13.8 0 0 1-1.91-3.96h3.82A13.8 13.8 0 0 1 12 19.96zM14.34 14H9.66a14.6 14.6 0 0 1 0-4h4.68a14.6 14.6 0 0 1 0 4zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56zM16.36 14a16.5 16.5 0 0 0 0-4h3.38c.17.64.26 1.31.26 2s-.09 1.36-.26 2h-3.38z"/></svg>',
+        discord: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.369a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.331c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.419 0 1.334-.956 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.419 0 1.334-.946 2.419-2.157 2.419z"/></svg>'
+      };
+
       function isEnRoute() {
         return (location.hash || '').indexOf('#/en/') === 0;
       }
@@ -3353,22 +3378,27 @@
         meta.appendChild(element('span', 'cm-server-version',
           text.version + (en ? ': ' : '：') + server.version));
 
+        function iconLink(href, label, svg) {
+          var link = document.createElement('a');
+          link.className = 'cm-server-icon-link';
+          link.href = href;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.title = label;
+          link.setAttribute('aria-label', label);
+          // 静态 SVG，不含用户输入；用户提供的只有经过 safeUrl 的 href
+          link.innerHTML = svg;
+          return link;
+        }
+
         var website = safeUrl(server.website, false);
         if (website) {
-          var site = element('a', 'cm-server-link', text.website);
-          site.href = website;
-          site.target = '_blank';
-          site.rel = 'noopener noreferrer';
-          meta.appendChild(site);
+          meta.appendChild(iconLink(website, text.website, ICONS.globe));
         }
 
         var discord = safeUrl(server.discord, false);
         if (discord) {
-          var chat = element('a', 'cm-server-link', 'Discord');
-          chat.href = discord;
-          chat.target = '_blank';
-          chat.rel = 'noopener noreferrer';
-          meta.appendChild(chat);
+          meta.appendChild(iconLink(discord, 'Discord', ICONS.discord));
         }
 
         if (server.qq) {
