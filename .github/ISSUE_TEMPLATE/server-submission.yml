@@ -119,6 +119,12 @@ body:
         - label: PvP
         - label: RPG
         - label: Casual / 休闲
+        - label: Modded / 魔改
+        - label: Vanilla / 纯原版
+        - label: Fusion Pokémon / 融合精灵
+        - label: Gyms / 道馆
+        - label: Tournaments / 赛事
+        - label: Adventure / 冒险
     validations:
       required: false
 

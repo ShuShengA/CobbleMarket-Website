@@ -53,6 +53,18 @@ const GAMEPLAY_MAP = {
   rpg: 'rpg',
   casual: 'casual',
   '休闲': 'casual',
+  modded: 'modded',
+  '魔改': 'modded',
+  vanilla: 'vanilla',
+  '纯原版': 'vanilla',
+  fusion: 'fusion',
+  '融合精灵': 'fusion',
+  gyms: 'gyms',
+  '道馆': 'gyms',
+  tournaments: 'tournaments',
+  '赛事': 'tournaments',
+  adventure: 'adventure',
+  '冒险': 'adventure',
 };
 
 /** 把 Issue 正文按 `### 标题` 切成小节。只认已知标题，避免用户简介里的 ### 把内容切碎。 */
