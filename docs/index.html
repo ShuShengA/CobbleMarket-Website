@@ -2049,25 +2049,31 @@
       height: 22px;
       fill: currentColor;
     }
-    /* 官网用站点主题红；Discord 用官方 Blurple */
-    .cm-server-icon-link--website {
+    /* ⚠ 前面有 `.markdown-section a { color: var(--theme-color) }`（优先级 0,1,1），
+       单个 class（0,1,0）会被它染红 —— 社交图标的颜色规则必须带 `.markdown-section` 前缀。 */
+    .markdown-section .cm-server-icon-link {
+      background: transparent;
+      border: 0;
+      text-decoration: none;
+    }
+    .markdown-section .cm-server-icon-link--website {
       color: var(--theme-color);
     }
-    .cm-server-icon-link--website:hover {
+    .markdown-section .cm-server-icon-link--website:hover {
       color: var(--theme-color);
       background: color-mix(in srgb, var(--theme-color) 12%, transparent);
     }
-    .cm-server-icon-link--discord {
+    .markdown-section .cm-server-icon-link--discord {
       color: #5865f2;
     }
-    .cm-server-icon-link--discord:hover {
+    .markdown-section .cm-server-icon-link--discord:hover {
       color: #5865f2;
       background: color-mix(in srgb, #5865f2 14%, transparent);
     }
-    .cm-server-icon-link--qq {
+    .markdown-section .cm-server-icon-link--qq {
       color: #12b7f5;
     }
-    .cm-server-icon-link--qq:hover {
+    .markdown-section .cm-server-icon-link--qq:hover {
       color: #12b7f5;
       background: color-mix(in srgb, #12b7f5 14%, transparent);
     }
