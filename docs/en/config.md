@@ -46,6 +46,11 @@ Full details, including how the market cooperates with each currency mod, are in
 | `maxItemListingsPerPlayer` | `0` | Max active item listings per player (`0` = unlimited) |
 | `listingDurationDays` | `14` | Days before a listing expires |
 | `pendingReturnRetentionDays` | `30` | Days to keep unclaimed returns. **Overdue unclaimed returns are permanently deleted with no refund** (`0` = keep forever) |
+| `shareEnabled` | `true` | Master switch for player showcases (**config file only**): when off, "Showcase to chat" no longer works |
+| `shareCooldownSeconds` | `10` | Showcase cooldown in seconds (1–3600): the wait between two showcases by the same player, shared by Pokémon / ID card / item showcases. ⚠ Too small a value floods server chat |
+| `idCardBackground` | blank | Market ID Card background image file name: put the image into `config/cobblemarket/idcard/` (plain file name, no path); blank = the mod's built-in image. PNG only, max 1MB and max 2048×2048; applies after `/market reload` |
+
+> ⚠ `shareCooldownSeconds` and `idCardBackground` can also be edited in the in-game Server Config screen; `shareEnabled` is config-file only for now.
 
 ## Auctions
 

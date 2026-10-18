@@ -46,18 +46,22 @@ Two owners:
 
 > ⚠ An empty list means **nobody has admin permissions** (a secure default); the server prints how to set it up on startup
 
-## 2. The eight admin nodes
+## 2. The ten admin nodes
 
 | Node | What it covers |
 |---|---|
 | Blacklist | Add Pokémon / items to the blacklist or take them off it (blacklisted goods cannot be listed) |
 | Price Limits | Set min / max prices for Pokémon / items (out-of-range goods cannot be listed) |
 | Bans | Ban / unban players, view the ban list |
-| Listing Admin | Delist any player's Pokémon / items, view all trade history |
+| Listing Admin | Delist any player's Pokémon / items |
+| Trade History | View every player's trade records (who bought what, for how much, and when) |
 | Auctions | Force-cancel any player's auction |
 | Buy Orders | Force-cancel any player's buy order |
-| Finance | Manage player cards, view the server-wide loan ledger |
+| Finance | Manage player cards, block loans and adjust limits; view the server-wide loan ledger (bad-debt revocation is owner-only) |
 | Market Switch | Emergency stop / resume (affects the whole server) |
+| Player Overview | View every player's market and economy data (balance, listings, credit limit, debt, deposits and interest, Pokédex counts) |
+
+> ⚠ **"Player Overview" reveals every player's balance and debt** — nodes are granted all-or-nothing and cannot be partially revoked, so make sure you trust whoever receives it
 
 > ⚠ **Market Switch is deliberately its own node**: an emergency stop is a server-wide nuclear button that carries an order of magnitude more weight than "delist one rule-breaking listing" — bundling the two means "ask someone to help watch listings, and you have to hand them the stop-the-market power as well". If you do want them merged, just tick both nodes for that person
 

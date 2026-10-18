@@ -46,6 +46,11 @@
 | `maxItemListingsPerPlayer` | `0` | 每人同时活跃的物品上架数上限（`0` = 不限制） |
 | `listingDurationDays` | `14` | 上架过期天数 |
 | `pendingReturnRetentionDays` | `30` | 待领取退回的保留天数。**超期未领取的退回会被永久删除、不退款**（`0` = 永不清理） |
+| `shareEnabled` | `true` | 玩家展示总开关（**只能在配置文件里改**）：关闭后「展示到聊天」不再生效 |
+| `shareCooldownSeconds` | `10` | 展示冷却秒数（1~3600）：每个玩家两次展示之间的等待时间，精灵 / ID 卡 / 物品三种展示共用。⚠ 设得太小会让全服播报刷屏 |
+| `idCardBackground` | 空 | 市场 ID 卡背景图文件名：图放进 `config/cobblemarket/idcard/`（只写文件名、不带路径），留空 = 用模组内置图。只认 PNG、单张 ≤1MB 且 ≤2048×2048；`/market reload` 生效 |
+
+> ⚠ `shareCooldownSeconds` 与 `idCardBackground` 在游戏内服务器配置界面里也能直接改；`shareEnabled` 目前只能改配置文件。
 
 ## 拍卖
 
