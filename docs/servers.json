@@ -19,6 +19,9 @@
       "creative",
       "economy"
     ],
-    "issue": 1
+    "issue": 1,
+    "online": true,
+    "players": 0,
+    "maxPlayers": 20
   }
 ]
