@@ -3304,7 +3304,7 @@
           online: '在线',
           offline: '离线',
           statusUnknown: '状态未知',
-          statusHint: '在线状态由后台定期检查（约每 10 分钟），非实时',
+          statusHint: '在线状态由 mcstatus.io 实时查询（每 60 秒刷新）',
           tags: {
             zh: '中文', en: 'English', multi: '多语言',
             fabric: 'Fabric', neoforge: 'NeoForge',
@@ -3335,7 +3335,7 @@
           online: 'Online',
           offline: 'Offline',
           statusUnknown: 'Status unknown',
-          statusHint: 'Online status is polled periodically (~every 10 min), not real-time',
+          statusHint: 'Online status via mcstatus.io (refreshed every 60 seconds)',
           tags: {
             zh: 'Chinese', en: 'English', multi: 'Multilingual',
             fabric: 'Fabric', neoforge: 'NeoForge',
@@ -3361,6 +3361,9 @@
         // QQ 没有像 Discord 那样适合直接内联的官方小图标，这里用腾讯蓝的「QQ」字标
         qq: '<svg viewBox="0 0 24 24" aria-hidden="true"><text x="12" y="16.5" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="700" fill="currentColor">QQ</text></svg>'
       };
+
+      var liveStatus = Object.create(null);
+      var liveTimer = null;
 
       function isEnRoute() {
         return (location.hash || '').indexOf('#/en/') === 0;
@@ -3401,6 +3404,66 @@
         if (/^[a-z][a-z0-9+.-]*:\/\//i.test(v)) return safeUrl(v, false);
         if (/^\d+$/.test(v) || !/[./]/.test(v)) return '';
         return safeUrl('https://' + v, false);
+      }
+
+      function paintStatus(address) {
+        var status = liveStatus[address];
+        if (!status) return;
+        var text = TEXT[isEnRoute() ? 'en' : 'zh'];
+        var pills = document.querySelectorAll('.cm-server-status[data-cm-address]');
+        for (var i = 0; i < pills.length; i++) {
+          var pill = pills[i];
+          if (pill.getAttribute('data-cm-address') !== address) continue;
+          var label = pill.querySelector('.cm-server-status-text');
+          pill.classList.remove('cm-server-status--online', 'cm-server-status--offline');
+          if (status.online === true) {
+            pill.classList.add('cm-server-status--online');
+            var players = Number(status.players) || 0;
+            var maxPlayers = Number(status.maxPlayers) || 0;
+            if (label) {
+              label.textContent = maxPlayers > 0 ? players + ' / ' + maxPlayers : text.online;
+            }
+          } else {
+            pill.classList.add('cm-server-status--offline');
+            if (label) label.textContent = text.offline;
+          }
+          pill.title = text.statusHint;
+        }
+      }
+
+      function fetchLiveStatus(server) {
+        var url = 'https://api.mcstatus.io/v2/status/java/' +
+          encodeURIComponent(server.address).replace(/%3A/g, ':');
+        var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+        var timeout = controller ? setTimeout(function () { controller.abort(); }, 8000) : null;
+        var options = { cache: 'no-store' };
+        if (controller) options.signal = controller.signal;
+        return fetch(url, options)
+          .then(function (response) {
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            return response.json();
+          })
+          .then(function (data) {
+            if (!data || typeof data.online !== 'boolean') throw new Error('invalid status');
+            return {
+              online: data.online,
+              players: data.online ? (Number(data.players && data.players.online) || 0) : 0,
+              maxPlayers: data.online ? (Number(data.players && data.players.max) || 0) : 0
+            };
+          })
+          .finally(function () { if (timeout) clearTimeout(timeout); });
+      }
+
+      function refreshAllLive(servers) {
+        servers.forEach(function (server) {
+          fetchLiveStatus(server).then(function (status) {
+            liveStatus[server.address] = status;
+            paintStatus(server.address);
+          }).catch(function (error) {
+            // 查询失败时保留 servers.json 里的兜底状态
+            console.warn('mcstatus.io query failed for ' + server.address, error);
+          });
+        });
       }
 
       function shuffle(items) {
@@ -3524,19 +3587,21 @@
         var side = element('div', 'cm-server-side');
         side.appendChild(icon);
 
+        var statusData = liveStatus[server.address] || server;
         var status = element('span', 'cm-server-status');
+        status.setAttribute('data-cm-address', server.address);
         status.appendChild(element('span', 'cm-server-status-dot'));
         var statusText = text.statusUnknown;
-        if (server.online === true) {
+        if (statusData.online === true) {
           status.classList.add('cm-server-status--online');
-          var players = Number(server.players) || 0;
-          var maxPlayers = Number(server.maxPlayers) || 0;
+          var players = Number(statusData.players) || 0;
+          var maxPlayers = Number(statusData.maxPlayers) || 0;
           statusText = maxPlayers > 0 ? players + ' / ' + maxPlayers : text.online;
-        } else if (server.online === false) {
+        } else if (statusData.online === false) {
           status.classList.add('cm-server-status--offline');
           statusText = text.offline;
         }
-        status.appendChild(element('span', '', statusText));
+        status.appendChild(element('span', 'cm-server-status-text', statusText));
         status.title = text.statusHint;
         side.appendChild(status);
 
@@ -3722,11 +3787,19 @@
         layout.appendChild(column);
         box.appendChild(layout);
         apply();
+
+        // 第三方实时状态：打开页面先查一次，之后每 60 秒刷新；
+        // servers.json 里的 online/players/maxPlayers 是查询失败时的兜底。
+        clearInterval(liveTimer);
+        refreshAllLive(servers);
+        liveTimer = setInterval(function () { refreshAllLive(servers); }, 60000);
       }
 
       function render() {
         var box = document.getElementById('cm-server-list');
         if (!box || box.dataset.cmRendered === '1') return;
+        clearInterval(liveTimer);
+        liveTimer = null;
         box.dataset.cmRendered = '1';
         var en = box.getAttribute('data-lang') === 'en' || isEnRoute();
         var text = TEXT[en ? 'en' : 'zh'];
@@ -3754,7 +3827,13 @@
       }
 
       window.__cmRenderServers = function () {
-        if (!isServersRoute()) return;
+        if (!isServersRoute()) {
+          if (liveTimer) {
+            clearInterval(liveTimer);
+            liveTimer = null;
+          }
+          return;
+        }
         render();
       };
     })();
