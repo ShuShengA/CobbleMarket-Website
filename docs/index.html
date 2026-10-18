@@ -2014,17 +2014,8 @@
     .cm-server-copy.done {
       color: var(--accent-gold);
     }
-    .cm-server-version,
-    .cm-server-qq {
+    .cm-server-version {
       color: var(--text-muted);
-    }
-    .cm-server-link {
-      color: var(--theme-color);
-      text-decoration: none;
-      border-bottom: 1px solid color-mix(in srgb, var(--theme-color) 45%, transparent);
-    }
-    .cm-server-link:hover {
-      border-bottom-color: var(--theme-color);
     }
     .cm-server-icon-link {
       display: inline-flex;
@@ -3595,20 +3586,6 @@
           // 静态 SVG，不含用户输入；用户提供的只有经过 safeUrl 的 href
           link.innerHTML = svg;
           return link;
-        }
-
-        if (server.qq) {
-          var qqMetaUrl = qqUrlOf(server.qq);
-          if (qqMetaUrl) {
-            var qqMetaLink = element('a', 'cm-server-link', text.qq);
-            qqMetaLink.href = qqMetaUrl;
-            qqMetaLink.target = '_blank';
-            qqMetaLink.rel = 'noopener noreferrer';
-            meta.appendChild(qqMetaLink);
-          } else {
-            meta.appendChild(element('span', 'cm-server-qq',
-              text.qq + (en ? ': ' : '：') + server.qq));
-          }
         }
 
         main.appendChild(meta);
