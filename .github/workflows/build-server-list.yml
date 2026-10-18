@@ -1,0 +1,46 @@
+# 服务器列表：从带 approved 标签的 Issue 重建 docs/servers.json。
+#
+# 数据流：Issue 表单 → 维护者打 approved 标签 → 本 workflow 解析 → 提交 servers.json
+# 页面上始终只显示「open + approved」的 Issue；撤掉标签 / 关闭 Issue 会自动下架。
+name: Build Server List
+
+on:
+  issues:
+    types: [labeled, unlabeled, edited, closed, reopened, deleted]
+  workflow_dispatch:        # 也支持手动触发，方便调试
+
+permissions:
+  contents: write
+  issues: read
+
+# 同一时间只跑一个，避免连续改标签时两个任务互相覆盖
+concurrency:
+  group: build-server-list
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build servers.json from approved issues
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/build-server-list.mjs
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/servers.json
+          if git diff --cached --quiet; then
+            echo "servers.json unchanged"
+          else
+            git commit -m "chore: 更新服务器列表"
+            git push
+          fi

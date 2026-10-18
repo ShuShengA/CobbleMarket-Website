@@ -1,0 +1,131 @@
+name: Server submission
+description: List a Cobblemon server that runs CobbleMarket / 登记一台装了 CobbleMarket 的服务器
+title: "[Server] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for submitting your server! **The server must run CobbleMarket**; submissions are reviewed manually before they appear on the list.
+        感谢提交！**服务器必须安装 CobbleMarket**；提交后由维护者人工审核，通过后才会出现在服务器列表页。
+
+        - Only public servers, please. 请只提交公开服务器。
+        - Fields marked with * are required. 带 * 的为必填项。
+        - After review, the maintainer adds the `approved` label and the list is rebuilt automatically. 审核通过后维护者会打上 `approved` 标签，列表会自动更新。
+
+  - type: input
+    id: server_name
+    attributes:
+      label: Server name
+      description: 服务器名（显示在卡片标题上）/ The name shown on the card
+      placeholder: e.g. CobbleKanto Public Server
+    validations:
+      required: true
+
+  - type: input
+    id: address
+    attributes:
+      label: Address
+      description: 服务器地址，含端口（不写端口默认 25565）/ Address with port (25565 if omitted)
+      placeholder: play.example.com:25565
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Minecraft 与 Cobblemon 版本 / Minecraft and Cobblemon versions
+      placeholder: Minecraft 1.21.1 · Cobblemon 1.8.x
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: 一两句话介绍你的服务器，显示在卡片上（建议不超过 200 字）/ A sentence or two about your server, shown on the card (200 characters recommended)
+      placeholder: A survival server with a player-run economy, gyms and regular events...
+    validations:
+      required: true
+
+  - type: input
+    id: icon
+    attributes:
+      label: Icon / banner URL
+      description: 可选的方形图标或横幅图片直链（https，会以 cover 方式裁切）/ Optional square icon or banner image URL (https, cropped to cover)
+      placeholder: https://example.com/icon.png
+    validations:
+      required: false
+
+  - type: input
+    id: website
+    attributes:
+      label: Website URL
+      description: 可选 / optional
+      placeholder: https://example.com
+    validations:
+      required: false
+
+  - type: input
+    id: discord
+    attributes:
+      label: Discord invite URL
+      description: 可选 / optional
+      placeholder: https://discord.gg/...
+    validations:
+      required: false
+
+  - type: input
+    id: qq
+    attributes:
+      label: QQ group
+      description: 可选，填群号 / optional QQ group number
+      placeholder: "123456789"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: language
+    attributes:
+      label: Language
+      description: 服务器主要语言，可多选 / Main language(s), multiple allowed
+      options:
+        - label: Chinese / 中文
+        - label: English
+        - label: Multilingual / 多语言
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: platform
+    attributes:
+      label: Platform
+      description: 服务器使用的模组加载器 / Mod loader used by the server
+      options:
+        - label: Fabric
+        - label: NeoForge
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: gameplay
+    attributes:
+      label: Gameplay
+      description: 可多选 / multiple allowed
+      options:
+        - label: Survival / 生存
+        - label: Creative / 创造
+        - label: Economy / 经济
+        - label: PvP
+        - label: RPG
+        - label: Casual / 休闲
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: This server runs CobbleMarket, and I agree that the information above may be published on the CobbleMarket website. / 本服已安装 CobbleMarket，且同意以上信息在 CobbleMarket 官网公开展示。
+          required: true
