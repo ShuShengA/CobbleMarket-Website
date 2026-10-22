@@ -21,6 +21,11 @@ All data is persisted via Minecraft's PersistentState mechanism in the server wo
 | Offline messages | `cobblemarket_offline_messages.dat` |
 | Finance system (loan state machine / reserve pool / total volume / IP records) | `cobblemarket_finance.dat` |
 | Player Overview snapshots (offline players' balance / Pokédex data) | `cobblemarket_overview.dat` |
+| RP balances | `cobblemarket_points.dat` |
+| RP reward progress (times paid + today's daily caps) | `cobblemarket_points_rewards.dat` |
+| RP redeem codes (local codes + used external serials) | `cobblemarket_point_codes.dat` |
+| RP top-up orders | `cobblemarket_point_orders.dat` |
+| RP Shop offers and stock | `cobblemarket_point_shop.dat` |
 
 ## Notes
 
@@ -69,6 +74,12 @@ Actions taken on the Finance Management screen (Loan Ban, card issuing / revokin
 
 - Each record says who did what, to whom, when, and what the previous value was
 - ⚠ This ledger **starts recording with 1.2.2**; earlier card issues / revokes have no history
+
+## Extra RP files
+
+- **Balance-ranking export**: `<world save>/cobblemarket_points/` (`ranking.json` for the whole server + `players/<uuid>.json` for individuals), **not under `data/`**; the format and a reading example are in the README inside that folder
+- **RP flow / top-up order ledgers**: CSVs under `config/cobblemarket/points/` (external ledgers, not part of the world save)
+- ⚠ **Deleting the reward-progress file only resets progress, never balances**: progress lives in `cobblemarket_points_rewards.dat`, balances in `cobblemarket_points.dat` — to let players earn first-tier rewards again, use `/market points rewards reset ...` or delete only the former with the server stopped
 
 ## Market ID Card Background Image
 

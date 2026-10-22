@@ -46,7 +46,7 @@ Two owners:
 
 > ⚠ An empty list means **nobody has admin permissions** (a secure default); the server prints how to set it up on startup
 
-## 2. The ten admin nodes
+## 2. The fourteen admin nodes
 
 | Node | What it covers |
 |---|---|
@@ -59,13 +59,28 @@ Two owners:
 | Buy Orders | Force-cancel any player's buy order |
 | Finance | Manage player cards, block loans and adjust limits; view the server-wide loan ledger (bad-debt revocation is owner-only) |
 | Market Switch | Emergency stop / resume (affects the whole server) |
-| Player Overview | View every player's market and economy data (balance, listings, credit limit, debt, deposits and interest, Pokédex counts) |
+| Check Balance | View **anyone's** RP balance (checking your own needs no node) — read-only, safe to give to support staff |
+| Redeem Codes | Create / list / void / purge redeem codes — ⚠ **this mints money**; the list also exposes full codes that can be redeemed, so the whole node is a code-issuing right, not a read-only list |
+| Top-up Orders | Verify payments and grant / void top-up orders — ⚠ **granting adds balance**; confirm the recipient can see your payment statements before granting |
+| RP Shop | List / edit / remove RP Shop offers — decides what players can get for their RP |
+| Player Overview | View every player's market and economy data (balance, listings, credit limit, debt, deposits and interest, Pokédex counts; includes RP balance and sorting by RP) |
 
 > ⚠ **"Player Overview" reveals every player's balance and debt** — nodes are granted all-or-nothing and cannot be partially revoked, so make sure you trust whoever receives it
 
 > ⚠ **Market Switch is deliberately its own node**: an emergency stop is a server-wide nuclear button that carries an order of magnitude more weight than "delist one rule-breaking listing" — bundling the two means "ask someone to help watch listings, and you have to hand them the stop-the-market power as well". If you do want them merged, just tick both nodes for that person
 
 > ⚠ **Revoking bad debt is not in any node**: it is an owner intervention reserved for the server owner alone — when lent money cannot be recovered, it is the last resort
+
+> ⚠ **Two of the four RP nodes can mint money**: "Redeem Codes" creates RP out of nothing (and its list exposes full codes), and "Top-up Orders" grants balance when an order is confirmed. Think carefully about who receives them
+
+> ⚠ **OP means nothing for RP**: RP Shop listings, redeem-code creation and RP config read/write all check the nodes above or the owner list; RP config read/write is **owner-only** (it holds the external signing secret)
+
+**The "delegate give/take" switch** (RP Config screen, off by default): when on, **player-ops (permission level 2+)** can also grant / take RP with `/market points give|take`.
+
+- Use case: quest mods run commands **as the completing player with permission level N** (FTB Quests' "run level"), neither owner nor console; without this switch, quest rewards can never be paid
+- Two steps for the owner: ① turn the switch on ② write `/market points give @s N` as the quest reward and set the **run level to 2 or higher**
+- ⚠ **Turning it on accepts that any player-op can grant RP** (`/op` is transferable); keep it off if RP is a top-up currency you hand out yourself
+- ⚠ The switch **only covers the give/take commands** — permission grants, bad-debt cancellations and everything else still require the owner
 
 ## 3. How to assign nodes to players
 
@@ -82,6 +97,8 @@ The server owner does this in game: **entry screen → Admin Panel → Permissio
 The only difference: **an OP with no permission nodes can still see the Admin Panel button** — inside, every function is greyed out (including the owner-only "Permissions" and "Server Config"), and hovering tells them to ask the server owner to add them to `serverOwners`. This is deliberately kept as a **teaching entry point**.
 
 > ⚠ One more exception: **`/market reload` stays open to OPs** — server owners edit the config by hand and rely on it to apply, and a singleplayer host with cheats enabled can use it too
+
+> ⚠ **The RP-side exception (off by default)**: with the "delegate give/take" switch in RP Config on, **player-ops (permission level 2+)** can also grant / take RP with `/market points give|take`. It exists for quest mods (FTB Quests and the like); the switch is off by default and **only covers those two commands**. See section 2
 
 ## 5. Why not hook into LuckPerms-style plugins
 

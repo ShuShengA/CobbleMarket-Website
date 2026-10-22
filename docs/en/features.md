@@ -79,10 +79,22 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 
 <img src="en/images/meowth-bank.jpg" class="shot" loading="lazy" alt="Meowth Bank screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
+## RP (optional premium currency)
+
+RP is this mod's **premium currency**, running alongside the main one — the market, auction house and buy orders all let you price in either. It **cannot be exchanged or transferred, and stays outside the finance system**; where it comes from is up to the owner (quest rewards / top-ups / datapack rules, alone or combined).
+
+- **Player-to-player RP trading** — its own switch (off by default); while off, RP can only flow in one direction (top-ups / rewards / codes) and players cannot trade with each other in RP
+- **RP Shop** — an owner-run 8×4 grid selling Pokémon / items generated from the spec on the spot; Pokémon offers cover form / variant / shiny / min IVs / move slots / OT, and item offers can copy the exact held item
+- **Four ways to hand out RP** — `/market points give`, redeem codes (local or externally signed by your site), in-game top-up (personal payment QR), datapack reward rules
+- **Always visible** — the second line of the balance HUD, the entry screen, the ID Card and the Player Overview (sortable by RP balance)
+
+Full guide: [RP System](/en/points).
+
 ## History & Ledgers
 
 - **In-game history screen** — personal history reads the last 14 days of the ledger (up to 500 entries each), while admins can view the server-wide feed
 - **Hover for the full row** — hovering a row highlights it and shows the complete info for that line: long player names, Pokémon names and amounts are no longer cut off; Pokémon names use the primary-type colour and item names the rarity colour (same as the market lists)
+- **RP Shop sales** — shown as "▣ Shop" (gold) in the seller column of both the personal and server-wide history; the CSV ledger gains Currency (PRIMARY / POINTS) and Source (market / shop) columns
 - **CSV trade ledger** — covers the market, auctions and Buy Orders end to end, with a "details" column recording **full Pokémon data** (nickname, size, Tera type, Gigantamax, Original Trainer, moves, friendship and Marks included) and item components so that goods can be **reproduced exactly**
 - **CSV credit ledger** — loan creation / overdue / settlement events plus each repayment split into principal and interest, with the repayment method recorded
 - Ledgers are written **synchronously**, independent of world autosaves, so a crash or a killed process doesn't lose them
@@ -91,11 +103,11 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 
 ## Admin Tools
 
-- **Permission nodes** — the market does not go by OP (`/op` can be passed on by any OP): who manages which area is decided by the nodes the server owner grants, across **ten admin nodes** (including the new "Player Overview"); the owner list is hand-edited in the config file. Full guide: [Permission Nodes](/en/permission)
-- **Player Overview** — an Admin Panel entry (requires the "Player Overview" node) listing every player on one line, showing the field you currently sort by, with name search and sorting by balance / limit / debt / deposits / trade volume / Pokédex counts and more; hover a row for that player's full info card (the same items as the Market ID Card). ⚠ Offline players show the data recorded while they were last online (marked on the line); online players show live values
-- **Blacklists** — separate tabs for Pokémon and items, precise down to the **item variant** (ban only "Sharpness V" enchanted books without touching other books; entries match by containment so adding a junk enchantment can't slip past), with add-from-held-item, bulk banning and exact unbanning by search results
+- **Permission nodes** — the market does not go by OP (`/op` can be passed on by any OP): who manages which area is decided by the nodes the server owner grants, across **fourteen admin nodes** (including the four RP nodes and "Player Overview"); the owner list is hand-edited in the config file. ⚠ RP does not go by OP either (shop listings / redeem codes / RP config read-write all check a node or the owner); the "delegate give/take" switch is off by default, and when on it lets player-ops pay quest rewards. Full guide: [Permission Nodes](/en/permission)
+- **Player Overview** — an Admin Panel entry (requires the "Player Overview" node) listing every player on one line, showing the field you currently sort by, with name search and sorting by balance / **RP balance** / limit / debt / deposits / trade volume / Pokédex counts and more; hover a row for that player's full info card (the same items as the Market ID Card, including the RP balance line). ⚠ Offline players show the data recorded while they were last online (marked on the line); online players show live values
+- **Blacklists** — separate tabs for Pokémon and items, precise down to the **item variant** (ban only "Sharpness V" enchanted books without touching other books; entries match by containment so adding a junk enchantment can't slip past), with add-from-held-item, bulk banning and exact unbanning by search results; Pokémon rules can target **form / variant** (variant is multi-select: patterns / cosmetics / caps each ticked on their own) with three tiers (All / Form / Variant)
 - **Honours vanilla "untradeable"** — a Pokémon marked untradeable in Cobblemon (the vanilla trade screen locks it) is blocked from all three paths — market, auctions and buy orders — and the picker screens draw the same lock on that row
-- **Price limits** — upper and lower bounds per Pokémon form or item variant, with the most specific entry taking precedence
+- **Price limits** — upper and lower bounds per Pokémon form / variant or item variant, with the most specific entry taking precedence; when a trade is blocked, the message names **the rule that matched** (e.g. "Form: Any · Variant: Rage Candy Bar"), so players do not assume the whole Pokémon is banned
 - **Bans** — ban a player from the **market's trading** (buying Pokémon / items, listing them, creating auctions, bidding, creating buy orders, delivering, paying for a delivery) for a set duration or permanently, with a reason; **assets are never seized** (cancelling listings, claiming returns and collecting pending balance keep working); **borrowing also keeps working by default**; to block someone from borrowing, add them on the Finance Management screen's "Loan Ban" tab (the ban dialog no longer has that toggle; deposits, withdrawals and repayments are never affected) — see [Ban Management](/en/moderation) for the exact scope
 - **Forced delisting** — admins can view and force-delist any listing, auction or buy order; both parties are notified (queued and delivered on next login if offline)
 - **Market master switch** — stop the market in an emergency with one button (with confirmation); the trading entries (Pokémon / Items / Auction / Buy Orders) and Meowth Bank's borrowing entry are greyed out and explain why when clicked; **only trading is blocked** — Settings and History keep working, as do Meowth Bank deposits / withdrawals / repayments and card applications, while pending claims, balance collection and delisting wait until the market reopens (nothing is lost); server owners and admins holding the corresponding permission nodes can still use the Admin Panel to clean up (OPs can see the entry too, though its functions are still judged by the nodes)
@@ -107,7 +119,9 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 - **Professor Oak** — a resident character on the entry screen whose speech bubble shows random Pokémon trivia (498 bilingual entries built in, freely editable)
 - **Listing notifications** — when someone else lists a Pokémon or an item or puts one up for auction, a round bubble drops from the top of your screen (with that Pokémon's 3D model / that item's icon) and a chime plays; your own listings show nothing. The icon and the sound can be turned off separately in the settings
 - **Offline notifications** — trade notifications received while offline are queued and delivered on next login, rendered in the player's own language
-- **Balance HUD** — your market balance always visible in the corner, draggable anywhere on screen with snapping and alignment guides
+- **Balance HUD** — your market balance always visible in the corner, draggable anywhere on screen with snapping and alignment guides; with RP enabled the same box gains an RP row (both rows show and hide together)
+- **List loading state** — auction house / buy orders / pending claims / history / blacklists / bans / permissions and other list screens show "Loading…" until the first response, instead of reporting "nothing here" before the data has arrived
+- **Draggable scrollbars** — every scrollable list lets you drag the handle or click an empty spot on the track to jump there; the mouse wheel keeps working
 - **UI scale** — the settings let you scale this mod's screens on their own (six steps: Auto / 1-5, default 3) — this mod's screens only, leaving the chat and other mods untouched; "Auto" follows vanilla exactly
 - **Server-wide trade volume** — the entry screen shows the server's cumulative traded value
 - **Hyper Training display** — shows trained IVs as "real (trained)" and judges by effective values

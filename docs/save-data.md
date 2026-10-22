@@ -21,6 +21,11 @@
 | 离线消息 | `cobblemarket_offline_messages.dat` |
 | 金融系统（贷款状态机/准备金池/累计成交额/IP 记录） | `cobblemarket_finance.dat` |
 | 玩家总览快照（离线玩家的余额 / 图鉴数据） | `cobblemarket_overview.dat` |
+| RP 余额 | `cobblemarket_points.dat` |
+| RP 奖励进度（已发次数 + 当天每日上限） | `cobblemarket_points_rewards.dat` |
+| RP 兑换码（本地码 + 外部码已用 serial） | `cobblemarket_point_codes.dat` |
+| RP 充值订单 | `cobblemarket_point_orders.dat` |
+| RP 商城商品与库存 | `cobblemarket_point_shop.dat` |
 
 ## 说明
 
@@ -69,6 +74,12 @@
 
 - 记的是「谁、什么时候、对谁、做了什么、原值是多少」
 - ⚠ 这本账**从 1.2.2 才开始记**，之前的卡片发放 / 收回没有历史
+
+## RP 系统的额外文件
+
+- **余额排行导出**：`<世界存档>/cobblemarket_points/`（`ranking.json` 全服排行 + `players/<uuid>.json` 单人余额），**不在 `data/` 里**；格式与读取示例见该目录里的 README
+- **RP 流水 / 充值订单账本**：`config/cobblemarket/points/` 下的 CSV（对外账本，不随存档走）
+- ⚠ **删奖励进度文件只重置进度、不动余额**：奖励进度在 `cobblemarket_points_rewards.dat`，余额在 `cobblemarket_points.dat` —— 想让玩家重新按第一档领奖励，用 `/market points rewards reset ...` 或停服后只删前者
 
 ## 市场 ID 卡背景图
 

@@ -27,6 +27,32 @@ Priority: **Cobblemon Economy → CobbleDollars → Impactor → item currency**
 
 Full details, including how the market cooperates with each currency mod, are in [Currency](/en/currency).
 
+## RP (premium currency)
+
+RP is an optional premium currency, off by default. Full guide: [RP System](/en/points).
+
+| Key | Default | Description |
+|---|---|---|
+| `pointsEnabled` | `false` | RP master switch. While off, the RP button is hidden from price-setting screens and RP cannot be used outside the RP Shop |
+| `pointsMarketEnabled` | `false` | Player-to-player RP trading. While off, RP currency buttons are greyed out and the server refuses RP listings; top-ups / RP Shop / balance display are unaffected |
+| `rpAsQuestCurrency` | `false` | Delegate give/take: player-ops (level 2+) can also grant / take RP, for quest rewards. ⚠ Turning it on accepts any player-op granting RP |
+| `pointsRewardsEnabled` | `false` | Datapack reward rules master switch. ⚠ If you sell RP for real money, enabling it hands RP out automatically; a modpack's own rules still stay off until you enable this |
+| `pointsPokemonListingFeePercent` | `0` | RP Pokémon listing fee (%). Keep at 0 if RP is bought with real money |
+| `pointsItemListingFeePercent` | `0` | RP item listing fee (%) |
+| `pointsAuctionFeePercent` | `0` | RP auction fee (%) |
+| `pointsBuyOrderFeePercent` | `0` | RP buy-order fee (%) |
+| `pointsExternalSecret` | empty | HMAC secret for external signed codes. **Empty = external codes disabled**; server-side only — never in a client, log or public repo |
+| `pointsExternalMaxDays` | `365` | Maximum validity for external codes in days; codes valid for longer are rejected |
+| `pointsShopEnabled` | `false` | In-game top-up switch (personal payment QR mode; needs `pointsEnabled`) |
+| `pointsShopPayQrImage` | empty | Payment QR image file name (under `config/cobblemarket/qr/`); empty = the buy-RP path is closed |
+| `pointsShopDefaultIcon` | empty | Global default coupon image for tiers (under `config/cobblemarket/icons/`); empty = built-in image |
+| `pointsShopOrderTimeoutMinutes` | `15` | Minutes before an unpaid order expires and is voided |
+| `pointsShopTiers` | `[]` | Top-up tiers (empty = the buy-RP path is closed); each tier needs positive `name` / `price` / `points` |
+| `pointsShopCurrencyLabel` | empty | Display unit for tier prices (e.g. `USD`); **no conversion is done** — empty shows the number only |
+| `pointsRankingExportMinutes` | `5` | Balance-ranking export interval in minutes (1–1440); only changed entries are written, and `/market points update` forces a refresh (command blocks work) |
+
+> Most RP settings can be edited under **Server Config → RP Config** (the four switches, the four fee rates, payment QR / coupon image / timeout / unit and tiers); `pointsExternalSecret` / `pointsExternalMaxDays` / `pointsRankingExportMinutes` are **file-only** and take effect on `/market reload`.
+
 ## Permission (Server Owners)
 
 | Field | Default | Description |

@@ -27,6 +27,32 @@
 
 完整说明（含与各货币模组的配合方式）见 [货币系统](/currency)。
 
+## RP（高级货币）
+
+RP 是可选的高级货币，默认关闭。完整玩法见 [RP 系统](/points)。
+
+| 字段 | 默认 | 说明 |
+|---|---|---|
+| `pointsEnabled` | `false` | RP 总开关。关闭时玩家设置价格的界面不出现 RP 按钮，除 RP 商城外不能用 RP 交易 |
+| `pointsMarketEnabled` | `false` | 玩家间 RP 交易开关。关闭时 RP 货币按钮置灰、服务端拒绝 RP 挂单；充值 / RP 商城 / 余额显示不受影响 |
+| `rpAsQuestCurrency` | `false` | give/take 权限下放：打开后玩家身份的 OP（等级 ≥ 2）也能发放 / 回收 RP，用于任务奖励。⚠ 打开 = 接受任何玩家 OP 都能发 RP |
+| `pointsRewardsEnabled` | `false` | 数据包奖励规则总开关。⚠ 如果你把 RP 当充值货币卖，打开它等于自动发钱；整合包自带规则也仍然默认关 |
+| `pointsPokemonListingFeePercent` | `0` | RP 精灵上架费率（%）。RP 若是真钱充值来的，建议保持 0 |
+| `pointsItemListingFeePercent` | `0` | RP 物品上架费率（%） |
+| `pointsAuctionFeePercent` | `0` | RP 拍卖成交费率（%） |
+| `pointsBuyOrderFeePercent` | `0` | RP 求购中介费率（%） |
+| `pointsExternalSecret` | 空 | 外部签名码的 HMAC 密钥。**留空 = 关闭外部码**；只能放服务端，绝不能进客户端 / 日志 / 公开仓库 |
+| `pointsExternalMaxDays` | `365` | 外部码有效期上限（天）；超出跨度的码一律拒绝 |
+| `pointsShopEnabled` | `false` | 游戏内充值开关（个人收款码模式，需 `pointsEnabled`） |
+| `pointsShopPayQrImage` | 空 | 收款码文件名（放在 `config/cobblemarket/qr/`）；留空 = 不开放「购买 RP」 |
+| `pointsShopDefaultIcon` | 空 | 档位「RP 券」的全局默认图（`config/cobblemarket/icons/`）；留空 = 用内置券图 |
+| `pointsShopOrderTimeoutMinutes` | `15` | 待支付订单超时（分钟），超时作废 |
+| `pointsShopTiers` | `[]` | 充值档位数组（空 = 不开放「购买 RP」）；每档 `name` / `price` / `points` 必填且为正 |
+| `pointsShopCurrencyLabel` | 空 | 档位金额的展示单位（如 `元` / `USD`）；**不做汇率换算**，留空 = 只显示数字 |
+| `pointsRankingExportMinutes` | `5` | 余额排行导出间隔（分钟，1~1440）；只写变化的条目，命令方块可用 `/market points update` 强制刷新 |
+
+> 大部分 RP 配置可在「服务器配置 → RP 配置」里改（含四个开关、四项费率、收款码 / 券图 / 超时 / 单位与档位）；`pointsExternalSecret` / `pointsExternalMaxDays` / `pointsRankingExportMinutes` **只能改配置文件**，`/market reload` 生效。
+
 ## 权限（服主名单）
 
 | 字段 | 默认 | 说明 |
