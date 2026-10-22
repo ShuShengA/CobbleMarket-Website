@@ -4,7 +4,7 @@
      （样式见 index.html 的 .cm-cover-card / .cm-cover-ver） -->
 <a class="cm-cover-card cm-cover-card--left" href="#/meowth-bank?id=喵%C2%B7紫电卡" title="喵·紫电卡"><img src="images/meowth-purple-card.png" alt="喵·紫电卡"></a>
 <a class="cm-cover-card cm-cover-card--right" href="#/meowth-bank?id=喵%C2%B7金轮卡" title="喵·金轮卡"><img src="images/meowth-black-card.png" alt="喵·金轮卡"></a>
-<div class="cm-cover-ver">1.2</div>
+<div class="cm-cover-ver">1.3</div>
 
 # CobbleMarket
 

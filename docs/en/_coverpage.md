@@ -4,7 +4,7 @@
      when the next release ships (styles: .cm-cover-card / .cm-cover-ver in index.html) -->
 <a class="cm-cover-card cm-cover-card--left" href="#/en/meowth-bank?id=meowth%C2%B7volt-card" title="Meowth·Volt Card"><img src="images/meowth-purple-card.png" alt="Meowth·Volt Card"></a>
 <a class="cm-cover-card cm-cover-card--right" href="#/en/meowth-bank?id=meowth%C2%B7genesis-card" title="Meowth·Genesis Card"><img src="images/meowth-black-card.png" alt="Meowth·Genesis Card"></a>
-<div class="cm-cover-ver">1.2</div>
+<div class="cm-cover-ver">1.3</div>
 
 # CobbleMarket
 
