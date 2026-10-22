@@ -20,8 +20,8 @@
       "economy"
     ],
     "issue": 1,
-    "online": false,
+    "online": true,
     "players": 0,
-    "maxPlayers": 0
+    "maxPlayers": 20
   }
 ]
