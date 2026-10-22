@@ -337,7 +337,7 @@ You do not need to dig through files to find ids. Two in-game commands:
 
 ## Example pack
 
-[Download the example datapack](downloads/rewards_example_datapack.zip) (folder form; drop it into `datapacks/`), or write your own using the minimal datapack above.
+<a href="downloads/rewards_example_datapack.zip">Download the example datapack</a> (unzip it and place the `rewards_example_datapack/` folder in `datapacks/`; folder form only for now), or write your own using the minimal datapack above.
 
 ---
 

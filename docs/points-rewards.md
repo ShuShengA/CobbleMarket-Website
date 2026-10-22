@@ -337,7 +337,7 @@ Cobblemon 的数据包 NPC 可以按**类 id** 作为奖励目标。类 id = `/s
 
 ## 示例包
 
-[下载示例数据包](downloads/rewards_example_datapack.zip)（文件夹形态，直接放进 `datapacks/`），或照着上面的最小数据包自己写一个。
+<a href="downloads/rewards_example_datapack.zip">下载示例数据包</a>（解压后把 `rewards_example_datapack/` 文件夹放进 `datapacks/`；目前只认文件夹形态），或照着上面的最小数据包自己写一个。
 
 ---
 
