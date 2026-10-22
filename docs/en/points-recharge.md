@@ -137,23 +137,28 @@ supports searching by **player name or order number**.
 
 ## 7. FAQ
 
-**How many orders can one player have at once?**
+### How many orders can one player have at once?
+
 Up to **three unfinished orders** (so changing your mind about which tier to buy does not force a cancel first).
 
-**The order timed out, then the player came back and tapped "I have paid" — now what?**
+### The order timed out, then the player came back and tapped "I have paid" — now what?
+
 There is a **30-minute grace period** after the timeout during which "I have paid" is still accepted —
 the player may well have scanned the code already and simply came back late.
 
-**Can a grant happen twice?**
+### Can a grant happen twice?
+
 No. Only orders in "awaiting confirmation" can be granted, and granting is idempotent: repeated clicks,
 UI resends, or reopening the list after a crash will succeed exactly once.
 
-**Where are the ledgers?**
+### Where are the ledgers?
+
 - Every RP change (including this grant): CSVs under `config/cobblemarket/points/`
 - Order ledger (created / player claimed paid / granted / voided): another CSV in the same folder
 - Transaction ledger (every RP trade in the market): daily CSVs under `config/cobblemarket/history/`
 
-**Do finished orders stay forever?**
+### Do finished orders stay forever?
+
 They are kept for **90 days** and then cleaned up — long enough to reconcile against your statement
 line by line.
 

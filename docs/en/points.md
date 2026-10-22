@@ -179,13 +179,21 @@ Put same-named, same-sized images in a server resource pack and every player see
 
 ## 10. FAQ
 
-**Can RP be converted into the main currency?** No. RP and the main currency are separate ledgers; there is no exchange entry and no way to transfer RP to another player (player-to-player RP trading means buying and selling goods in RP, not moving RP itself).
+### Can RP be converted into the main currency?
 
-**Does turning off the RP master switch delete players' RP?** No. Balances stay in the save; they are simply hidden and cannot be used until you turn it back on.
+No. RP and the main currency are separate ledgers; there is no exchange entry and no way to transfer RP to another player (player-to-player RP trading means buying and selling goods in RP, not moving RP itself).
 
-**External codes or local codes?** Use local codes if you want in-game management, limited uses, binding or revocation; use external signed codes if you have your own site and want buyers to receive a code automatically after paying. Both share one redeem entry.
+### Does turning off the RP master switch delete players' RP?
 
-**Is the RP Shop the same as player-to-player RP trading?** No. The RP Shop is run single-handedly by the owner (it sells recipes, and prices are not subject to market rules); player-to-player RP trading is players buying and selling from each other, controlled by `pointsMarketEnabled`.
+No. Balances stay in the save; they are simply hidden and cannot be used until you turn it back on.
+
+### External codes or local codes?
+
+Use local codes if you want in-game management, limited uses, binding or revocation; use external signed codes if you have your own site and want buyers to receive a code automatically after paying. Both share one redeem entry.
+
+### Is the RP Shop the same as player-to-player RP trading?
+
+No. The RP Shop is run single-handedly by the owner (it sells recipes, and prices are not subject to market rules); player-to-player RP trading is players buying and selling from each other, controlled by `pointsMarketEnabled`.
 
 ---
 
