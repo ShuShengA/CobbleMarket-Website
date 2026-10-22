@@ -89,7 +89,7 @@ Use a datapack to describe rules such as "catching this Pokémon pays N RP", "an
 
 - **Balance HUD**: RP shows on the line **below** the main balance (with green / red floating deltas when it changes). It **shares the same background box and the same display switch** as the main currency (both rows show and hide together); the row hides itself when the server has RP turned off
 - **Market entry screen**: a line of RP sits below the balance (hidden when the server has RP off)
-- **Market ID Card / Player Overview**: both show the RP balance; the overview can also **sort by RP balance** (the sort button uses the currency icon — the text "RP" never appears). ⚠ The sort field is hidden when the server has RP off
+- **Market ID Card / Player Overview**: both show the RP balance; the overview supports **sorting by RP balance** (the sort button uses the currency icon — the text "RP" never appears). ⚠ The sort field is hidden when the server has RP off
 - **Commands**: `/market points check` for yourself (available to everyone); checking someone else requires the "Check Balance" node
 
 > ⚠ Turning off this mod's balance HUD hides the RP row with it — use the entry-screen line, the ID Card or `/market points check` instead. If you are doing it to avoid overlapping another mod's balance HUD, we recommend turning off the other HUD and keeping this one (it shows both balances at once).
