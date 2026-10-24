@@ -10,7 +10,7 @@
 > 兑换成功后 RP 直接进余额，并写审计日志。
 
 <div class="cm-compliance">
-⚠ <strong>合规提示</strong>：RP 可以购买精灵与物品（包括影响平衡的内容）。用真实货币出售 RP、再换取影响游戏平衡的东西，可能构成 Minecraft 使用指南所禁止的 Pay-to-Win —— 开启本功能前请自行确认合规。<br><strong>CobbleMarket 坚决不提倡 Pay-to-Win</strong>：充值功能默认关闭，模组不提供任何收款渠道、不参与支付；是否用真钱出售 RP，由服主自行决定。 <a href="https://www.minecraft.net/zh-hans/usage-guidelines" target="_blank" rel="noopener">查看 Minecraft 使用指南</a>
+⚠ <strong>合规提示</strong>：Minecraft 使用准则允许服务器出售游戏内虚拟货币，前提是它没有现实世界价值（不能兑现、转移至其他服务器或换回真钱）、不冒充 Mojang、名称与外观不类似 Minecoins —— CobbleMarket 的 RP 不可兑现、不能跨服转移。准则也允许出售「影响游戏玩法的权益」，前提是<strong>不破坏其他玩家的游戏体验、不提供竞争优势</strong>：如果 RP 被用来换取在你们服务器上构成竞争优势的内容，就可能越线，开启前请自行确认合规。<br><strong>CobbleMarket 坚决不提倡 Pay-to-Win</strong>：充值功能默认关闭，模组不提供任何收款渠道、不参与支付；是否用真钱出售 RP，由服主自行决定。 <a href="https://www.minecraft.net/zh-hans/usage-guidelines" target="_blank" rel="noopener">查看 Minecraft 使用指南</a>
 </div>
 
 ## 一、服务器要先打开这个功能
