@@ -1,6 +1,6 @@
 # 自定义 NPC 商店
 
-不生成新 NPC —— 把服务器现有的任意实体（Easy NPC / Impactor / 原版村民…）绑定成商店，玩家**右键那个实体就打开这家店**。界面与 RP 商城同一张背景、标题换成店名；每家店的商品、库存、价格、开关互相独立，结算货币可选**主货币**或 **RP**。
+把服务器上**你自己的 NPC**（Easy NPC / Impactor / 自己生成的自定义实体 / 原版村民…**任意实体**）绑定成商店 —— 玩家**右键那个 NPC 就打开这家店**。模组不会另外生成商店 NPC，用的就是你放好的那一个，带自定义皮肤 / 模型的也照常。界面与 RP 商城同一张背景、标题换成店名；每家店的商品、库存、价格、开关互相独立，结算货币可选**主货币**或 **RP**。
 
 <img src="images/custom-shop.png" class="shot" loading="lazy" alt="自定义 NPC 商店界面" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
@@ -38,7 +38,7 @@
 ## 权限、限制与存档
 
 - 管理全部走 `points.shop` 节点（**不认 OP**）；主 RP 商城完全不受影响；自定义商店**只买不卖**
-- 已知限制：Easy NPC 等自定义皮肤显示默认模型；旧绑定（无 NPC 元数据）可能显示未知实体；管理员面板绑定只列**附近 16 格**，远处用命令
+- 已知限制：管理员面板列表里的 NPC 头像对 Easy NPC 等自定义皮肤只显示**默认模型**（**游戏内 NPC 的外观不受影响**）；旧绑定（无 NPC 元数据）可能显示未知实体；管理员面板绑定只列**附近 16 格**，远处用命令
 - 存档：`world/data/cobblemarket_custom_shops.dat`（商店 / 类型 / 商品 / NPC 绑定）与 `world/data/cobblemarket_custom_shop_claims.dat`（每玩家每店的领取周期与已领数量）；都是新文件，旧存档没有即视为空
 
 ## 闪光播报

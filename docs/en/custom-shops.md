@@ -1,6 +1,6 @@
 # Custom NPC Shops
 
-No new NPCs are generated — bind any existing entity on your server (Easy NPC / Impactor / vanilla villagers…) as a shop, and **right-clicking that entity opens the shop**. It uses the same background as the RP Shop with the shop name as its title; each shop has its own offers, stock, prices and open/closed state, and can settle in the **main currency** or **RP**.
+Bind **your own NPCs** on the server (Easy NPC / Impactor / custom entities you spawned / vanilla villagers… **any entity**) as shops — **right-clicking that NPC opens the shop**. The mod does not spawn a separate shop NPC; it uses the one you placed, custom skins / models included. It uses the same background as the RP Shop with the shop name as its title; each shop has its own offers, stock, prices and open/closed state, and can settle in the **main currency** or **RP**.
 
 <img src="en/images/custom-shop.png" class="shot" loading="lazy" alt="Custom NPC shop screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
@@ -38,7 +38,7 @@ No new NPCs are generated — bind any existing entity on your server (Easy NPC 
 ## Permissions, limits and saves
 
 - All management uses the `points.shop` node (**OP alone is not enough**); the main RP Shop is completely unaffected; custom shops are **buy-only**
-- Known limits: custom skins such as Easy NPC's show the default model; old bindings (without NPC metadata) may show an unknown entity; the Admin Panel lists only entities **within 16 blocks** — use commands for distant ones
+- Known limits: the Admin Panel's NPC avatar shows the **default model** for custom skins such as Easy NPC's (**the NPC's in-game appearance is unaffected**); old bindings (without NPC metadata) may show an unknown entity; the Admin Panel lists only entities **within 16 blocks** — use commands for distant ones
 - Saves: `world/data/cobblemarket_custom_shops.dat` (shops / types / offers / NPC bindings) and `world/data/cobblemarket_custom_shop_claims.dat` (each player's claim cycle start and claimed counts per shop); both are new files, so an old save simply treats them as empty
 
 ## Shiny announcements

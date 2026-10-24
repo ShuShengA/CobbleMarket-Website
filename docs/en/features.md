@@ -92,7 +92,7 @@ Full guide: [RP System](/en/points).
 
 ## Custom NPC Shops
 
-No new NPCs are generated — bind an existing entity as a shop and players **open it by right-clicking**. Offers can be bought with the **main currency or RP**, and a shop can be a **periodic claim shop** (daily / weekly / monthly, one-click claim with a rolling cooldown). Full guide: [Custom NPC Shops](/en/custom-shops).
+Bind **your own NPCs** (Easy NPC / Impactor / custom entities / vanilla villagers — any entity) as shops and players **open them by right-clicking**. Offers can be bought with the **main currency or RP**, and a shop can be a **periodic claim shop** (daily / weekly / monthly, one-click claim with a rolling cooldown). Full guide: [Custom NPC Shops](/en/custom-shops).
 
 ## History & Ledgers
 
