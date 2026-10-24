@@ -1,6 +1,30 @@
 # Changelog
 
-> This page lists the changes for **every version**; the latest is **1.3.0**, followed by all previously released versions below.
+> This page lists the changes for **every version**; the latest is **1.3.1**, followed by all previously released versions below.
+
+## 1.3.1
+
+⚠ **Client and server must be upgraded together** (this version changes network payloads)
+
+### New Feature
+
+- **The "Illegal" mark is now visible across the trading screens**: a Pokemon tagged Illegal in the RP shop (or by a datapack) **stays recognisable once it leaves the shop** — an "Illegal" stamp is drawn on the **top-right corner of its icon**, in **both list rows and the dialogs opened from them**: selecting a Pokemon to sell, creating an auction, pending pickup, the Pokemon market, the auction house and the admin screens for both Pokemon and auctions, plus the buy-order delivery review dialog. ⚠ It sits mirrored against the "untradeable" lock (lock top-left, stamp top-right); the two states are independent. ⚠ The check reads the **mark on the Pokemon itself**, not a snapshot taken at listing time ⇒ listings and auctions **created before the update still show it**, with no re-listing needed; a `cobblemarket:illegal` written in your own datapacks is recognised too
+
+#### Custom NPC shops
+
+- **Spend RP at an NPC**: server owners can create any number of custom shops and bind existing NPCs to them (Easy NPC / Impactor / vanilla villagers — **any entity**); **right-clicking that NPC opens the shop**. It uses the same background as the RP shop with the shop name as its title, and buying / delivery (party / PC / inventory / pending pickup) work exactly like the RP shop.
+- **Each shop is independent**: offers, stock, prices and the open/closed state are per shop. A shop can also **sell only Pokemon, only items, or both** (`/market shop type <id> pokemon|item|both`) — a single-type shop shows **no tabs**, just the grid for that category. Offers are configured right in the shop screen (the same editor as the RP shop).
+- **Each shop can choose its settlement currency**: pick **primary currency** or **RP** at creation (primary by default). Prices, charges and the insufficient-balance message all use that shop's currency, and **the RP master switch only affects RP-priced shops**. ⚠ The currency can only be changed while the shop has **no offers**, via `/market shop currency <id> primary|points` (changing it after prices are set would reinterpret every price).
+- **Management commands**: `/market shop create|delete|list|rename|type|bind|unbind|enable|disable|open` — all use the `points.shop` permission (**OP alone is not enough**). `bind` / `unbind` target **the entity you are looking at**; one NPC can serve only one shop, and a shop can have several NPCs.
+- **Shop management screen in the admin panel**: a **Custom Shops** button at the bottom of the admin panel, right of the market switch. Each shop is one row with the **3D avatar and name of its bound NPC**, and hovering shows the full info (ID / type / open state / offer counts / bound NPCs). Creating, renaming, changing the sale type, opening/closing, binding/unbinding, editing offers and deleting are **all done here**; binding lists the entities within 16 blocks (avatar + name + distance), so you just click one.
+- **Periodic claim shops (daily / weekly / monthly — any period)**: set **Shop mode** to **Periodic claim** at creation and fill in the **claim period** in hours (24 = daily, 168 = weekly, 720 = monthly). Players press **Claim** to **collect everything at once**; the per-slot amount is **per player per period** (default 0 = not offered, **unlimited is not allowed**). The period is a **rolling cooldown** that starts when the player actually receives something; **anything that does not fit stays in the shop** (clear your inventory and claim again) but does **not stack** — whatever is left unclaimed expires at the end of the period. Claiming is free and **not affected by the RP master switch**; the period can be changed any time with `/market shop period <id> <hours>` (the mode itself is fixed at creation). **Hovering a slot shows its full details** (level / form / shiny / ability / IVs / moves / held item for Pokemon; the vanilla tooltip for items), with the claimable count on the last line.
+- **Server-wide announcement for shiny Pokemon**: when a player **buys** a shiny Pokemon from a custom shop or the RP Shop, or **claims** one from a periodic-claim shop, the whole server sees `[Merchant] Congratulations to <player> on purchasing / claiming ★[<species>]!` Custom shops use the **name of the NPC the player right-clicked** (falling back to the shop name when that NPC has no custom name or the shop was opened another way); the RP Shop uses a fixed tag built from the **currency icon** (`[Ⓡ Shop]`, with no “RP” text in game). The name supports **hover for the big preview and full tooltip**.
+- **Opening / closing**: after `/market shop disable <id>` the NPC no longer opens the shop and the server rejects all purchases from it; offers and settings are kept, and `enable` restores it.
+- **Price limits now support RP**: each rule can use the **primary currency** or **RP** (primary by default), and **the Pokemon market, item market, auctions and buy orders are all checked against the currency of the transaction** — RP trades no longer skip price limits. The add / edit dialog gets a **currency toggle** to the right of the price box (the same control as the listing screens), and each row shows the currency icon of its rule. ⚠ Old rules load as primary currency.
+
+### Fixes
+
+- **RP reward rules only loaded folder-form datapacks**: a `.zip` dropped straight into `datapacks/` **now loads as well** — previously it was **silently ignored** (the log only showed `0 file(s)`, no error). The zip only needs `pack.mcmeta` at its root; folder-form datapacks keep working
 
 ## 1.3.0
 

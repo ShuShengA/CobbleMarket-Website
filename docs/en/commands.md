@@ -56,6 +56,28 @@ Admin commands are judged by **permission nodes** (server owners always pass) �
 > ¹ **The give/take exception**: with "delegate give/take" enabled in RP Config, **player-ops (permission level 2+)** can also run these two commands (for quest mods). The switch is off by default and only covers these two commands
 > ² **Not a permission node**: the check is permission level ≥ 2 (server owner / in-game OP / command block). It only writes the balance table to disk early — it moves no money and changes no state
 
+### Custom NPC shops
+
+⚠ `/market shop ...` (custom NPC shops) and `/market points shop ...` (RP top-up orders) **are two separate command trees** — don't mix them up.
+
+| Command | Description |
+|---|---|
+| `/market shop create <id> <name>` | Creates a **default shop** (both types / main currency / normal purchase); create periodic-claim shops in the Admin Panel |
+| `/market shop delete <id>` | Delete a shop |
+| `/market shop list` | List all shops |
+| `/market shop rename <id> <name>` | Rename |
+| `/market shop type <id> pokemon\|item\|both` | Sale type; switching **does not delete** the other category, it only hides it |
+| `/market shop currency <id> primary\|points` | Settlement currency; **only an empty shop can change it** (changing it after prices are set reinterprets every price) |
+| `/market shop period <id> <hours>` | Claim period (1–8760 hours; 24 = daily, 168 = weekly, 720 = monthly); the mode itself is fixed at creation |
+| `/market shop bind <id>` | Bind **the entity you are looking at** to the shop |
+| `/market shop unbind` | Unbind **the entity you are looking at** (no ID needed) |
+| `/market shop enable <id>` / `disable <id>` | Open / close a shop (that shop only) |
+| `/market shop open <id>` | Open the shop screen (an admin test entry; buying still requires being within 8 blocks of a bound NPC) |
+
+- All require the `points.shop` permission node (**OP alone is not enough**)
+- `bind` / `unbind` target **the entity you are looking at**; one NPC serves only one shop, and one shop can have several NPCs
+- IDs use lowercase letters / digits / `_` / `-` (1–32 characters, cannot be `main`)
+
 ### Arguments
 
 **Ban duration** — a number followed by a unit:

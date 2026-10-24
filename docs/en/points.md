@@ -105,6 +105,9 @@ The middle of the RP Shop screen is run single-handedly by whoever holds the **"
 - **Stock is per slot**: empty = unlimited (default), a number = limited copies
 - **Prices are set by the owner**: not subject to price limits, blacklists or fees
 - **Variant is its own field**: form covers regional forms and Mega; species features (patterns / caps / creams / spots) go under Variant, one per dimension, listing only the ones that species actually has models for
+- **Shiny announcements**: when a player buys a shiny Pokémon from the shop, the whole server sees `[Ⓡ Shop] Congratulations to <player> on purchasing ★[<species>]!` (no "RP" text in game); hover the name for the large preview and full tooltip. Claim shops announce shinies the same way with the verb "claiming", using the name of the NPC the player entered through
+
+⚠ To run shops at NPCs (players open them by right-clicking), see the "Custom NPC Shops" section on [Features](/en/features)
 
 ### 5.1 Battle forms, the Illegal tag, and the unlock switch
 

@@ -25,7 +25,7 @@ RP 从哪来由你决定。这一页讲的是「游戏内产出」那条路：�
 
 - `<命名空间>` 就是 `data/` 下的一级文件夹名，随你起。示例用 `cobblemarket` 作为命名空间，所以路径是 `data/cobblemarket/points_rewards/`
 - ⚠ **不要多套一层 `cobblemarket/`**：写成 `data/cobblemarket/cobblemarket/points_rewards/...` 会一条规则都读不到
-- 只认**文件夹形态**的数据包，不认 zip
+- **文件夹与 zip 都认**：zip 直接把 `pack.mcmeta` 放在最外层（不要多包一层文件夹）
 - 新放进世界的包默认会自动启用；如果 `/datapack list` 显示它只是「可用」，再执行 `/datapack enable "file/<包名>"` 并 `/reload`
 
 ## 最小可用数据包
@@ -337,7 +337,7 @@ Cobblemon 的数据包 NPC 可以按**类 id** 作为奖励目标。类 id = `/s
 
 ## 示例包
 
-<a href="downloads/rewards_example_datapack.zip">下载示例数据包</a>（解压后把 `rewards_example_datapack/` 文件夹放进 `datapacks/`；目前只认文件夹形态），或照着上面的最小数据包自己写一个。
+<a href="downloads/rewards_example_datapack.zip">下载示例数据包</a>（zip 可直接丢进 `datapacks/`；解压后把 `rewards_example_datapack/` 文件夹放进去也可以），或照着上面的最小数据包自己写一个。
 
 ---
 

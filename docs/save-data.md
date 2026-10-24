@@ -26,6 +26,8 @@
 | RP 兑换码（本地码 + 外部码已用 serial） | `cobblemarket_point_codes.dat` |
 | RP 充值订单 | `cobblemarket_point_orders.dat` |
 | RP 商城商品与库存 | `cobblemarket_point_shop.dat` |
+| 自定义 NPC 商店（商店 / 出售类型 / 商品 / NPC 绑定） | `cobblemarket_custom_shops.dat` |
+| 自定义 NPC 商店领取进度（每玩家每店的周期与已领数量） | `cobblemarket_custom_shop_claims.dat` |
 
 ## 说明
 

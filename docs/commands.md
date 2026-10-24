@@ -56,6 +56,28 @@
 > ¹ **give/take 的例外**：RP 配置里的「give/take 权限下放」打开后，**玩家身份的 OP（命令等级 ≥ 2）**也能用这两条命令（给任务模组发奖励）；开关默认关，且只管这两条
 > ² **不是管理节点**：判据是命令等级 ≥ 2（服主 / 游戏内 OP / 命令方块都能用）。它只把余额表提前落盘，不动任何人的钱、不改任何状态
 
+### 自定义 NPC 商店
+
+⚠ `/market shop ...`（自定义 NPC 商店）与 `/market points shop ...`（RP 充值订单）**是两棵不同的命令树**，别混。
+
+| 命令 | 说明 |
+|---|---|
+| `/market shop create <id> <名字>` | 创建**默认店**（两者都卖 / 主货币 / 普通购买）；定期领取店请在管理员面板创建 |
+| `/market shop delete <id>` | 删除商店 |
+| `/market shop list` | 列出全部商店 |
+| `/market shop rename <id> <名字>` | 改名 |
+| `/market shop type <id> pokemon\|item\|both` | 出售类型；切换**不会删除**另一类商品，只是隐藏 |
+| `/market shop currency <id> primary\|points` | 结算货币；**只有空店能改**（店里有商品后再换，等于把价格全部重新解释一遍） |
+| `/market shop period <id> <小时>` | 领取周期（1~8760 小时；24 = 每日、168 = 每周、720 = 每月）；经营模式建好后不可改 |
+| `/market shop bind <id>` | 把**正在看的实体**绑定到商店 |
+| `/market shop unbind` | 解除**正在看的实体**的绑定（不需要 id） |
+| `/market shop enable <id>` / `disable <id>` | 开店 / 关店（只影响这一家店） |
+| `/market shop open <id>` | 打开商店界面（管理端的测试入口；购买仍要求在绑定 NPC 8 格内） |
+
+- 全部要求 `points.shop` 权限节点（**不认 OP**）
+- `bind` / `unbind` 需要**看着目标实体**执行；一个 NPC 只能服务一家店，一家店可以绑多个 NPC
+- ID 用小写字母 / 数字 / `_` / `-`（1~32 位，不能叫 `main`）
+
 ### 参数说明
 
 **封禁时长** —— 格式为「数字 + 单位」：

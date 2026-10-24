@@ -90,6 +90,53 @@ RP is this mod's **premium currency**, running alongside the main one — the ma
 
 Full guide: [RP System](/en/points).
 
+## Custom NPC Shops
+
+No new NPCs are generated — bind any existing entity on your server (Easy NPC / Impactor / vanilla villagers…) as a shop, and **right-clicking that entity opens the shop**. It uses the same background as the RP Shop with the shop name as its title; each shop has its own offers, stock, prices and open/closed state, and can settle in the **main currency** or **RP**.
+
+<img src="en/images/custom-shop.png" class="shot" loading="lazy" alt="Custom NPC shop screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+
+### Creating and binding
+
+- **Create in the Admin Panel (recommended)**: Admin Panel → Custom Shops → Create; fill in the **ID / name** and choose the **sale type** (Pokémon / items / both), **settlement currency**, **shop mode** (normal purchase / periodic claim) and claim period. ⚠ **Periodic claim can only be chosen here and cannot be changed afterwards**
+- **Create by command**: `/market shop create <id> <name>` creates a **default shop** (both types / main currency / normal purchase); `type` / `currency` can adjust it afterwards; **the mode cannot be changed by command**
+- **Binding an NPC**: look at the entity and run `/market shop bind <id>`, or click an entity within 16 blocks in the Admin Panel's "Select NPC" dialog. One NPC serves only one shop, and one shop can have several NPCs; bindings store UUIDs, so a deleted / replaced NPC must be bound again
+- IDs use lowercase letters / digits / `_` / `-` (1–32 characters, cannot be `main`); names are capped at 32 characters
+
+<img src="en/images/custom-shop-admin.png" class="shot" loading="lazy" alt="Custom Shops screen in the Admin Panel" onerror="this.onerror=null;this.src='images/placeholder.svg'">
+
+### Listing offers
+
+- Open the shop (right-click the NPC or `/market shop open <id>`) and click an empty slot — the editor is **exactly the same** as the RP Shop's
+- Pokémon offers cover species / form / variant / level / shiny / ability / moves / IVs / held item and more; item offers can copy every component of the item in your hand
+- Leave stock empty for **unlimited**, or type a number to limit it; in a **periodic claim shop the "amount" is how many each player gets per period** (0 = not offered, unlimited is not allowed)
+- Switching the sale type **does not delete** the other category — it only hides it
+
+### Periodic claim shops
+
+- Players press **Claim** at the bottom to collect everything, **free of charge** and **unaffected by the RP master switch**
+- **Rolling cooldown**: it starts when the player actually receives something and refreshes after one full period; change the period with `/market shop period <id> <hours>` (24 = daily, 168 = weekly, 720 = monthly)
+- **No stacking**: whatever is left unclaimed expires at the end of the period; if the inventory / party / PC is full, **only what fits is delivered** and the rest stays in the shop for the rest of the period
+- After pressing Claim, items fly from their slots toward the bottom centre of the screen (hotbar position), shrinking away — slots take off in sequence, and a multi-item slot flies as one icon with an ×N badge; **Pokémon do not animate**, and anything left in the shop does not fly either
+- **Hover a slot for full details** (level / form / shiny / ability / IVs / moves / held item for Pokémon; the vanilla tooltip for items), with the claimable count on the last line
+
+### Currency and switches
+
+- The settlement currency is chosen **at creation**; **once the shop has offers it cannot be changed** — only an empty shop accepts `/market shop currency <id> primary|points`
+- With the **RP master switch off**, RP-priced normal shops are refused (with a "RP is not enabled" notice) while primary-currency shops keep working; **claim shops are free and unaffected**
+- **Per-shop switch**: `/market shop disable <id>` closes just that shop — players cannot open / buy / claim, while admins can still edit it from the Admin Panel; ⚠ **it does not follow the market master switch** (stopping the market leaves NPC shops open)
+- Buying and claiming both require the player to be **within 8 blocks of a bound NPC**; walking away after opening the screen does not work
+
+### Permissions, limits and saves
+
+- All management uses the `points.shop` node (**OP alone is not enough**); the main RP Shop is completely unaffected; custom shops are **buy-only**
+- Known limits: custom skins such as Easy NPC's show the default model; old bindings (without NPC metadata) may show an unknown entity; the Admin Panel lists only entities **within 16 blocks** — use commands for distant ones
+- Saves: `world/data/cobblemarket_custom_shops.dat` (shops / types / offers / NPC bindings) and `world/data/cobblemarket_custom_shop_claims.dat` (each player's claim cycle start and claimed counts per shop); both are new files, so an old save simply treats them as empty
+
+### Shiny announcements
+
+When a player buys or claims a **shiny** Pokémon, the whole server sees `[Merchant] Congratulations to <player> on purchasing / claiming ★[<species>]!` — a custom shop uses the **name of the NPC the player right-clicked** (falling back to the shop name when it has no custom name), while the main RP Shop always shows the currency icon `[Ⓡ Shop]`; hover the name for the large preview and full tooltip
+
 ## History & Ledgers
 
 - **In-game history screen** — personal history reads the last 14 days of the ledger (up to 500 entries each), while admins can view the server-wide feed
@@ -107,7 +154,7 @@ Full guide: [RP System](/en/points).
 - **Player Overview** — an Admin Panel entry (requires the "Player Overview" node) listing every player on one line, showing the field you currently sort by, with name search and sorting by balance / **RP balance** / limit / debt / deposits / trade volume / Pokédex counts and more; hover a row for that player's full info card (the same items as the Market ID Card, including the RP balance line). ⚠ Offline players show the data recorded while they were last online (marked on the line); online players show live values
 - **Blacklists** — separate tabs for Pokémon and items, precise down to the **item variant** (ban only "Sharpness V" enchanted books without touching other books; entries match by containment so adding a junk enchantment can't slip past), with add-from-held-item, bulk banning and exact unbanning by search results; Pokémon rules can target **form / variant** (variant is multi-select: patterns / cosmetics / caps each ticked on their own) with three tiers (All / Form / Variant)
 - **Honours vanilla "untradeable"** — a Pokémon marked untradeable in Cobblemon (the vanilla trade screen locks it) is blocked from all three paths — market, auctions and buy orders — and the picker screens draw the same lock on that row
-- **Price limits** — upper and lower bounds per Pokémon form / variant or item variant, with the most specific entry taking precedence; when a trade is blocked, the message names **the rule that matched** (e.g. "Form: Any · Variant: Rage Candy Bar"), so players do not assume the whole Pokémon is banned
+- **Price limits** — upper and lower bounds per Pokémon form / variant or item variant, with the most specific entry taking precedence; when a trade is blocked, the message names **the rule that matched** (e.g. "Form: Any · Variant: Rage Candy Bar"), so players do not assume the whole Pokémon is banned. Each rule can use the **main currency / RP** (main by default), the dialog has a currency toggle next to the price box and each row shows its rule's currency icon; the Pokémon market / item market / auction house / Buy Orders all check **the trade's own currency**, so RP trades no longer skip price limits
 - **Bans** — ban a player from the **market's trading** (buying Pokémon / items, listing them, creating auctions, bidding, creating buy orders, delivering, paying for a delivery) for a set duration or permanently, with a reason; **assets are never seized** (cancelling listings, claiming returns and collecting pending balance keep working); **borrowing also keeps working by default**; to block someone from borrowing, add them on the Finance Management screen's "Loan Ban" tab (the ban dialog no longer has that toggle; deposits, withdrawals and repayments are never affected) — see [Ban Management](/en/moderation) for the exact scope
 - **Forced delisting** — admins can view and force-delist any listing, auction or buy order; both parties are notified (queued and delivered on next login if offline)
 - **Market master switch** — stop the market in an emergency with one button (with confirmation); the trading entries (Pokémon / Items / Auction / Buy Orders) and Meowth Bank's borrowing entry are greyed out and explain why when clicked; **only trading is blocked** — Settings and History keep working, as do Meowth Bank deposits / withdrawals / repayments and card applications, while pending claims, balance collection and delisting wait until the market reopens (nothing is lost); server owners and admins holding the corresponding permission nodes can still use the Admin Panel to clean up (OPs can see the entry too, though its functions are still judged by the nodes)
@@ -116,6 +163,7 @@ Full guide: [RP System](/en/points).
 
 ## And More
 
+- **The "Illegal" mark is visible across trading screens** — a Pokémon tagged Illegal in the RP Shop (or by a datapack) stays recognisable after leaving the shop: an "Illegal" stamp sits in the top-right corner of its icon, in list rows and dialogs across the sell picker / auction creation / pending claims / Pokémon market / auction house / Admin Panel; mirrored against the "untradeable" lock, it reads the mark on the Pokémon itself, so old listings and auctions need no re-listing
 - **Professor Oak** — a resident character on the entry screen whose speech bubble shows random Pokémon trivia (498 bilingual entries built in, freely editable)
 - **Listing notifications** — when someone else lists a Pokémon or an item or puts one up for auction, a round bubble drops from the top of your screen (with that Pokémon's 3D model / that item's icon) and a chime plays; your own listings show nothing. The icon and the sound can be turned off separately in the settings
 - **Offline notifications** — trade notifications received while offline are queued and delivered on next login, rendered in the player's own language

@@ -62,7 +62,7 @@ Two owners:
 | Check Balance | View **anyone's** RP balance (checking your own needs no node) — read-only, safe to give to support staff |
 | Redeem Codes | Create / list / void / purge redeem codes — ⚠ **this mints money**; the list also exposes full codes that can be redeemed, so the whole node is a code-issuing right, not a read-only list |
 | Top-up Orders | Verify payments and grant / void top-up orders — ⚠ **granting adds balance**; confirm the recipient can see your payment statements before granting |
-| RP Shop | List / edit / remove RP Shop offers — decides what players can get for their RP |
+| RP Shop | List / edit / remove RP Shop offers — decides what players can get for their RP; also covers creating / deleting / binding / managing custom NPC shops |
 | Player Overview | View every player's market and economy data (balance, listings, credit limit, debt, deposits and interest, Pokédex counts; includes RP balance and sorting by RP) |
 
 > ⚠ **"Player Overview" reveals every player's balance and debt** — nodes are granted all-or-nothing and cannot be partially revoked, so make sure you trust whoever receives it

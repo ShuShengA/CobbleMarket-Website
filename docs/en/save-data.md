@@ -26,6 +26,8 @@ All data is persisted via Minecraft's PersistentState mechanism in the server wo
 | RP redeem codes (local codes + used external serials) | `cobblemarket_point_codes.dat` |
 | RP top-up orders | `cobblemarket_point_orders.dat` |
 | RP Shop offers and stock | `cobblemarket_point_shop.dat` |
+| Custom NPC shops (shops / sale type / offers / NPC bindings) | `cobblemarket_custom_shops.dat` |
+| Custom NPC shop claim progress (cycle and claimed counts per player per shop) | `cobblemarket_custom_shop_claims.dat` |
 
 ## Notes
 

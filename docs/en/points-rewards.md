@@ -25,7 +25,7 @@ Where RP comes from is up to you. This page covers the in-game earning path: a p
 
 - `<namespace>` is the first-level folder under `data/`, and can be anything. The examples below use `cobblemarket` as the namespace, so the path is `data/cobblemarket/points_rewards/`
 - ⚠ **Do not add an extra `cobblemarket/` layer**: `data/cobblemarket/cobblemarket/points_rewards/...` loads zero rules
-- Only **folder-form** datapacks are supported, not zip files
+- **Both folders and zips work**: for a zip, put `pack.mcmeta` at its very root (do not wrap it in an extra folder)
 - A newly added pack is normally enabled automatically; if `/datapack list` shows it as available but not enabled, run `/datapack enable "file/<pack name>"` and `/reload`
 
 ## Minimal working datapack
@@ -337,7 +337,7 @@ You do not need to dig through files to find ids. Two in-game commands:
 
 ## Example pack
 
-<a href="downloads/rewards_example_datapack.zip">Download the example datapack</a> (unzip it and place the `rewards_example_datapack/` folder in `datapacks/`; folder form only for now), or write your own using the minimal datapack above.
+<a href="downloads/rewards_example_datapack.zip">Download the example datapack</a> (drop the zip straight into `datapacks/`, or unzip it and place the `rewards_example_datapack/` folder there), or write your own using the minimal datapack above.
 
 ---
 
