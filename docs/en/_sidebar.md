@@ -15,6 +15,7 @@
 - [Permission Nodes](/en/permission)
 - [Currency](/en/currency)
 - [RP System](/en/points)
+- [Custom NPC Shops](/en/custom-shops)
 - [RP Reward Rules](/en/points-rewards)
 - [RP Top-up](/en/points-recharge)
 - [RP External Signed Codes](/en/points-external)

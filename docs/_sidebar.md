@@ -15,6 +15,7 @@
 - [权限节点](/permission)
 - [货币系统](/currency)
 - [RP 系统](/points)
+- [自定义 NPC 商店](/custom-shops)
 - [RP 奖励规则](/points-rewards)
 - [RP 充值](/points-recharge)
 - [RP 外部签名码](/points-external)
