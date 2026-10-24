@@ -3,7 +3,7 @@
 This page covers **whether to do it and what it takes**, not how to integrate any particular platform. There are two ways to collect payment for RP, and they differ in exactly one respect: **who decides that the money arrived**.
 
 <div class="cm-compliance">
-⚠ <strong>Compliance note</strong>: RP can buy Pokémon and items (including gameplay-affecting content). Selling RP for real money and letting it buy gameplay advantages may constitute Pay-to-Win, which the Minecraft Usage Guidelines prohibit — confirm compliance yourself before deciding to integrate payments. <a href="https://www.minecraft.net/en-us/usage-guidelines" target="_blank" rel="noopener">Minecraft Usage Guidelines</a>
+⚠ <strong>Compliance note</strong>: RP can buy Pokémon and items (including gameplay-affecting content). Selling RP for real money and letting it buy gameplay advantages may constitute Pay-to-Win, which the Minecraft Usage Guidelines prohibit — confirm compliance yourself before deciding to integrate payments.<br><strong>CobbleMarket is firmly opposed to Pay-to-Win</strong>: the top-up feature is off by default, the mod provides no payment channel and takes no part in payments; whether to sell RP for real money is the server owner's decision. <a href="https://www.minecraft.net/en-us/usage-guidelines" target="_blank" rel="noopener">Minecraft Usage Guidelines</a>
 </div>
 
 ## 1. The two approaches

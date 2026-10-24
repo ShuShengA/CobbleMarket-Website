@@ -3,7 +3,7 @@
 这一页讲**要不要做、要准备什么**，不讲具体平台怎么接。RP 的收款方式有两条路，本质区别只有一个：**谁来判断「钱到了」**。
 
 <div class="cm-compliance">
-⚠ <strong>合规提示</strong>：RP 可以购买精灵与物品（包括影响平衡的内容）。用真实货币出售 RP、再换取影响游戏平衡的东西，可能构成 Minecraft 使用指南所禁止的 Pay-to-Win —— 在决定接入支付前请自行确认合规。<a href="https://www.minecraft.net/zh-hans/usage-guidelines" target="_blank" rel="noopener">查看 Minecraft 使用指南</a>
+⚠ <strong>合规提示</strong>：RP 可以购买精灵与物品（包括影响平衡的内容）。用真实货币出售 RP、再换取影响游戏平衡的东西，可能构成 Minecraft 使用指南所禁止的 Pay-to-Win —— 在决定接入支付前请自行确认合规。<br><strong>CobbleMarket 坚决不提倡 Pay-to-Win</strong>：充值功能默认关闭，模组不提供任何收款渠道、不参与支付；是否用真钱出售 RP，由服主自行决定。 <a href="https://www.minecraft.net/zh-hans/usage-guidelines" target="_blank" rel="noopener">查看 Minecraft 使用指南</a>
 </div>
 
 ## 一、两条路的本质区别
