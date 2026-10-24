@@ -25,6 +25,10 @@ Three rules, all on purpose — please accept them before reading on:
   and that is recoverable via the pending list and the order number.
   **Better to under-deliver than to over-deliver.**
 
+<div class="cm-compliance">
+⚠ <strong>Compliance note</strong>: RP can buy Pokémon and items (including gameplay-affecting content). Selling RP for real money and letting it buy gameplay advantages may constitute Pay-to-Win, which the Minecraft Usage Guidelines prohibit — confirm compliance yourself before enabling this feature. <a href="https://www.minecraft.net/en-us/usage-guidelines" target="_blank" rel="noopener">Minecraft Usage Guidelines</a>
+</div>
+
 ## 2. Turning it on
 
 1. Make sure the **RP master switch** is on (`pointsEnabled`)

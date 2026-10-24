@@ -19,6 +19,10 @@
   只有「付了但你没看到」会漏发 —— 可以用待确认列表 + 订单号补回来。
   **宁可漏发，不能滥发。**
 
+<div class="cm-compliance">
+⚠ <strong>合规提示</strong>：RP 可以购买精灵与物品（包括影响平衡的内容）。用真实货币出售 RP、再换取影响游戏平衡的东西，可能构成 Minecraft 使用指南所禁止的 Pay-to-Win —— 开启本功能前请自行确认合规。<a href="https://www.minecraft.net/zh-hans/usage-guidelines" target="_blank" rel="noopener">查看 Minecraft 使用指南</a>
+</div>
+
 ## 二、怎么开
 
 1. 先确认**RP 总开关**是开的（`pointsEnabled`）

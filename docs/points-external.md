@@ -9,6 +9,10 @@
 > 玩家在**游戏内**兑换（RP 商城界面的「兑换 RP」入口，或 `/market points redeem <码>`）。
 > 兑换成功后 RP 直接进余额，并写审计日志。
 
+<div class="cm-compliance">
+⚠ <strong>合规提示</strong>：RP 可以购买精灵与物品（包括影响平衡的内容）。用真实货币出售 RP、再换取影响游戏平衡的东西，可能构成 Minecraft 使用指南所禁止的 Pay-to-Win —— 开启本功能前请自行确认合规。<a href="https://www.minecraft.net/zh-hans/usage-guidelines" target="_blank" rel="noopener">查看 Minecraft 使用指南</a>
+</div>
+
 ## 一、服务器要先打开这个功能
 
 | 配置键 | 默认 | 说明 |
