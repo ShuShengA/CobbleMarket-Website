@@ -3,7 +3,7 @@
 这一页讲**要不要做、要准备什么**，不讲具体平台怎么接。RP 的收款方式有两条路，本质区别只有一个：**谁来判断「钱到了」**。
 
 <div class="cm-compliance">
-⚠ <strong>合规提示</strong>：Minecraft 使用准则允许服务器出售游戏内虚拟货币，前提是它没有现实世界价值（不能兑现、转移至其他服务器或换回真钱）、不冒充 Mojang、名称与外观不类似 Minecoins —— CobbleMarket 的 RP 不可兑现、不能跨服转移。准则也允许出售「影响游戏玩法的权益」，前提是<strong>不破坏其他玩家的游戏体验、不提供竞争优势</strong>：如果 RP 被用来换取在你们服务器上构成竞争优势的内容，就可能越线，开启前请自行确认合规。<br><strong>CobbleMarket 坚决不提倡 Pay-to-Win</strong>：充值功能默认关闭，模组不提供任何收款渠道、不参与支付；是否用真钱出售 RP，由服主自行决定。 <a href="https://www.minecraft.net/zh-hans/usage-guidelines" target="_blank" rel="noopener">查看 Minecraft 使用指南</a>
+⚠ <strong>合规提示</strong>：Minecraft 使用准则允许服务器出售游戏内虚拟货币，前提是它没有现实世界价值（不能兑现、转移至其他服务器或换回现实货币）、不冒充 Mojang、名称与外观不类似 Minecoins —— CobbleMarket 的 RP 不可兑现、不能跨服转移。准则也允许出售「影响游戏玩法的权益」，前提是<strong>不破坏其他玩家的游戏体验、不提供竞争优势</strong>：如果 RP 被用来换取在你们服务器上构成竞争优势的内容，就可能越线，开启前请自行确认合规。<br><strong>CobbleMarket 坚决不提倡 Pay-to-Win</strong>：充值功能默认关闭；模组<strong>不代收、不托管资金、不对接任何支付平台</strong>（收款码是服主自己的，外部签名码只验签，网站负责支付），只提供展示收款码、记录订单与兑换码的工具；是否用现实货币出售 RP，由服主自行决定。 <a href="https://www.minecraft.net/zh-hans/usage-guidelines" target="_blank" rel="noopener">查看 Minecraft 使用指南</a>
 </div>
 
 ## 一、两条路的本质区别
