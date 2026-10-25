@@ -29,7 +29,7 @@
     "address": "driftwood.dathost.net:17794",
     "version": "Minecraft 1.21.1 · Cobblemon 1.8.3",
     "description": "A 100% EULA-compliant, optimized Cobblemon server featuring custom fusion Pokémon",
-    "icon": "images/servers/server-2.jpg",
+    "icon": "images/servers/server-2.webp",
     "website": "",
     "discord": "https://discord.gg/jKzUXwuU5",
     "qq": "",
@@ -50,7 +50,7 @@
     ],
     "issue": 2,
     "online": true,
-    "players": 17,
+    "players": 16,
     "maxPlayers": 100
   }
 ]
