@@ -154,3 +154,5 @@ body:
       options:
         - label: This server runs CobbleMarket, and I agree that the information above may be published on the CobbleMarket website. / 本服已安装 CobbleMarket，且同意以上信息在 CobbleMarket 官网公开展示。
           required: true
+        - label: This server complies with Mojang's EULA and Commercial Usage Guidelines and does not sell gameplay advantages (no pay-to-win). / 本服符合 Mojang 的 EULA 与商业使用准则，且不出售玩法优势（不做 P2W）。
+          required: true
