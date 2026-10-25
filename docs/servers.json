@@ -23,5 +23,34 @@
     "online": false,
     "players": 0,
     "maxPlayers": 0
+  },
+  {
+    "name": "CobbleFusion F2P",
+    "address": "driftwood.dathost.net:17794",
+    "version": "Minecraft 1.21.1 · Cobblemon 1.8.3",
+    "description": "A 100% EULA-compliant, optimized Cobblemon server featuring custom fusion Pokémon",
+    "icon": "images/servers/server-2.jpg",
+    "website": "",
+    "discord": "https://discord.gg/jKzUXwuU5",
+    "qq": "",
+    "languages": [
+      "en"
+    ],
+    "platforms": [
+      "fabric"
+    ],
+    "gameplay": [
+      "survival",
+      "economy",
+      "pvp",
+      "modded",
+      "fusion",
+      "gyms",
+      "tournaments"
+    ],
+    "issue": 2,
+    "online": true,
+    "players": 17,
+    "maxPlayers": 100
   }
 ]
