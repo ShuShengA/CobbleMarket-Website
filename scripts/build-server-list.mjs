@@ -12,8 +12,14 @@
  */
 
 import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { connect } from 'node:net';
 import { lookup, resolveSrv } from 'node:dns/promises';
+
+// 日志里先打一行启动标记：如果 Action 日志里连这一行都没有，说明脚本根本没被执行。
+// `argv1` 同时写出来，方便排查入口判断（相对 / 绝对路径）问题。
+console.log(`build-server-list: start (argv1=${process.argv[1] ?? '(none)'})`);
 
 const KNOWN_HEADINGS = [
   'Server name',
@@ -443,6 +449,7 @@ async function main() {
     issues.push(...batch.filter((issue) => !issue.pull_request));
     if (batch.length < 100) break;
   }
+  console.log(`build-server-list: ${issues.length} approved issue(s) fetched`);
 
   const servers = [];
   for (const issue of issues) {
@@ -468,7 +475,13 @@ async function main() {
   );
 }
 
-if (process.argv[1] && process.argv[1].replace(/\\/g, '/').endsWith('/scripts/build-server-list.mjs')) {
+// ⚠ 用**解析后的绝对路径**比较：`node scripts/xxx.mjs` 在不同 Node/平台下
+// process.argv[1] 可能是相对路径，旧的 `endsWith('/scripts/...')` 会判 false，
+// 结果是脚本静默什么都不做、Action 却显示成功（2026-10-25 服务器列表 #2 踩到）。
+const invokedDirectly = process.argv[1] &&
+  path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url));
+
+if (invokedDirectly) {
   main().catch((error) => {
     console.error(error);
     process.exit(1);

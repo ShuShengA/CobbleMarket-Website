@@ -34,7 +34,8 @@ jobs:
       - name: Build servers.json from approved issues
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/build-server-list.mjs
+        # 用绝对路径跑，避免 process.argv[1] 是相对路径时入口判断失效
+        run: node "$GITHUB_WORKSPACE/scripts/build-server-list.mjs"
 
       - name: Commit changes
         run: |
