@@ -198,6 +198,12 @@ async function localizeIcon(iconUrl, issue) {
     fs.writeFileSync(`${ICON_DIR}/${name}`, bytes);
     return `images/servers/${name}`;
   } catch (error) {
+    // 远端拉不到时，如果站点已经有一份同 issue 的图标（上次成功下载过），继续用它 ——
+    // 不要在 servers.json 里退回 GitHub 附件 URL（那会 302 到 S3，部分网络加载失败）。
+    for (const ext of Object.values(ICON_TYPES)) {
+      const local = `images/servers/server-${issue}.${ext}`;
+      if (fs.existsSync(`${ICON_DIR}/server-${issue}.${ext}`)) return local;
+    }
     console.warn(`Icon for #${issue} not localized (${error.message}); keeping remote URL`);
     return iconUrl;
   }
@@ -363,13 +369,21 @@ export async function pingMinecraftServer(address) {
     const socket = connect({ host: target.connectHost, port: target.connectPort });
     let buffer = Buffer.alloc(0);
     let settled = false;
+    // ⚠ **必须有这个显式 timer**：`socket.setTimeout` 的计时器在「连接中」状态下
+    // 可能撑不住事件循环 ⇒ 另一台服务器先返回后，Node 直接 exit 0，`servers.json`
+    // 根本不会写。2026-10-25 服务器列表 #2 就是被这个坑住的（离线测试服把脚本挂到一半就退）。
+    let timer = null;
     const finish = (fn, value) => {
       if (settled) return;
       settled = true;
+      if (timer) clearTimeout(timer);
       socket.destroy();
       fn(value);
     };
+    timer = setTimeout(() => finish(reject, new Error('timeout')), 5000);
 
+    // 连接关闭但还没拿到状态：别让 Promise 永远悬着（正常的 finish 会先置 settled）
+    socket.on('close', () => finish(reject, new Error('closed')));
     socket.setTimeout(5000);
     socket.on('timeout', () => finish(reject, new Error('timeout')));
     socket.on('error', (error) => finish(reject, error));
