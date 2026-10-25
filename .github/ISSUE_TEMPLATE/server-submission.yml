@@ -52,9 +52,9 @@ body:
     id: hide_address
     attributes:
       label: Hide address
-      description: 可选。整合包已内置服务器时勾选：卡片以「获取整合包」为主按钮，地址收进「手动连接」（在线状态照常显示）/ Optional. Tick if the modpack already points to your server — the card shows a "Get the modpack" button and the address moves under "Manual connect" (online status still shows)
+      description: 可选。勾选后卡片只显示「获取整合包」、不显示服务器地址（未填 Modpack URL 时仍会显示地址，否则玩家无法进服；在线状态照常显示）/ Optional. Tick to hide the server address on the card — the card then shows only a "Get the modpack" button (the address is still shown if no modpack URL is given, otherwise players could not join; online status still works)
       options:
-        - label: Hide the server address behind "Manual connect" / 将服务器地址收进「手动连接」
+        - label: Hide the server address on the card / 卡片上不显示服务器地址
     validations:
       required: false
 
