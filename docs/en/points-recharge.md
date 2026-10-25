@@ -7,6 +7,10 @@ with one click.
 If your server **already runs its own top-up website**, read the other document instead —
 "[RP External Signed Codes](/en/points-external)" covers "pay on the web → receive a redeem code automatically".
 
+<div class="cm-compliance">
+⚠ <strong>Compliance note</strong>: The Minecraft Usage Guidelines allow servers to sell in-game virtual currency, provided it has no real-world value (cannot be cashed out, transferred to another server, or converted back into real-world currency), does not suggest it comes from Mojang, and is not similar in name or appearance to Minecoins — CobbleMarket's RP cannot be cashed out and cannot be transferred across servers. The Guidelines also allow selling "gameplay-affecting entitlements" as long as they <strong>do not harm other players' experience or grant a competitive advantage</strong>; if RP is used to obtain content that grants a competitive advantage on your server, that may cross the line — confirm compliance yourself before enabling it.<br><strong>CobbleMarket is firmly opposed to Pay-to-Win</strong>: the top-up feature is off by default; the mod <strong>does not collect or hold funds and does not integrate with any payment platform</strong> (the payment QR is the owner's own, external signed codes only verify signatures, and the website handles payment) — it only provides the tools to display your QR code and record orders and codes; whether to sell RP for real money is the server owner's decision. <a href="https://www.minecraft.net/en-us/usage-guidelines" target="_blank" rel="noopener">Minecraft Usage Guidelines</a>
+</div>
+
 ## 1. Why it works this way
 
 Small server owners commonly sell things with a **personal payment QR code** — the app does not matter
@@ -24,10 +28,6 @@ Three rules, all on purpose — please accept them before reading on:
   (nothing is granted until you confirm); only "paid, but you missed it" can be missed —
   and that is recoverable via the pending list and the order number.
   **Better to under-deliver than to over-deliver.**
-
-<div class="cm-compliance">
-⚠ <strong>Compliance note</strong>: The Minecraft Usage Guidelines allow servers to sell in-game virtual currency, provided it has no real-world value (cannot be cashed out, transferred to another server, or converted back into real-world currency), does not suggest it comes from Mojang, and is not similar in name or appearance to Minecoins — CobbleMarket's RP cannot be cashed out and cannot be transferred across servers. The Guidelines also allow selling "gameplay-affecting entitlements" as long as they <strong>do not harm other players' experience or grant a competitive advantage</strong>; if RP is used to obtain content that grants a competitive advantage on your server, that may cross the line — confirm compliance yourself before enabling it.<br><strong>CobbleMarket is firmly opposed to Pay-to-Win</strong>: the top-up feature is off by default; the mod <strong>does not collect or hold funds and does not integrate with any payment platform</strong> (the payment QR is the owner's own, external signed codes only verify signatures, and the website handles payment) — it only provides the tools to display your QR code and record orders and codes; whether to sell RP for real money is the server owner's decision. <a href="https://www.minecraft.net/en-us/usage-guidelines" target="_blank" rel="noopener">Minecraft Usage Guidelines</a>
-</div>
 
 ## 2. Turning it on
 

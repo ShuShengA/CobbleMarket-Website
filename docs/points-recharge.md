@@ -6,6 +6,10 @@
 如果你的服务器**已经有自己的充值网站**，请看另一份文档 [RP 外部签名码](/points-external) ——
 那份讲的是"网站在线支付 → 自动拿到兑换码"。
 
+<div class="cm-compliance">
+⚠ <strong>合规提示</strong>：Minecraft 使用准则允许服务器出售游戏内虚拟货币，前提是它没有现实世界价值（不能兑现、转移至其他服务器或换回现实货币）、不冒充 Mojang、名称与外观不类似 Minecoins —— CobbleMarket 的 RP 不可兑现、不能跨服转移。准则也允许出售「影响游戏玩法的权益」，前提是<strong>不破坏其他玩家的游戏体验、不提供竞争优势</strong>：如果 RP 被用来换取在你们服务器上构成竞争优势的内容，就可能越线，开启前请自行确认合规。<br><strong>CobbleMarket 坚决不提倡 Pay-to-Win</strong>：充值功能默认关闭；模组<strong>不代收、不托管资金、不对接任何支付平台</strong>（收款码是服主自己的，外部签名码只验签，网站负责支付），只提供展示收款码、记录订单与兑换码的工具；是否用现实货币出售 RP，由服主自行决定。 <a href="https://www.minecraft.net/zh-hans/usage-guidelines" target="_blank" rel="noopener">查看 Minecraft 使用指南</a>
+</div>
+
 ## 一、先理解这套设计的出发点
 
 国内小服主普遍用**个人收款码**（微信 / 支付宝）卖东西，而**个人收款码没有支付回调** ——
@@ -18,10 +22,6 @@
 - **失败方向必须是安全的**：「没付却说付了」**不会发货**（你不确认就不发放）；
   只有「付了但你没看到」会漏发 —— 可以用待确认列表 + 订单号补回来。
   **宁可漏发，不能滥发。**
-
-<div class="cm-compliance">
-⚠ <strong>合规提示</strong>：Minecraft 使用准则允许服务器出售游戏内虚拟货币，前提是它没有现实世界价值（不能兑现、转移至其他服务器或换回现实货币）、不冒充 Mojang、名称与外观不类似 Minecoins —— CobbleMarket 的 RP 不可兑现、不能跨服转移。准则也允许出售「影响游戏玩法的权益」，前提是<strong>不破坏其他玩家的游戏体验、不提供竞争优势</strong>：如果 RP 被用来换取在你们服务器上构成竞争优势的内容，就可能越线，开启前请自行确认合规。<br><strong>CobbleMarket 坚决不提倡 Pay-to-Win</strong>：充值功能默认关闭；模组<strong>不代收、不托管资金、不对接任何支付平台</strong>（收款码是服主自己的，外部签名码只验签，网站负责支付），只提供展示收款码、记录订单与兑换码的工具；是否用现实货币出售 RP，由服主自行决定。 <a href="https://www.minecraft.net/zh-hans/usage-guidelines" target="_blank" rel="noopener">查看 Minecraft 使用指南</a>
-</div>
 
 ## 二、怎么开
 
