@@ -2014,6 +2014,65 @@
     .cm-server-copy.done {
       color: var(--accent-gold);
     }
+    /* 整合包主按钮（2026-10-26）：有 Modpack URL 时显示。
+       ⚠ 必须带 `.markdown-section` 前缀：站点通用 `.markdown-section a`（0,1,1）
+       会把文字色和透明底抢回去（与社交图标同一个坑）。 */
+    .markdown-section .cm-server-modpack {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border: 2px solid var(--theme-color);
+      border-radius: 4px;
+      background: var(--theme-color);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      line-height: 1.35;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: filter var(--duration-medium), transform var(--duration-medium);
+    }
+    .markdown-section .cm-server-modpack:hover {
+      color: #fff;
+      filter: brightness(1.12);
+      text-shadow: none;
+      transform: translate(-1px, -1px);
+    }
+    /* 勾了「隐藏地址」：服务器地址收进「手动连接」（原生 details，展开/收起不用 JS） */
+    .cm-server-manual {
+      font-size: 0.78rem;
+    }
+    .cm-server-manual > summary {
+      display: flex;
+      align-items: center;
+      width: fit-content;
+      gap: 4px;
+      padding: 3px 2px;
+      color: var(--text-muted);
+      cursor: pointer;
+      list-style: none;
+      transition: color var(--duration-medium);
+    }
+    .cm-server-manual > summary::-webkit-details-marker {
+      display: none;
+    }
+    .cm-server-manual > summary::before {
+      content: '▸';
+      font-size: 0.7rem;
+      transition: transform var(--duration-medium);
+    }
+    .cm-server-manual[open] > summary::before {
+      transform: rotate(90deg);
+    }
+    .cm-server-manual > summary:hover,
+    .cm-server-manual[open] > summary {
+      color: var(--theme-color);
+    }
+    .cm-server-manual .cm-server-address {
+      display: flex;
+      width: fit-content;
+      margin-top: 6px;
+    }
     .cm-server-version {
       color: var(--text-muted);
     }
@@ -3310,6 +3369,8 @@
           copied: '已复制 ✓',
           copyFailed: '复制失败',
           version: '版本',
+          modpack: '获取整合包',
+          manualConnect: '手动连接',
           qq: 'QQ 群',
           website: '官网',
           online: '在线',
@@ -3341,6 +3402,8 @@
           copied: 'Copied ✓',
           copyFailed: 'Copy failed',
           version: 'Version',
+          modpack: 'Get the modpack',
+          manualConnect: 'Manual connect',
           qq: 'QQ group',
           website: 'Website',
           online: 'Online',
@@ -3567,6 +3630,17 @@
         main.appendChild(element('p', 'cm-server-desc', server.description));
 
         var meta = element('div', 'cm-server-meta');
+
+        // 整合包（可选）：有链接时「获取整合包」是主按钮（2026-10-26）
+        var modpack = safeUrl(server.modpack, false);
+        if (modpack) {
+          var modpackLink = element('a', 'cm-server-modpack', text.modpack);
+          modpackLink.href = modpack;
+          modpackLink.target = '_blank';
+          modpackLink.rel = 'noopener noreferrer';
+          meta.appendChild(modpackLink);
+        }
+
         var address = element('span', 'cm-server-address');
         address.appendChild(element('code', '', server.address));
         var copy = element('button', 'cm-server-copy', text.copy);
@@ -3584,7 +3658,18 @@
           });
         });
         address.appendChild(copy);
-        meta.appendChild(address);
+
+        if (server.hideAddress === true) {
+          // 勾了「隐藏地址」：地址收进「手动连接」，展开后才显示 ——
+          // 在线状态仍在左侧、照常按 address 查询，不受隐藏影响。
+          var manual = document.createElement('details');
+          manual.className = 'cm-server-manual';
+          manual.appendChild(element('summary', '', text.manualConnect));
+          manual.appendChild(address);
+          meta.appendChild(manual);
+        } else {
+          meta.appendChild(address);
+        }
 
         meta.appendChild(element('span', 'cm-server-version',
           text.version + (en ? ': ' : '：') + server.version));

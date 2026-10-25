@@ -39,6 +39,25 @@ body:
     validations:
       required: true
 
+  - type: input
+    id: modpack
+    attributes:
+      label: Modpack URL
+      description: 可选。CurseForge / Modrinth 整合包链接（整合包已内置本服时填写）/ Optional. CurseForge or Modrinth modpack URL, if players join through a modpack
+      placeholder: https://www.curseforge.com/minecraft/modpacks/...
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: hide_address
+    attributes:
+      label: Hide address
+      description: 可选。整合包已内置服务器时勾选：卡片以「获取整合包」为主按钮，地址收进「手动连接」（在线状态照常显示）/ Optional. Tick if the modpack already points to your server — the card shows a "Get the modpack" button and the address moves under "Manual connect" (online status still shows)
+      options:
+        - label: Hide the server address behind "Manual connect" / 将服务器地址收进「手动连接」
+    validations:
+      required: false
+
   - type: textarea
     id: description
     attributes:

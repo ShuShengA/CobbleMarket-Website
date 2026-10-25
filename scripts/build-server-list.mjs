@@ -28,6 +28,8 @@ const KNOWN_HEADINGS = [
   'Description',
   'Icon / banner',
   'Icon / banner URL',
+  'Modpack URL',
+  'Hide address',
   'Website URL',
   'Discord invite URL',
   'QQ group',
@@ -263,6 +265,10 @@ export function parseIssueBody(body) {
       website: normalizeUrl(sections['Website URL'], false),
       discord: normalizeUrl(sections['Discord invite URL'], false),
       qq: clean(sections['QQ group']).slice(0, 200),
+      // 整合包（可选）：旧 Issue 没有这两个小节 ⇒ modpack 空、hideAddress false，
+      // 页面对应「照常显示地址、没有整合包按钮」。
+      modpack: normalizeUrl(sections['Modpack URL'], false),
+      hideAddress: checkedLabels(sections['Hide address']).length > 0,
       languages,
       platforms,
       gameplay,
