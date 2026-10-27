@@ -1,6 +1,16 @@
 # Changelog
 
-> This page lists the changes for **every version**; the latest is **1.3.2**, followed by all previously released versions below.
+> This page lists the changes for **every version**; the latest is **1.3.3**, followed by all previously released versions below.
+
+## 1.3.3
+
+### Changes
+
+- Adjusted the position of the ID card rotation button (moved to the left equipment column)
+
+### Fixes
+
+- **Some textures missing in the ID card's spinning mode**
 
 ## 1.3.2
 
