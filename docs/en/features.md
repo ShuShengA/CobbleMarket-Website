@@ -42,9 +42,10 @@ Post **what you want, and your price** — other players deliver it.
 
 - **Pokémon orders** — species (blank = any), shininess, Hyper Training, all six IVs (**at least**: entering 20 means 20 or higher; existing buy orders follow the same rule), form, ability and nature
 - **Item orders** — optionally require components such as enchantments; deliveries that don't match are rejected
-- **Escrow** — "highest unit price × quantity" is frozen when posting; settlement uses the actual price and refunds the difference, and closing or expiry returns the remainder
+- **Escrow** — "highest unit price × quantity + estimated fee" is frozen when posting; settlement charges the fee at the actual trade price, **the buyer (the order creator) pays the fee**, the deliverer receives the full amount, and any over-frozen price difference and fee difference is refunded to the buyer on delivery / close / expiry (with an amount notice; RP orders show the RP icon)
 - **Buyer confirmation** — a delivery first enters "pending confirmation" with the goods held and funds unsettled (surviving restarts); the buyer reviews the full goods before accepting (settling the sale) or rejecting (returning the goods, optionally with a note)
-- **Partial delivery** — several sellers can each deliver part of an item order, which closes automatically once the quantity is filled
+- **Partial delivery** — several sellers can each deliver part of an item order, which closes automatically once the quantity is filled; the deliverable amount counts the **total of that variant in your inventory**, no longer limited to a single inventory stack (one group at most)
+- **Upgrade note** — orders created before this update have no frozen fee and still deduct it from the deliverer
 
 <img src="en/images/buy-order.jpg" class="shot" loading="lazy" alt="Buy Orders screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
@@ -60,6 +61,10 @@ Post your Pokémon, an item, or your Market ID Card to server chat — **hover t
 
 Click the card at the bottom of the entry screen (or press `I`) to open **your own market ID**: your 3D avatar on the left, and two columns on the right listing listings / auctions / buy orders / pending claims, balance, borrowable limit, debt, deposits and interest, lifetime trade volume, and Pokédex seen / caught counts (the Pokédex lines use Cobblemon's own icons).
 
+- **Equipment and XP** — a **4-slot equipment column** (helmet / chestplate / leggings / boots, with durability bars and the same frames as the dialogs, empty slots show the frame too) sits to the left of the avatar, and an **experience bar + level** (matching the vanilla HUD) runs along the bottom centre. **ID cards shared to chat show them too** (a snapshot of the equipment and level at the moment of sharing)
+- **Model rotation** — the small button at the bottom-right of the avatar toggles between **following the mouse** and **spinning in place**; the choice is remembered, and the model on ID cards shared to chat **always spins**
+- **Shared cards carry no live status** — a shared ID card does not show "Online" (it is a snapshot from the moment of sharing)
+
 ⚠ **The background image can be replaced with your server's own**: drop an image into `config/cobblemarket/idcard/` and enter its file name in the server config (blank = the built-in one). The card can also be showcased to chat directly.
 
 ## Meowth Bank (optional finance system)
@@ -72,7 +77,7 @@ Off by default. Once enabled it injects **liquidity** into the server economy an
 - **Three tiers of overdue penalties** — 7 days doubles market fees → 14 days freezes market trading → 30 days writes the debt off as bad debt (the owner is alerted and can revoke it manually)
 - **Deposits** — spare money earns daily interest and can be withdrawn at any time, feeding the reserve pool and closing the deposit-lending loop; the deposit / withdraw screen also shows your current balance, and the daily rate is displayed at its actual precision (up to 6 decimals, trailing zeros trimmed)
 - **Meowth Pay** — pay for a purchase on credit, with the server reserve paying the seller upfront and the buyer repaying in installments
-- **Card credentials** — the Meowth·Volt Card and Meowth·Genesis Card are high-limit credentials whose credit line is bound to the holder rather than the item (duplicated cards are worthless), with configurable fee discounts and self-application requirements
+- **Card credentials** — the Meowth·Volt Card and Meowth·Genesis Card are high-limit credentials whose credit line is bound to the holder rather than the item (duplicated cards are worthless), with configurable fee discounts and self-application requirements. The Genesis Card requires **holding the Volt Card** and is judged on revenue / trade volume / holding time and other conditions; **the old "credit requirement" is gone** (a holder's limit is fixed, so that condition was always either satisfied or never satisfiable)
 - **Anti-abuse design** — credit-line growth cooldown, a per-IP debt cap, trade-pair detection and a deposit-rate guard rail (so "borrow money, deposit it, live off the interest" can't work)
 - **Credit ledger** — every loan and repayment is written to its own CSV ledger, in both Chinese and English, split by day, for owners to audit offline
 - **Finance Management screen (admins)** — the Meowth Bank entry now opens Finance Management with five tabs: Loan Ban, Cards, Credits, Change Log and Top Limits; **the borrowable limit can be lowered or zeroed by hand** (⚠ it is not pinned — repayments and trade volume still move it; card holders' limits come from the card config and cannot be adjusted); players receive a notice with your reason when their limit is changed; the change log lives in its own ledger under `config/cobblemarket/finance/`
@@ -94,11 +99,18 @@ Full guide: [RP System](/en/points).
 
 Bind **your own NPCs** (Easy NPC / Impactor / custom entities / vanilla villagers — any entity) as shops and players **open them by right-clicking**. Offers can be bought with the **main currency or RP**, and a shop can be a **periodic claim shop** (daily / weekly / monthly, one-click claim with a rolling cooldown). Full guide: [Custom NPC Shops](/en/custom-shops).
 
+- **Purchase cooldowns** — normal purchase shops can apply a **shop-wide cooldown** and a **per-item cooldown** (per player, the longer one wins; an item with a cooldown is limited to 1 unit per purchase and only starts after a successful purchase). A single slot can override it in the editor, and the admin screen can **reset cooldowns**
+- **Right-click to edit** — owners / `points.shop` holders **right-click** an existing offer to edit every field without delisting; **left-click still buys**. While someone has the editor open, purchases in that shop are **paused** for everyone else
+- **Grid hover details** — hovering an offer in a purchase shop shows the full Pokémon specs / item tooltip, with the complete unit price and limited stock as the last line
+- **In-shop search** — a search box at the top-left of purchase shops searches the whole shop by Pokémon / item name across all pages
+- **Shop records** — purchase / claim shops show their **own** sales / claim history at the top (server owner or `points.shop` only); each claim in a claim shop is also written to the full transaction history (type "Claimed", price "Free")
+
 ## History & Ledgers
 
 - **In-game history screen** — personal history reads the last 14 days of the ledger (up to 500 entries each), while admins can view the server-wide feed
 - **Hover for the full row** — hovering a row highlights it and shows the complete info for that line: long player names, Pokémon names and amounts are no longer cut off; Pokémon names use the primary-type colour and item names the rarity colour (same as the market lists)
 - **RP Shop sales** — shown as "▣ Shop" (gold) in the seller column of both the personal and server-wide history; the CSV ledger gains Currency (PRIMARY / POINTS) and Source (market / shop) columns
+- **Shop sales stay out of personal history** — sales from the RP Shop and custom NPC shops no longer count towards the lister's personal trade history and appear only in the full history; custom-shop rows show the **shop name** in the seller column instead of "Shop"
 - **CSV trade ledger** — covers the market, auctions and Buy Orders end to end, with a "details" column recording **full Pokémon data** (nickname, size, Tera type, Gigantamax, Original Trainer, moves, friendship and Marks included) and item components so that goods can be **reproduced exactly**
 - **CSV credit ledger** — loan creation / overdue / settlement events plus each repayment split into principal and interest, with the repayment method recorded
 - Ledgers are written **synchronously**, independent of world autosaves, so a crash or a killed process doesn't lose them
@@ -115,6 +127,7 @@ Bind **your own NPCs** (Easy NPC / Impactor / custom entities / vanilla villager
 - **Bans** — ban a player from the **market's trading** (buying Pokémon / items, listing them, creating auctions, bidding, creating buy orders, delivering, paying for a delivery) for a set duration or permanently, with a reason; **assets are never seized** (cancelling listings, claiming returns and collecting pending balance keep working); **borrowing also keeps working by default**; to block someone from borrowing, add them on the Finance Management screen's "Loan Ban" tab (the ban dialog no longer has that toggle; deposits, withdrawals and repayments are never affected) — see [Ban Management](/en/moderation) for the exact scope
 - **Forced delisting** — admins can view and force-delist any listing, auction or buy order; both parties are notified (queued and delivered on next login if offline)
 - **Market master switch** — stop the market in an emergency with one button (with confirmation); the trading entries (Pokémon / Items / Auction / Buy Orders) and Meowth Bank's borrowing entry are greyed out and explain why when clicked; **only trading is blocked** — Settings and History keep working, as do Meowth Bank deposits / withdrawals / repayments and card applications, while pending claims, balance collection and delisting wait until the market reopens (nothing is lost); server owners and admins holding the corresponding permission nodes can still use the Admin Panel to clean up (OPs can see the entry too, though its functions are still judged by the nodes)
+- **Per-feature switches** — the Pokémon market / item market / auction house / buy orders can each be **switched off on their own** (auctions and buy orders can further be split into Pokémon / items, which also hides that tab). Off = that feature is **fully disabled**: no listing / buying / bidding / delivering, and existing entries are untradeable; delisting, cancelling your own entries, claiming pending items and collecting balance keep working, and the Admin Panel can still clean up; player entries grey out with a click message. ⭐ One example: keep item trading only and send Pokémon back to catching and trading by hand
 - **Server Config screen** — edit fees, limits, durations and switches in-game, with no need to touch the config file
 - **Server list** — servers running this mod can be submitted to the [server list](/en/servers) (manual review); players can find yours by platform / language / gameplay
 
@@ -124,6 +137,8 @@ Bind **your own NPCs** (Easy NPC / Impactor / custom entities / vanilla villager
 - **Professor Oak** — a resident character on the entry screen whose speech bubble shows random Pokémon trivia (498 bilingual entries built in, freely editable)
 - **Listing notifications** — when someone else lists a Pokémon or an item or puts one up for auction, a round bubble drops from the top of your screen (with that Pokémon's 3D model / that item's icon) and a chime plays; your own listings show nothing. The icon and the sound can be turned off separately in the settings
 - **Offline notifications** — trade notifications received while offline are queued and delivered on next login, rendered in the player's own language
+- **Offline avatars keep the real skin** — the Pokémon market, auction house, buy orders, Meowth Bank card-holder lists and both admin screens cache players' real skins, so avatars no longer fall back to the default Steve once a player logs off
+- **Dialogs no longer trigger the list underneath** — while a dialog is open, list rows stop highlighting under the mouse (they stay visible, dimmed by the overlay) and resume when it closes
 - **Balance HUD** — your market balance always visible in the corner, draggable anywhere on screen with snapping and alignment guides; with RP enabled the same box gains an RP row (both rows show and hide together)
 - **List loading state** — auction house / buy orders / pending claims / history / blacklists / bans / permissions and other list screens show "Loading…" until the first response, instead of reporting "nothing here" before the data has arrived
 - **Draggable scrollbars** — every scrollable list lets you drag the handle or click an empty spot on the track to jump there; the mouse wheel keeps working

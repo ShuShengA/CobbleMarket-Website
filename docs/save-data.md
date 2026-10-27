@@ -28,6 +28,7 @@
 | RP 商城商品与库存 | `cobblemarket_point_shop.dat` |
 | 自定义 NPC 商店（商店 / 出售类型 / 商品 / NPC 绑定） | `cobblemarket_custom_shops.dat` |
 | 自定义 NPC 商店领取进度（每玩家每店的周期与已领数量） | `cobblemarket_custom_shop_claims.dat` |
+| 自定义 NPC 商店购买冷却（每玩家每店 / 每格的计时） | `cobblemarket_custom_shop_cooldowns.dat` |
 
 ## 说明
 

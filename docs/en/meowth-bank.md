@@ -122,7 +122,7 @@ High-limit credential items — holders get a **fixed borrowing limit** (indepen
 ### Meowth·Genesis Card
 
 - One tier above Volt: limit `blackCardCreditLimit` (default 5M); server cap `blackCardCount` (default 5)
-- Hard apply requirement: **must already hold the Volt Card** + the seven conditions (same shape, configurable) + the application fee
+- Hard apply requirement: **must already hold the Volt Card** + the conditions (same shape, configurable) + the application fee. ⚠ The old "credit requirement" has been **removed** — a holder's limit is fixed, so that condition was always either satisfied or never satisfiable; `blackCardApplyCredit` is ignored in old configs
 - **Upgrade replacement**: obtaining the Genesis Card auto-removes the Volt Card qualification (no double slot); the Genesis Card's limit and fee discount apply
 - Everything else matches the Volt Card (drop-to-vanish / reissue fee / same-IP exemption)
 

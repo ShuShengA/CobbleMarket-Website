@@ -69,6 +69,9 @@ Admin commands are judged by **permission nodes** (server owners always pass) â€
 | `/market shop type <id> pokemon\|item\|both` | Sale type; switching **does not delete** the other category, it only hides it |
 | `/market shop currency <id> primary\|points` | Settlement currency; **only an empty shop can change it** (changing it after prices are set reinterprets every price) |
 | `/market shop period <id> <hours>` | Claim period (1â€“8760 hours; 24 = daily, 168 = weekly, 720 = monthly); the mode itself is fixed at creation |
+| `/market shop cooldown <id> <hours>` | **Shop-wide cooldown**: buying any slot locks the whole shop for that player (0 = off) |
+| `/market shop itemcooldown <id> <hours>` | **Per-item cooldown**: each item ticks on its own (0 = off) |
+| `/market shop cooldown <id> reset` | Clear **every player's** cooldown records on that shop (for testing) |
 | `/market shop bind <id>` | Bind **the entity you are looking at** to the shop |
 | `/market shop unbind` | Unbind **the entity you are looking at** (no ID needed) |
 | `/market shop enable <id>` / `disable <id>` | Open / close a shop (that shop only) |

@@ -8,11 +8,12 @@ RP **cannot be exchanged, cannot be transferred, and takes no part in the financ
 
 ## 1. Turn on the master switch
 
-The RP switches live under **Server Config → RP Config** (server owner only). The RP master switch is off by default; while it is off, the RP button is hidden from every price-setting screen and RP cannot be used anywhere except the RP Shop.
+The RP switches live under **Server Config → RP Config** (server owner only). The RP master switch is **on by default for new installs**; while it is off, the RP button is hidden from every price-setting screen and RP cannot be used anywhere except the RP Shop. The main RP Shop has its **own switch** (off by default, so no empty shop appears), and **custom NPC shops are unaffected by either switch**.
 
 | Key | Default | Description |
 |---|---|---|
-| `pointsEnabled` | `false` | RP master switch. While off, players cannot trade with RP (with each other or with the market); owners can still stock the RP Shop for players who already hold RP |
+| `pointsEnabled` | `true` | RP master switch. While off, players cannot trade with RP (with each other or with the market); owners can still stock the RP Shop for players who already hold RP. ⚠ Upgrades keep the old value |
+| `pointsMainShopEnabled` | `false` | **Main RP Shop switch**: when off, the shop entry is greyed out with a click message. ⚠ When an old config lacks this key it follows `pointsEnabled`, so upgrading does not change existing RP servers |
 | `pointsMarketEnabled` | `false` | **Player-to-player RP trading switch**: while off, the RP currency buttons in listing and market screens are greyed out and the server refuses RP listings. ⚠ It only blocks player-to-player trading — top-ups, the RP Shop and balance display are unaffected |
 | `rpAsQuestCurrency` | `false` | **Delegate give/take**: when on, player-ops (permission level 2+) can also grant / take RP, for quest rewards. See section 2.1 |
 | `pointsRewardsEnabled` | `false` | **Reward rules master switch**: only when this is on do datapack reward rules take effect. ⚠ If you sell RP for real money, enabling it hands RP out automatically |
@@ -97,6 +98,8 @@ Use a datapack to describe rules such as "catching this Pokémon pays N RP", "an
 ## 5. The RP Shop (owner-run)
 
 The middle of the RP Shop screen is run single-handedly by whoever holds the **"RP Shop" permission node** — **8 columns × 4 rows, 32 slots**. Click any slot to list a Pokémon or an item; players buy it with RP.
+
+⚠ The shop itself is controlled by `pointsMainShopEnabled` (off by default) — when off, the shop button on the market entry is greyed out with a click message. This only affects the main RP Shop; **custom NPC shops keep trading as usual**.
 
 - **Offers are recipes, not physical stock**: the Pokémon sold is generated from the spec on the spot, and its **Original Trainer is the buyer by default** (you can set a distribution name instead); the owner's name never ends up on it
 - **Pokémon offers are highly configurable**: species, form, variant, shiny (never / always / by chance), level, gender, nature, ability, ball, size, Alpha, Tera type, Gmax, Dmax level, held item, tradeable, **minimum perfect IVs**, plus **four move slots** (every move the species or form can learn is selectable, filterable by source; tutor and form-exclusive moves are included)

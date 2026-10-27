@@ -69,6 +69,9 @@
 | `/market shop type <id> pokemon\|item\|both` | 出售类型；切换**不会删除**另一类商品，只是隐藏 |
 | `/market shop currency <id> primary\|points` | 结算货币；**只有空店能改**（店里有商品后再换，等于把价格全部重新解释一遍） |
 | `/market shop period <id> <小时>` | 领取周期（1~8760 小时；24 = 每日、168 = 每周、720 = 每月）；经营模式建好后不可改 |
+| `/market shop cooldown <id> <小时>` | **整店冷却**：买成任意一格后全店都要等（0 = 关闭） |
+| `/market shop itemcooldown <id> <小时>` | **商品各自冷却**：每件商品单独计时（0 = 关闭） |
+| `/market shop cooldown <id> reset` | 清空这家店**所有玩家**的冷却记录（测试用） |
 | `/market shop bind <id>` | 把**正在看的实体**绑定到商店 |
 | `/market shop unbind` | 解除**正在看的实体**的绑定（不需要 id） |
 | `/market shop enable <id>` / `disable <id>` | 开店 / 关店（只影响这一家店） |

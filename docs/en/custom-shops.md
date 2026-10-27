@@ -19,6 +19,21 @@ Bind **your own NPCs** on the server (Easy NPC / Impactor / custom entities you 
 - Pokémon offers cover species / form / variant / level / shiny / ability / moves / IVs / held item and more; item offers can copy every component of the item in your hand
 - Leave stock empty for **unlimited**, or type a number to limit it; in a **periodic claim shop the "amount" is how many each player gets per period** (0 = not offered, unlimited is not allowed)
 - Switching the sale type **does not delete** the other category — it only hides it
+- **Left-click buys, right-click edits**: owners / `points.shop` holders can **right-click an existing offer** to edit every field (Pokémon specs, price, stock, cooldown and more) without delisting and re-adding it; **left-click still buys** (matching the released behaviour; left-clicking an empty slot adds). Claim shops have no buying, so left-click edits there. A "Remove" button stays in the editor
+- **Purchases pause while editing**: when someone has the editor open, other players see the buy button greyed out and only hear a failure sound with a "shop owner is editing" notice; it resumes when the editor closes (or the editor disconnects). The server enforces this too, so forged buy packets are rejected
+- **Grid hover details**: hovering an offer in a purchase shop also shows the full Pokémon specs / item tooltip, with the **complete unit price and limited stock** as the last line (grid prices are abbreviated); a claim shop's last line is the claimable amount
+
+## Purchase cooldowns
+
+Normal purchase shops can apply **purchase cooldowns** to players (in hours, 0 = off), in two layers that can be used alone or together:
+
+- **Shop-wide cooldown**: after buying any slot, the whole shop is locked for that player
+- **Per-item cooldown**: each item ticks on its own — buying one only locks that item, the rest stay available
+- When both apply to the same slot, the **longer one wins** (shop-wide as the floor); a single slot can override it in the editor (blank = follow the shop setting, again taking the longer one)
+- Any slot with a cooldown is **limited to 1 unit per purchase** even with unlimited stock, and the cooldown starts only after a **successful purchase** — failures, a full inventory and insufficient funds do not trigger it
+- Cooldowns use server time, survive restarts, and are cleared for a slot when it is delisted and re-listed (new slot)
+- **Management**: the "Set cooldowns" button in Admin Panel → Custom Shops → Manage → Details changes both layers at once, and **Reset cooldowns** clears every player's records on that shop (with confirmation). Commands: `/market shop cooldown <id> <hours>` (shop-wide), `/market shop itemcooldown <id> <hours>` (per item), `/market shop cooldown <id> reset` (clear records)
+- Existing shops need no recreation — cooldowns can be set at any time after creation
 
 ## Periodic claim shops
 
@@ -27,6 +42,12 @@ Bind **your own NPCs** on the server (Easy NPC / Impactor / custom entities you 
 - **No stacking**: whatever is left unclaimed expires at the end of the period; if the inventory / party / PC is full, **only what fits is delivered** and the rest stays in the shop for the rest of the period
 - After pressing Claim, items fly from their slots toward the bottom centre of the screen (hotbar position), shrinking away — slots take off in sequence, and a multi-item slot flies as one icon with an ×N badge; **Pokémon do not animate**, and anything left in the shop does not fly either
 - **Hover a slot for full details** (level / form / shiny / ability / IVs / moves / held item for Pokémon; the vanilla tooltip for items), with the claimable count on the last line
+- Every claim is written to the transaction history: the type shows "Claimed" (not a sale), the price shows "Free", and it appears in the full history and the claimer's personal history, never in the admin's personal history
+
+## Records and search
+
+- **Each shop shows its own records**: purchase / claim shops get a "Sales history / Claim history" button at the top (**visible only to the server owner / `points.shop` holders**) listing only that shop's sales / claims. ⚠ Records created before this update carry no shop ID and will not appear here (they remain in the full history)
+- **In-shop search**: a search box at the top-left of purchase shops (available to all players) searches the current shop by Pokémon / item name across all pages; results are paginated, and clearing the search restores normal pages. ⚠ Results are a snapshot — re-search after offers change or sell out
 
 ## Currency and switches
 
@@ -39,7 +60,7 @@ Bind **your own NPCs** on the server (Easy NPC / Impactor / custom entities you 
 
 - All management uses the `points.shop` node (**OP alone is not enough**); the main RP Shop is completely unaffected; custom shops are **buy-only**
 - Known limits: the Admin Panel's NPC avatar shows the **default model** for custom skins such as Easy NPC's (**the NPC's in-game appearance is unaffected**); old bindings (without NPC metadata) may show an unknown entity; the Admin Panel lists only entities **within 16 blocks** — use commands for distant ones
-- Saves: `world/data/cobblemarket_custom_shops.dat` (shops / types / offers / NPC bindings) and `world/data/cobblemarket_custom_shop_claims.dat` (each player's claim cycle start and claimed counts per shop); both are new files, so an old save simply treats them as empty
+- Saves: `world/data/cobblemarket_custom_shops.dat` (shops / types / offers / NPC bindings), `world/data/cobblemarket_custom_shop_claims.dat` (each player's claim cycle start and claimed counts per shop) and `world/data/cobblemarket_custom_shop_cooldowns.dat` (per-player purchase cooldowns per shop / slot); all are new files, so an old save simply treats them as empty
 
 ## Shiny announcements
 

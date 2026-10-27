@@ -28,6 +28,7 @@ All data is persisted via Minecraft's PersistentState mechanism in the server wo
 | RP Shop offers and stock | `cobblemarket_point_shop.dat` |
 | Custom NPC shops (shops / sale type / offers / NPC bindings) | `cobblemarket_custom_shops.dat` |
 | Custom NPC shop claim progress (cycle and claimed counts per player per shop) | `cobblemarket_custom_shop_claims.dat` |
+| Custom NPC shop purchase cooldowns (per player per shop / slot) | `cobblemarket_custom_shop_cooldowns.dat` |
 
 ## Notes
 

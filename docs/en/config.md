@@ -6,7 +6,7 @@ Path: `config/cobblemarket.json` (generated on first launch)
 
 **Two ways to edit it:**
 
-1. **In-game (recommended)** — the **Server Config** screen at the bottom of the Admin Panel (**server owners only**) covers fees, limits, durations and switches; Meowth Bank settings live in the **Meowth Bank Config** screen reached from there
+1. **In-game (recommended)** — the **Server Config** screen at the bottom of the Admin Panel (**server owners only**) covers fees, limits, durations and switches. Settings are split into per-feature sub-screens: **Pokémon Market / Item Market / Auction House / Buy Orders / Meowth Bank / RP System** (the main screen keeps only the ID Card background and the showcase cooldown). The Pokémon and Item Market sub-screens both show the same "listing duration / pending-claims retention" values — editing either one changes both
 2. **Edit the file directly** — then run `/market reload` to apply changes without a restart
 
 > ⚠ **Currency settings (the `currency` block) are read only at server startup.** After changing them you must restart; `/market reload` will not apply them (it tells you so when it detects a change).
@@ -29,11 +29,12 @@ Full details, including how the market cooperates with each currency mod, are in
 
 ## RP (premium currency)
 
-RP is an optional premium currency, off by default. Full guide: [RP System](/en/points).
+RP is an optional premium currency. The **master switch is on by default for new installs** (upgrades keep the old value), and the main RP Shop has its own switch that defaults to off. Full guide: [RP System](/en/points).
 
 | Key | Default | Description |
 |---|---|---|
-| `pointsEnabled` | `false` | RP master switch. While off, the RP button is hidden from price-setting screens and RP cannot be used outside the RP Shop |
+| `pointsEnabled` | `true` | RP master switch. While off, the RP button is hidden from price-setting screens and RP cannot be used outside the RP Shop. ⚠ Upgrades keep the old value |
+| `pointsMainShopEnabled` | `false` | **Main RP Shop switch** (the shop owners stock and players buy from with RP). When off, the shop entry is greyed out with a click message; **custom NPC shops are completely unaffected**. ⚠ When an old config lacks this key it **follows `pointsEnabled`**, so upgrading does not change existing RP servers |
 | `pointsMarketEnabled` | `false` | Player-to-player RP trading. While off, RP currency buttons are greyed out and the server refuses RP listings; top-ups / RP Shop / balance display are unaffected |
 | `rpAsQuestCurrency` | `false` | Delegate give/take: player-ops (level 2+) can also grant / take RP, for quest rewards. ⚠ Turning it on accepts any player-op granting RP |
 | `pointsRewardsEnabled` | `false` | Datapack reward rules master switch. ⚠ If you sell RP for real money, enabling it hands RP out automatically; a modpack's own rules still stay off until you enable this |
@@ -66,6 +67,14 @@ RP is an optional premium currency, off by default. Full guide: [RP System](/en/
 | Field | Default | Description |
 |---|---|---|
 | `marketEnabled` | `true` | Market master switch. When off, every buy / sell / auction / buy-order action is blocked, while claiming assets still works |
+| `pokemonMarketEnabled` | `true` | Pokémon Market switch. Off = fully disabled (no listing / buying, and existing entries are untradeable); delisting, claiming pending items and collecting balance keep working |
+| `itemMarketEnabled` | `true` | Item Market switch, same semantics as above |
+| `auctionEnabled` | `true` | Auction House switch. Off hides both the Pokémon and Items tabs |
+| `auctionPokemonEnabled` | `true` | Pokémon category switch for auctions (always off while the master switch is off) |
+| `auctionItemEnabled` | `true` | Item category switch for auctions (always off while the master switch is off) |
+| `buyOrderEnabled` | `true` | Buy Orders switch |
+| `buyOrderPokemonEnabled` | `true` | Pokémon category switch for buy orders (always off while the master switch is off) |
+| `buyOrderItemEnabled` | `true` | Item category switch for buy orders (always off while the master switch is off) |
 | `pokemonListingFeePercent` | `5.0` | Pokémon listing fee percentage (`0` = no fee) |
 | `itemListingFeePercent` | `5.0` | Item listing fee percentage (`0` = no fee) |
 | `maxPokemonListingsPerPlayer` | `0` | Max active Pokémon listings per player (`0` = unlimited) |
@@ -92,7 +101,7 @@ RP is an optional premium currency, off by default. Full guide: [RP System](/en/
 
 | Field | Default | Description |
 |---|---|---|
-| `buyOrderFeePercent` | `5.0` | Fee percentage deducted from the seller's payment on settlement (`0` = no fee) |
+| `buyOrderFeePercent` | `5.0` | Fee percentage **paid by the buyer (the order creator)** — "highest unit price × quantity + estimated fee" is frozen when posting, the fee is charged at the actual trade price, the deliverer receives the full amount, and the over-frozen difference is refunded to the buyer (`0` = no fee). ⚠ Orders created before this update still deduct it from the deliverer |
 | `buyOrderExpiryDays` | `3` | Days before an order expires; it closes automatically and refunds the frozen money |
 | `maxBuyOrdersPerPlayer` | `5` | Max concurrent Buy Orders per player, Pokémon and items combined (`0` = unlimited) |
 
@@ -100,7 +109,7 @@ RP is an optional premium currency, off by default. Full guide: [RP System](/en/
 
 | Field | Default | Description |
 |---|---|---|
-| `eggTradingEnabled` | `false` | Egg trading switch. ⚠ Eggs travel the item path and **skip the Pokémon blacklist**; with egg encryption off, some mods can reveal the Pokémon inside, letting players pick eggs before hatching. Evaluate the risk before enabling |
+| `eggTradingEnabled` | `false` | Egg trading switch (the in-game toggle is under **Server Config → Pokémon Market**). ⚠ Eggs travel the item path and **skip the Pokémon blacklist**; with egg encryption off, some mods can reveal the Pokémon inside, letting players pick eggs before hatching. Evaluate the risk before enabling |
 
 ## Finance (Meowth Bank)
 
@@ -120,7 +129,7 @@ Off as a whole by default. Enabling it involves lending and the server economy �
 | `finance.tradePairMaxTrades` | `3` | Same-pair trade cap |
 | `finance.overdueDays` | 7 / 14 / 30 | Three overdue tiers: `feeDouble` (fees double) / `freeze` (trading frozen) / `badDebt` (written off) |
 | `finance.purpleCard*` | — | Issue cap, credit line, self-apply switch, seven application conditions, application / reissue fees and fee discount for the Meowth·Volt Card. **12 settings in total** |
-| `finance.blackCard*` | — | The same set for the Meowth·Genesis Card. **12 settings in total**; holding a Volt Card is a hard requirement |
+| `finance.blackCard*` | — | The same set for the Meowth·Genesis Card. **11 settings in total**; holding a Volt Card is a hard requirement. ⚠ The old `blackCardApplyCredit` (credit requirement) has been removed — a holder's limit is fixed, so that condition was always either satisfied or never satisfiable; the key is ignored in old config files |
 
 > The card settings are numerous and interlocking (application conditions, the net-deposit requirement, fee discounts stacking with overdue doubling). See [Meowth Bank](/en/meowth-bank) for the full explanation.
 
