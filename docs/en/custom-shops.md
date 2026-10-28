@@ -35,6 +35,16 @@ Normal purchase shops can apply **purchase cooldowns** to players (in hours, 0 =
 - **Management**: the "Set cooldowns" button in Admin Panel → Custom Shops → Manage → Details changes both layers at once, and **Reset cooldowns** clears every player's records on that shop (with confirmation). Commands: `/market shop cooldown <id> <hours>` (shop-wide), `/market shop itemcooldown <id> <hours>` (per item), `/market shop cooldown <id> reset` (clear records)
 - Existing shops need no recreation — cooldowns can be set at any time after creation
 
+## Card shop discount
+
+Holders of the Meowth·Volt Card / Meowth·Genesis Card get a price discount on **purchases** in this shop (off by default; the rate is set in the two card config screens, Genesis Card first):
+
+- **The shop can override it**: Admin Panel → Custom Shops → Manage → Details; inside the details dialog, the "Back" button has one input **on each side** (left = Volt Card, right = Genesis Card), filled as a percentage (5 = 5% off)
+- **Blank = follow the card config**; `0` = no discount in this shop; `1~100` = override with the shop's own rate
+- The discounted price is **at least 1**; items the owner priced at 0 (free) stay free
+- The buy dialog shows the discount, and the purchase confirmation lists the original and discounted prices
+- ⚠ This is **separate from the fee discount**: the fee discount covers player-to-player market fees (listing / auctions / buy orders), while this only applies to the price of **items bought in the main RP Shop and custom NPC shops**
+
 ## Periodic claim shops
 
 - Players press **Claim** at the bottom to collect everything, **free of charge** and **unaffected by the RP master switch**

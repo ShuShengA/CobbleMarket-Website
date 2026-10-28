@@ -1,6 +1,31 @@
 # Changelog
 
-> This page lists the changes for **every version**; the latest is **1.3.3**, followed by all previously released versions below.
+> This page lists the changes for **every version**; the latest is **1.3.4**, followed by all previously released versions below.
+
+## 1.3.4
+
+⚠ **Client and server must be upgraded together** (this version changes network payloads)
+
+### New Feature
+
+- **Card shopping discount**: holders of the Meowth·Volt Card / Meowth·Genesis Card get a price discount when buying from the RP Shop and custom NPC shops (off by default) — the rate is set in the purple / black card config screens, and the Genesis Card wins when both are held; each custom NPC shop can override it (blank = follow the card config, 0 = no discount in that shop); the buy dialog shows the discount and the purchase confirmation lists the original and discounted prices, with a minimum final price of 1
+- **Card application ban**: a new "Card Ban" tab in Finance Management blocks a player from applying for a chosen card (timed or permanent, with an optional reason) — blocked players cannot apply even when every condition is met, and the Apply button is greyed out with the reason. Revoking a card (Cards tab or `/market card revoke`) **automatically adds** the player to this list (permanent by default, existing entries are not overwritten, and it can be lifted anytime); a player can have two entries, one per card
+- **Card status is readable by datapacks / commands**: card holders automatically carry the entity tags `cobblemarket_purple_card` / `cobblemarket_black_card`, and the scoreboard objectives `cm_purple` / `cm_black` hold 1 (0 without the card); synced automatically on login / card grant / card revoke, so owners can build gameplay like "card holders are immune to negative effects" or "only card holders may enter this area" — see [Reading Card Status from Datapacks](/en/card-status) for the tutorial and example datapack
+
+### Changes
+
+- Card config screens no longer repeat the card name: row labels on the purple / Genesis card config screens drop the card name (the page title already says which card it is)
+
+### Fixes
+
+- **The custom shop search box could not find datapack-defined custom items**: matching now also uses each offer's display name
+- **Searching certain terms in the Item Market could disconnect players**: short queries matched too many items and the request exceeded the packet limit — fixed
+- **The Item Market / Auction House / Buy Orders could not find datapack-defined custom items**: matching now also uses each entry's actual display name
+- **Polymer-style "client-disguised" items could not be listed**: the Item Market and Auction House now take the real server-side item from the inventory slot
+- **Those items showed as Air / had no icon after listing**: listings now store an extra client-side copy of the item for display
+- **Polymer-style "client-disguised" items had no icon in chat shares or auction notifications**: they now use the client-side copy for display
+- **Long player names overflowed the bid dialog**: the seller / highest-bidder rows now widen the dialog to fit (item auctions' right column too)
+- **With the player-name suggestion list or the sort list open, rows underneath still highlighted and clicking empty space could hit their buttons**: fixed in Finance, Ban Management, Permission Management and Player Overview
 
 ## 1.3.3
 

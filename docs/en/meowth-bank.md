@@ -117,13 +117,14 @@ High-limit credential items — holders get a **fixed borrowing limit** (indepen
 - How to get: the owner issues it via `/market card give <player>`; or, with self-apply enabled, players apply via the Volt Card icon on the left of Meowth Bank (the application fee goes to the reserve pool)
 - Seven self-apply conditions (all configurable, 0 = not required): asset (cash balance) / spending (all-time counted buying volume) / credit (credit base) / **net deposit** (demand deposit − outstanding debt, see §3) / Pokédex seen count (includes caught) / Pokédex caught count / clean record
 - Fee discount: market fees are discounted by `purpleCardFeeDiscount` (listing/auction settlement/buy-order fees, stacks with overdue doubling, off by default)
+- Shop discount: purchases in official shops (the main RP Shop / custom NPC shops) are discounted by `purpleCardShopDiscount` (off by default = no discount). ⚠ This is **separate from the fee discount above** — the fee discount covers player-to-player market fees (listing / auction settlement / buy orders), while this only applies to **item prices in official shops**; each custom shop can override it
 - Card holders are exempt from the same-IP debt cap (alts can't hold cards: server-wide cap + seven conditions)
 
 ### Meowth·Genesis Card
 
 - One tier above Volt: limit `blackCardCreditLimit` (default 5M); server cap `blackCardCount` (default 5)
 - Hard apply requirement: **must already hold the Volt Card** + the conditions (same shape, configurable) + the application fee. ⚠ The old "credit requirement" has been **removed** — a holder's limit is fixed, so that condition was always either satisfied or never satisfiable; `blackCardApplyCredit` is ignored in old configs
-- **Upgrade replacement**: obtaining the Genesis Card auto-removes the Volt Card qualification (no double slot); the Genesis Card's limit and fee discount apply
+- **Upgrade replacement**: obtaining the Genesis Card auto-removes the Volt Card qualification (no double slot); the Genesis Card's limit, fee discount and shop discount apply
 - Everything else matches the Volt Card (drop-to-vanish / reissue fee / same-IP exemption)
 
 ### Owner tools
@@ -154,7 +155,7 @@ High-limit credential items — holders get a **fixed borrowing limit** (indepen
 
 ## 9. Owner tools
 
-### Finance Management screen (five tabs)
+### Finance Management screen (six tabs)
 
 The entry button in Meowth Bank (the two-card icon) now opens **Finance Management**:
 
@@ -162,6 +163,7 @@ The entry button in Meowth Bank (the two-card icon) now opens **Finance Manageme
 |---|---|
 | Loan Ban | Type a player name (with autocomplete) + duration + reason to add them to the list — listed players **cannot borrow** (⚠ deposits, withdrawals and **repayments keep working**); remove them on the same tab |
 | Cards | Purple / black card holders with a per-row revoke button (everything the old card management screen did) |
+| Card Ban | Ban a player from applying for the purple / black card (timed or permanent, with an optional reason) — blocked players cannot apply even when every condition is met, and the Apply button is greyed out with the reason; **revoking a card automatically adds** the player here (permanent by default, existing entries are not overwritten, and it can be lifted anytime); a player can have one entry per card |
 | Credits | Look up a player and set their **borrowable limit** (see below) |
 | Change Log | A ledger of card / loan-ban / credit-limit actions plus self-service card applications (who, when, to whom, what, and the previous value), written to its own CSV under `config/cobblemarket/finance/` — kept separate from the trading / loan / ban / permission ledgers; ⚠ starts recording with 1.2.2 |
 | Top Limits | The **top 50 borrowable limits** server-wide (pulled when you open the tab, or via Refresh) — for **discovering** players with suspiciously high limits; each row also has a "set limit" button |

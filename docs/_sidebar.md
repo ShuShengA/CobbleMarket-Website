@@ -21,6 +21,7 @@
 - [RP 外部签名码](/points-external)
 - [网站支付接入](/points-payment)
 - [喵喵银行](/meowth-bank)
+- [让数据包读取持卡状态](/card-status)
 - [封禁管理](/moderation)
 - [存档数据位置](/save-data)
 

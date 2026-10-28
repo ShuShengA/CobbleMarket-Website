@@ -21,6 +21,7 @@
 - [RP External Signed Codes](/en/points-external)
 - [Website Payment Integration](/en/points-payment)
 - [Meowth Bank](/en/meowth-bank)
+- [Reading Card Status from Datapacks](/en/card-status)
 - [Ban Management](/en/moderation)
 - [Save Data Locations](/en/save-data)
 
