@@ -9,6 +9,7 @@ List Pokémon from your **party or PC**, and browse every listing on the server.
 - **Filter panel** — the **Filter** button at the right end of the search row opens a **panel beside the list**: shininess, gender, type, ability, nature, Hyper Training and IVs, plus one-click reset; collapsed by default, and opening it no longer pushes the list around
 - **Hover details** — level, ball, type (**with the Tera type at the end**), nature (including the effective nature when a Nature Mint was used), ability, all six IVs (Hyper Trained values shown as "real (trained)"), friendship, Marks, size, held item; **Gigantamax (with its Dynamax Level) and Original Trainer each get their own line**, shown only when present; **a nickname the player gave the Pokémon appears on the line under its name** (hover windows and dialogs only — list rows do not show it)
 - **3D Pokémon icons** — icons in lists and detail panels play Cobblemon's built-in idle animation by default, and can be switched to fully static in the settings; icons **blink at random intervals**, and some species occasionally play a little idle animation (none while walking, and very little movement while asleep). **Clicking an icon** picks at random between the normal cry / the battle cry / the battle intro (some species such as Ceruledge have a dedicated battle-entry animation in the world) — the intro only appears for species that actually have one, so a click is never silent
+- **Pokédex status badge** — the top-left of each Pokémon icon shows your own Pokédex status: a **caught** icon if you have caught the species, a **seen** icon if you have only encountered it, and nothing if you never have (catching any form counts as caught); the buy dialog's large icon shows it too, as do the RP Shop and custom NPC shop grids — when an "Illegal" stamp is also present, the stamp sits on the left with the Pokédex badge on the right
 
 <img src="en/images/pokemon-market.jpg" class="shot" loading="lazy" alt="Pokémon market screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
@@ -33,6 +34,7 @@ Timed auctions with **live countdowns** and bidding, settled automatically on ex
 - **Automatic settlement** — the server settles auctions when they expire, with nobody needing the screen open: the winner's goods go to Pending Claims, the seller is paid minus the fee, and auctions with no bids are returned
 - **Server-wide broadcast** — new listings and results are announced in chat; hover the item name for details or click it to jump straight to the bidding screen — the **large render sits in the centre of the screen** with a backed panel of full details to its right (matching the regular tooltips; auctions also list the seller, current price, starting price, minimum increment, time left and who is leading)
 - **Auction sound** — a confirmation chime on bidding; three escalating hammer strikes at 10 / 6 / 3 seconds remaining; a final hammer and bell on settlement (sent only to participants, so bystanders aren't disturbed)
+- **Pokédex status badge** — the top-left of each Pokémon icon also shows your own Pokédex status (caught / seen), including the large icon in the bid dialog
 
 <img src="en/images/auction.jpg" class="shot" loading="lazy" alt="Auction House screen" onerror="this.onerror=null;this.src='images/placeholder.svg'">
 
@@ -56,6 +58,7 @@ Post your Pokémon, an item, or your Market ID Card to server chat — **hover t
 - **Entry** — the showcase button left of Settings on the entry screen opens three sub-buttons: **Pokémon / ID Card / Item**; pick one to post it
 - **Quick showcase** — hold `X` to show the selected party Pokémon / the item in your main hand (an extra ID Card box appears below; rebindable in Controls)
 - **Cooldown** — **10 seconds** by default, adjustable in the server config screen (1–3600 seconds; shared by Pokémon / ID card / item showcases); server owners can also turn the whole feature off with `shareEnabled`
+- **Click to pin** — hovering a showcase broadcast in chat shows a "Click to pin on screen for Xs" tooltip; clicking keeps the preview on screen (new chat messages and moving the mouse no longer hide it), and clicking again cancels early. The duration is adjustable in the gear settings at the bottom-right of the entry screen (default 5 seconds)
 
 ## Market ID Card
 
@@ -139,7 +142,7 @@ Bind **your own NPCs** (Easy NPC / Impactor / custom entities / vanilla villager
 - **Offline notifications** — trade notifications received while offline are queued and delivered on next login, rendered in the player's own language
 - **Offline avatars keep the real skin** — the Pokémon market, auction house, buy orders, Meowth Bank card-holder lists and both admin screens cache players' real skins, so avatars no longer fall back to the default Steve once a player logs off
 - **Dialogs no longer trigger the list underneath** — while a dialog is open, list rows stop highlighting under the mouse (they stay visible, dimmed by the overlay) and resume when it closes
-- **Balance HUD** — your market balance always visible in the corner, draggable anywhere on screen with snapping and alignment guides; with RP enabled the same box gains an RP row (both rows show and hide together)
+- **Balance HUD** — your market balance always visible in the corner, draggable anywhere on screen with snapping and alignment guides; with RP enabled the same box gains an RP row (both rows show and hide together); **your Meowth Bank deposit can be shown as another row** (entry settings toggle, on by default; hidden when the deposit is 0, placed between the main currency and RP), and balance changes show green + / red - floats
 - **List loading state** — auction house / buy orders / pending claims / history / blacklists / bans / permissions and other list screens show "Loading…" until the first response, instead of reporting "nothing here" before the data has arrived
 - **Draggable scrollbars** — every scrollable list lets you drag the handle or click an empty spot on the track to jump there; the mouse wheel keeps working
 - **UI scale** — the settings let you scale this mod's screens on their own (six steps: Auto / 1-5, default 3) — this mod's screens only, leaving the chat and other mods untouched; "Auto" follows vanilla exactly
