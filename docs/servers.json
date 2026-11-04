@@ -53,8 +53,8 @@
       "tournaments"
     ],
     "issue": 2,
-    "online": false,
+    "online": true,
     "players": 0,
-    "maxPlayers": 0
+    "maxPlayers": 100
   }
 ]
