@@ -1,6 +1,14 @@
 # Changelog
 
-> This page lists the changes for **every version**; the latest is **1.3.5**, followed by all previously released versions below.
+> This page lists the changes for **every version**; the latest is **1.3.6**, followed by all previously released versions below.
+
+## 1.3.6
+
+⚠ **Client and server must be upgraded together** (this version changes network payloads)
+
+### New Feature
+
+- **Stats chart in hover tooltips (server config, off by default)**: when the owner turns it on in Server Config, hover tooltips across the Pokémon Market, Auction House, admin screens, and the listing / auction-create / pending-return selection screens show a stat hexagon
 
 ## 1.3.5
 

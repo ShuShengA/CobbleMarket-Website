@@ -6,7 +6,7 @@ Path: `config/cobblemarket.json` (generated on first launch)
 
 **Two ways to edit it:**
 
-1. **In-game (recommended)** — the **Server Config** screen at the bottom of the Admin Panel (**server owners only**) covers fees, limits, durations and switches. Settings are split into per-feature sub-screens: **Pokémon Market / Item Market / Auction House / Buy Orders / Meowth Bank / RP System** (the main screen keeps only the ID Card background and the showcase cooldown). The Pokémon and Item Market sub-screens both show the same "listing duration / pending-claims retention" values — editing either one changes both
+1. **In-game (recommended)** — the **Server Config** screen at the bottom of the Admin Panel (**server owners only**) covers fees, limits, durations and switches. Settings are split into per-feature sub-screens: **Pokémon Market / Item Market / Auction House / Buy Orders / Meowth Bank / RP System** (the main screen keeps only the hover stats toggle, the ID Card background and the showcase cooldown). The Pokémon and Item Market sub-screens both show the same "listing duration / pending-claims retention" values — editing either one changes both
 2. **Edit the file directly** — then run `/market reload` to apply changes without a restart
 
 > ⚠ **Currency settings (the `currency` block) are read only at server startup.** After changing them you must restart; `/market reload` will not apply them (it tells you so when it detects a change).
@@ -84,6 +84,7 @@ RP is an optional premium currency. The **master switch is on by default for new
 | `shareEnabled` | `true` | Master switch for player showcases (**config file only**): when off, "Showcase to chat" no longer works |
 | `shareCooldownSeconds` | `10` | Showcase cooldown in seconds (1–3600): the wait between two showcases by the same player, shared by Pokémon / ID card / item showcases. ⚠ Too small a value floods server chat |
 | `idCardBackground` | blank | Market ID Card background image file name: put the image into `config/cobblemarket/idcard/` (plain file name, no path); blank = the mod's built-in image. PNG only, max 1MB and max 2048×2048; applies after `/market reload` |
+| `hoverStatsChart` | `false` | Show a stats chart in hover tooltips: when on, Pokémon hover windows draw a stat hexagon (same values as the in-game summary, including fused Pokémon); only hover tooltips are affected — purchase / bid / detail dialogs are not. ⚠ When on, the server calculates stats for every hover info, which may add load when many players hover frequently; when off it costs nothing. Also toggleable on the in-game Server Config main screen (asking for confirmation when enabling) |
 
 > ⚠ `shareCooldownSeconds` and `idCardBackground` can also be edited in the in-game Server Config screen; `shareEnabled` is config-file only for now.
 
