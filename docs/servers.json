@@ -22,9 +22,9 @@
       "economy"
     ],
     "issue": 1,
-    "online": true,
-    "players": 3,
-    "maxPlayers": 20
+    "online": false,
+    "players": 0,
+    "maxPlayers": 0
   },
   {
     "name": "CobbleFusion F2P",
@@ -54,7 +54,7 @@
     ],
     "issue": 2,
     "online": true,
-    "players": 4,
+    "players": 0,
     "maxPlayers": 100
   }
 ]
