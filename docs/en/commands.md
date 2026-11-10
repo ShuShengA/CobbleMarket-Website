@@ -9,9 +9,8 @@ All commands live under `/market`.
 | `/market gui` | Open the market entry screen (same as pressing `K`, or opening it from the Cobblemon Smartphone app) |
 | `/market points redeem <code>` | Redeem RP (the normal path is the redeem box in the RP Shop; the command is for console / support use) |
 | `/market points check` | View your own RP balance |
-| `/market points shop create <tier>` | Create a top-up order (the normal path is the in-game top-up screen) |
-| `/market points shop paid <order>` | Declare "I have paid" (**a claim, not proof** â€” the owner still checks their statement) |
-| `/market points shop cancel <order>` | Cancel your unpaid order |
+
+> RP top-up orders (create / mark paid / cancel) are handled **only on the RP Shop screen** â€” there are no player commands
 
 ## Admin Commands
 
@@ -24,6 +23,8 @@ Admin commands are judged by **permission nodes** (server owners always pass) â€
 | `/market ban <player> [duration] [reason]` | Bans | Ban a player from trading (see [Ban Management](/en/moderation) for the exact scope) |
 | `/market unban <player>` | Bans | Lift a ban |
 | `/market banlist` | Bans | List active bans |
+| `/market peek <player>` | Player Overview | Watch the player from spectator view (both must be in the same dimension; only works on online, non-spectator players) |
+| `/market peek stop` | Player Overview | Stop spectating and restore your position and game mode |
 | `/market card give <player> [kind]` | Finance | Issue a card credential |
 | `/market card revoke <player> [kind]` | Finance | Revoke a card credential |
 | `/market card list` | Finance | List issued cards |
@@ -71,7 +72,7 @@ Admin commands are judged by **permission nodes** (server owners always pass) â€
 | `/market shop period <id> <hours>` | Claim period (1â€“8760 hours; 24 = daily, 168 = weekly, 720 = monthly); the mode itself is fixed at creation |
 | `/market shop cooldown <id> <hours>` | **Shop-wide cooldown**: buying any slot locks the whole shop for that player (0 = off) |
 | `/market shop itemcooldown <id> <hours>` | **Per-item cooldown**: each item ticks on its own (0 = off) |
-| `/market shop cooldown <id> reset` | Clear **every player's** cooldown records on that shop (for testing) |
+| `/market shop cooldown <id> reset` | Clear **every player's** cooldown records on that shop; on **claim shops** it clears the claim period instead (everyone can claim again) |
 | `/market shop bind <id>` | Bind **the entity you are looking at** to the shop |
 | `/market shop unbind` | Unbind **the entity you are looking at** (no ID needed) |
 | `/market shop enable <id>` / `disable <id>` | Open / close a shop (that shop only) |

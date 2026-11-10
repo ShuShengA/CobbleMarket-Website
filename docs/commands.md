@@ -9,9 +9,8 @@
 | `/market gui` | 打开市场入口界面（等同于按 `K`，或从 Cobblemon Smartphone 应用进入） |
 | `/market points redeem <兑换码>` | 兑换 RP（正式路径是 RP 商城界面里的兑换框，命令留给后台 / 客服代兑） |
 | `/market points check` | 查看自己的 RP 余额 |
-| `/market points shop create <档位>` | 创建一个充值订单（正式路径是游戏内充值界面） |
-| `/market points shop paid <订单号>` | 声明「我已支付」（**声明不是证据**，仍需服主核对账单） |
-| `/market points shop cancel <订单号>` | 取消自己未支付的订单 |
+
+> RP 充值订单（下单 / 我已支付 / 取消）只在 **RP 商城界面**里操作，没有玩家命令
 
 ## 管理命令
 
@@ -24,6 +23,8 @@
 | `/market ban <玩家> [时长] [理由]` | 封禁 | 封禁玩家交易（限制范围见[封禁管理](/moderation)）|
 | `/market unban <玩家>` | 封禁 | 解除封禁 |
 | `/market banlist` | 封禁 | 列出当前生效的封禁 |
+| `/market peek <玩家>` | 玩家总览 | 进入旁观视角监视该玩家（双方需在同一维度；只对在线且非旁观模式的玩家生效） |
+| `/market peek stop` | 玩家总览 | 结束监视并还原位置与游戏模式 |
 | `/market card give <玩家> [卡种]` | 金融管理 | 发放卡片凭证 |
 | `/market card revoke <玩家> [卡种]` | 金融管理 | 收回卡片凭证 |
 | `/market card list` | 金融管理 | 列出已发放的卡片 |
@@ -71,7 +72,7 @@
 | `/market shop period <id> <小时>` | 领取周期（1~8760 小时；24 = 每日、168 = 每周、720 = 每月）；经营模式建好后不可改 |
 | `/market shop cooldown <id> <小时>` | **整店冷却**：买成任意一格后全店都要等（0 = 关闭） |
 | `/market shop itemcooldown <id> <小时>` | **商品各自冷却**：每件商品单独计时（0 = 关闭） |
-| `/market shop cooldown <id> reset` | 清空这家店**所有玩家**的冷却记录（测试用） |
+| `/market shop cooldown <id> reset` | 清空这家店**所有玩家**的冷却记录；对**领取店**则是清空领取周期（所有玩家可立即领取） |
 | `/market shop bind <id>` | 把**正在看的实体**绑定到商店 |
 | `/market shop unbind` | 解除**正在看的实体**的绑定（不需要 id） |
 | `/market shop enable <id>` / `disable <id>` | 开店 / 关店（只影响这一家店） |
