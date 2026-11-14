@@ -23,7 +23,7 @@
     ],
     "issue": 1,
     "online": true,
-    "players": 2,
+    "players": 0,
     "maxPlayers": 20
   },
   {
@@ -54,7 +54,7 @@
     ],
     "issue": 2,
     "online": true,
-    "players": 3,
+    "players": 18,
     "maxPlayers": 100
   }
 ]
