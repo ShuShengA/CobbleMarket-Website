@@ -1,6 +1,28 @@
 # Changelog
 
-> This page lists the changes for **every version**; the latest is **1.3.7**, followed by all previously released versions below.
+> This page lists the changes for **every version**; the latest is **1.3.8**, followed by all previously released versions below.
+
+## 1.3.8
+
+⚠ **Client and server must be upgraded together** (this version changes network payloads)
+
+### New Feature
+
+- **"Online Players" panel in Quick Actions now supports "suspicious marks"**: right-click a player row and their avatar becomes a suspicious button; click it to enter a reason (optional) and mark the player. Marked players show a warning icon left of their avatar (with a count badge when two or more people have marked them), visible to everyone with the Player Overview permission; the hover tooltip shows the dimension and lists every mark (who, when, and the reason). Each permission member stores their own mark independently: the button's selected state only reflects your own mark, clicking it removes yours, and marks from others are untouched. Player Overview (when sorted by name) also shows the mark at the end of the row, with all markers and times in the hover tooltip; its sort dropdown gained a "Mark" filter (icon + label) that shows only marked players. Marks are saved on the server and survive restarts. Commands are also available: `/market peekmark <player> [reason]` to mark (works for offline players too; reason optional; running it again replaces your own previous mark) and `/market peekmark clear <player>` to remove your own mark
+
+### Changes
+
+- **Clearer message when teleporting to another dimension while spectating**: it now says you were moved back to where you started and need to run the teleport again (previously it only said spectating had ended, so seeing the teleport succeed and then being pulled back looked like the teleport had failed)
+- **The six IV fields for RP Shop / custom NPC shop Pokémon are now a lower bound (≥)**: filling 20 means that stat is generated between 20 and 31 (previously fixed at 20); existing offers keep their fixed values unless edited and saved
+- **Quick Actions "Online Players" panel: hovering a row now shows the dimension that player is in** (clicking to spectate is unchanged)
+- **Switching spectate targets no longer sends you back to your original spot first**: switching to another player in the same dimension now teleports you straight to the new target (previously it ended the old session, moved you back, then started the new one, which looked like an extra teleport)
+- **The spectating player no longer appears as a spectator in the tab list**
+
+### Fixes
+
+- **Offline players without a cached name showed as a raw UUID in Player Overview**: names are now recovered from online snapshots, auctions, buy orders and bans; if a name still cannot be found it shows "Unknown player", and the full UUID is still visible in the hover tooltip
+- **Hovering a shared Market ID Card in chat showed the sharer's model without their equipment (armor etc.) when they were far away or offline**: the model now wears the four pieces captured at share time; whether armor is visible still follows the accessory mod (e.g. Accessories) settings
+- **Clicking "Spectate" on a NeoForge server crashed the server**
 
 ## 1.3.7
 

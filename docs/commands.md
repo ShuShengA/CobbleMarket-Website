@@ -25,6 +25,8 @@
 | `/market banlist` | 封禁 | 列出当前生效的封禁 |
 | `/market peek <玩家>` | 玩家总览 | 进入旁观视角监视该玩家（双方需在同一维度；只对在线且非旁观模式的玩家生效） |
 | `/market peek stop` | 玩家总览 | 结束监视并还原位置与游戏模式 |
+| `/market peekmark <玩家> [原因]` | 玩家总览 | 标记该玩家为可疑（支持离线玩家；原因可省略；重复执行覆盖你自己的旧标记）|
+| `/market peekmark clear <玩家>` | 玩家总览 | 取消你对该玩家的可疑标记 |
 | `/market card give <玩家> [卡种]` | 金融管理 | 发放卡片凭证 |
 | `/market card revoke <玩家> [卡种]` | 金融管理 | 收回卡片凭证 |
 | `/market card list` | 金融管理 | 列出已发放的卡片 |

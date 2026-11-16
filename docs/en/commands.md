@@ -25,6 +25,8 @@ Admin commands are judged by **permission nodes** (server owners always pass) â€
 | `/market banlist` | Bans | List active bans |
 | `/market peek <player>` | Player Overview | Watch the player from spectator view (both must be in the same dimension; only works on online, non-spectator players) |
 | `/market peek stop` | Player Overview | Stop spectating and restore your position and game mode |
+| `/market peekmark <player> [reason]` | Player Overview | Mark the player as suspicious (works for offline players; reason optional; running it again replaces your own previous mark) |
+| `/market peekmark clear <player>` | Player Overview | Remove your own suspicious mark from the player |
 | `/market card give <player> [kind]` | Finance | Issue a card credential |
 | `/market card revoke <player> [kind]` | Finance | Revoke a card credential |
 | `/market card list` | Finance | List issued cards |
