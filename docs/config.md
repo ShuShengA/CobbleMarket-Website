@@ -82,11 +82,12 @@ RP 是可选的高级货币 —— 总开关**新装默认开启**（升级保�
 | `listingDurationDays` | `14` | 上架过期天数 |
 | `pendingReturnRetentionDays` | `30` | 待领取退回的保留天数。**超期未领取的退回会被永久删除、不退款**（`0` = 永不清理） |
 | `shareEnabled` | `true` | 玩家展示总开关（**只能在配置文件里改**）：关闭后「展示到聊天」不再生效 |
+| `photoEnabled` | `true` | 照片分享开关：关闭后仍可拍照、预览、起名、选位置，但「发送到聊天」不可用（服务端也会拒绝上传）。也可在游戏内「服务器配置」主界面开关 |
 | `shareCooldownSeconds` | `10` | 展示冷却秒数（1~3600）：每个玩家两次展示之间的等待时间，精灵 / ID 卡 / 物品三种展示共用。⚠ 设得太小会让全服播报刷屏 |
 | `idCardBackground` | 空 | 市场 ID 卡背景图文件名：图放进 `config/cobblemarket/idcard/`（只写文件名、不带路径），留空 = 用模组内置图。只认 PNG、单张 ≤1MB 且 ≤2048×2048；`/market reload` 生效 |
 | `hoverStatsChart` | `false` | 悬停窗口显示能力值：打开后精灵信息悬停窗会画出一个能力值六边形（与游戏内队伍详情同口径，融合精灵也正确）；只在悬停窗显示，购买 / 出价 / 详情弹窗不加。⚠ 开启时服务端要为每条悬停信息计算能力值，玩家多、频繁悬停时可能增加负担；关闭时零开销。也可在游戏内「服务器配置」主界面开关（开启时会二次确认） |
 
-> ⚠ `shareCooldownSeconds` 与 `idCardBackground` 在游戏内服务器配置界面里也能直接改；`shareEnabled` 目前只能改配置文件。
+> ⚠ `shareCooldownSeconds`、`idCardBackground` 与 `photoEnabled` 在游戏内服务器配置界面里也能直接改；`shareEnabled` 目前只能改配置文件。
 
 ## 拍卖
 
